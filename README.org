@@ -1,0 +1,10 @@
+20111129--jwd
+
+* INTRODUCTION
+
+  Keep all emacs configuation in a single directory. Put that
+  directory under version control, and push it to Github.
+
+* REFERENCES
+
+  1) [[http://avdi.org/devblog/category/emacs-reboot/][Emacs Reboot]] series from Avdi Grimm's blog [[http://avdi.org/devblog/][Virtuous Code]]
