@@ -2,9 +2,31 @@
 
 * INTRODUCTION
 
+  Learning Emacs will reward me with knowledge of a powerful
+  cross-platform and general-purpose tool. I plan to learn Emacs by
+  following Avdi Grimm's example in his "Emacs Reboot" series. Namely,
+  to set-up Emacs 24 from scratch as a learning exercise. 
+
+** PLAN
+
+   For each of the following, study the changes made and incorporate
+   those that seem most relevant and useful.
+
+   1) Emacs Reboot
+   2) Emacs Prelude
+   3) Emacs24 Starter Kit
+   4) Ergoemacs
+   5) Xah Lee's Emacs Tutorial
+
+* SUMMARY
+
   Keep all emacs configuation in a single directory. Put that
-  directory under version control, and push it to Github.
+  directory under version control, and push it to Github.  
 
 * REFERENCES
 
   1) [[http://avdi.org/devblog/category/emacs-reboot/][Emacs Reboot]] series from Avdi Grimm's blog [[http://avdi.org/devblog/][Virtuous Code]]
+  2) [[Bozhidar%20Batsov][Bozhidar Batsov]]'s [[https://github.com/bbatsov/emacs-prelude][Emacs Prelude]]
+  3) [[https://github.com/eschulte][Eric Shulte]]'s [[https://github.com/eschulte/emacs24-starter-kit#readme][Emacs24 Starter Kit]]
+  4) [[http://xahlee.org/index.html][Xah Lee]]'s [[http://xahlee.org/emacs/emacs.html][Emacs Tutorial]] and his [[http://code.google.com/p/ergoemacs/][Ergoemacs]]
+
