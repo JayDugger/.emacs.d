@@ -1,4 +1,4 @@
-20111129--jwd
+20111225--jwd
 
 * INTRODUCTION
 
@@ -15,8 +15,8 @@
    1) Emacs Reboot
    2) Emacs Prelude
    3) Emacs24 Starter Kit
-   4) Ergoemacs
-   5) Xah Lee's Emacs Tutorial
+   4) Xah Lee's Emacs Tutorial and his Ergoemacs
+   
 
 * SUMMARY
 
@@ -29,4 +29,5 @@
   2) [[Bozhidar%20Batsov][Bozhidar Batsov]]'s [[https://github.com/bbatsov/emacs-prelude][Emacs Prelude]]
   3) [[https://github.com/eschulte][Eric Shulte]]'s [[https://github.com/eschulte/emacs24-starter-kit#readme][Emacs24 Starter Kit]]
   4) [[http://xahlee.org/index.html][Xah Lee]]'s [[http://xahlee.org/emacs/emacs.html][Emacs Tutorial]] and his [[http://code.google.com/p/ergoemacs/][Ergoemacs]]
+  5) [[http://schwehr.org/][Kurt Schwehr]]'s [[http://vislab-ccom.unh.edu/~schwehr/Classes/2011/esci895-researchtools/][2011 Research Tools]] class
 
