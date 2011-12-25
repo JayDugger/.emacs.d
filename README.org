@@ -1,4 +1,6 @@
-20111225--jwd
+#+TITLE: Dugger, Jay - [.emacs.d] - README.org
+#+AUTHOR: Jay Dugger
+#+EMAIL: jay.dugger@gmail.com
 
 * INTRODUCTION
 
@@ -16,13 +18,70 @@
    2) Emacs Prelude
    3) Emacs24 Starter Kit
    4) Xah Lee's Emacs Tutorial and his Ergoemacs
+   5) Kurt Schwehr's Research Tools
    
-
 * SUMMARY
 
   Keep all emacs configuation in a single directory. Put that
   directory under version control, and push it to Github.  
 
+* TODO Emacs Reboot
+** DONE [[http://avdi.org/devblog/2011/08/08/emacs-reboot-1-beginnings/][Emacs Reboot #1: Beginnings]], Part 1
+   Check out Emacs 24 from bzr and build it from source.
+   - DECLINED
+     I use a PPA for Emacs 24 from Batsov's Emacs Prelude.
+** DONE [[http://avdi.org/devblog/2011/08/08/emacs-reboot-1-beginnings/][Emacs Reboot #1: Beginnings]], Part 2
+   - ACCEPTED
+     I installed the various development libraries needed to build
+     Emacs 24.
+#+begin_src sh
+sudo apt-get install libgtk-3-dev libgif-dev libxpm-dev
+#+end_src
+** DONE [[http://avdi.org/devblog/2011/08/09/emacs-reboot-2-startup/][Emacs Reboot #2: Startup]]
+   Test the emacs newly built from source, and force it to load a
+   different init file
+   - DECLINED
+     I installed Emacs 24 from a package manager.
+#+begin_src sh
+sudo apt-get install libcanberra-gtk3-dev
+#+end_src
+** DONE [[http://avdi.org/devblog/2011/09/08/emacs-reboot-3-preparing-the-canvas/][Emacs Reboot #3: Preparing the Canvas]], Part 1
+   Set .emacs to switch between Emacs 23 and Emacs 24 depending on
+   which version of Emacs one starts.
+   - DECLINED
+     I don't plan to keep multiple versions of emacs installed.
+** DONE [[http://avdi.org/devblog/2011/09/08/emacs-reboot-3-preparing-the-canvas/][Emacs Reboot #3: Preparing the Canvas]], Part 1
+   Combine all configuration in a single version-controlled directory
+   and push that to Github.
+   - ACCEPTED
+     See [[https://github.com/JayDugger/.emacs.d][JayDugger/.emacs.d]] on GitHub.     
+** DONE [[http://avdi.org/devblog/2011/09/08/emacs-reboot-4-customizing-customization/][Emacs Reboot #4: Customizing Customization]] 
+   Set emacs to use ~/.emacs24.d/emacs-customizations.el.
+   - DECLINED
+     I don't plan to keep multiple versions of emacs installed.
+** DONE [[http://avdi.org/devblog/2011/09/10/emacs-reboot-5/][Emacs Reboot #5]]
+   Move back-up file copies from their default location alongside the
+   original file to a single central directory at ~/.emacs.d/backups.
+   - DECLINED
+     Creating a central back-up directory doesn't offer my any advantages.
+** TODO [[http://avdi.org/devblog/2011/09/19/emacs-reboot-6-marmalade-magit/][Emacs Reboot #6: Marmalade, Magit]]
+   I use the Maramalade package archive to install the latest and
+   greatest Magit-mode for managing Git repositories.
+   - ACCEPTED
+** TODO Emacs Reboot #7: Ido
+** TODO Emacs Reboot #8: Gists
+** TODO Emacs Reboot #9: Blogging
+** TODO Emacs Reboot #10: Lorem Ipsum
+** TODO Emacs Reboot #11: Line Numbers
+** TODO Emacs Reboot #12: Required Packages
+** TODO Emacs Reboot #13: Breaking up init.el
+** TODO Emacs Reboot #14: RVM.el and Inf-Ruby
+** TODO Emacs Reboot #15: Running Emacs as a Server
+* TODO Emacs Prelude
+* TODO Emacs24 Starter Kit
+* TODO Xah Lee's Emacs Tutorial
+* TODO Ergoemacs
+* TODO Kurt Schwehr's Research Tools
 * REFERENCES
 
   1) [[http://avdi.org/devblog/category/emacs-reboot/][Emacs Reboot]] series from Avdi Grimm's blog [[http://avdi.org/devblog/][Virtuous Code]]
