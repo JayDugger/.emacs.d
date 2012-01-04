@@ -9,3 +9,6 @@
 /session.*
 /eshell/history
 /*~
+/elpa/archives/marmalade/archive-contents~
+/elpa/color-theme-6.6.1/color-theme-autoloads.el~
+/elpa/solarized-theme-0.2/README.md
