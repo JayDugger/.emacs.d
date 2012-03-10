@@ -1,0 +1,879 @@
+;;; .loaddefs.el --- automatically extracted autoloads
+;;
+;;; Code:
+
+
+;;;### (autoloads (artbollocks-mode) "artbollocks-mode/artbollocks-mode"
+;;;;;;  "artbollocks-mode/artbollocks-mode.el" (20311 29945))
+;;; Generated autoloads from artbollocks-mode/artbollocks-mode.el
+
+(autoload 'artbollocks-mode "artbollocks-mode/artbollocks-mode" "\
+highlight passive voice, weasel words and artbollocks in text, provide useful text metrics
+
+\(fn &optional ARG)" t nil)
+
+;;;***
+
+;;;### (autoloads (color-theme-solarized-light color-theme-solarized-dark
+;;;;;;  color-theme-solarized) "color-theme-solarized/color-theme-solarized"
+;;;;;;  "color-theme-solarized/color-theme-solarized.el" (20305 4790))
+;;; Generated autoloads from color-theme-solarized/color-theme-solarized.el
+
+(autoload 'color-theme-solarized "color-theme-solarized/color-theme-solarized" "\
+Color theme by Ethan Schoonover, created 2011-03-24.
+Ported to Emacs by Greg Pfeil, http://ethanschoonover.com/solarized.
+
+\(fn MODE)" t nil)
+
+(autoload 'color-theme-solarized-dark "color-theme-solarized/color-theme-solarized" "\
+
+
+\(fn)" t nil)
+
+(autoload 'color-theme-solarized-light "color-theme-solarized/color-theme-solarized" "\
+
+
+\(fn)" t nil)
+
+;;;***
+
+;;;### (autoloads (color-theme-initialize color-theme-submit color-theme-install
+;;;;;;  color-theme-compare color-theme-make-snapshot color-theme-analyze-defun
+;;;;;;  color-theme-print color-theme-install-at-point-for-current-frame
+;;;;;;  color-theme-install-at-mouse color-theme-describe color-theme-select)
+;;;;;;  "color-theme/color-theme" "color-theme/color-theme.el" (17529
+;;;;;;  41105))
+;;; Generated autoloads from color-theme/color-theme.el
+
+(autoload 'color-theme-select "color-theme/color-theme" "\
+Displays a special buffer for selecting and installing a color theme.
+With optional prefix ARG, this buffer will include color theme libraries
+as well.  A color theme library is in itself not complete, it must be
+used as part of another color theme to be useful.  Thus, color theme
+libraries are mainly useful for color theme authors.
+
+\(fn &optional ARG)" t nil)
+
+(autoload 'color-theme-describe "color-theme/color-theme" "\
+Describe color theme listed at point.
+This shows the documentation of the value of text-property color-theme
+at point.  The text-property color-theme should be a color theme
+function.  See `color-themes'.
+
+\(fn)" t nil)
+
+(autoload 'color-theme-install-at-mouse "color-theme/color-theme" "\
+Install color theme clicked upon using the mouse.
+First argument EVENT is used to set point.  Then
+`color-theme-install-at-point' is called.
+
+\(fn EVENT)" t nil)
+
+(autoload 'color-theme-install-at-point-for-current-frame "color-theme/color-theme" "\
+Install color theme at point for current frame only.
+Binds `color-theme-is-global' to nil and calls
+`color-theme-install-at-point'.
+
+\(fn)" t nil)
+
+(autoload 'color-theme-print "color-theme/color-theme" "\
+Print the current color theme function.
+
+You can contribute this function to <URL:news:gnu.emacs.sources> or
+paste it into your .emacs file and call it.  That should recreate all
+the settings necessary for your color theme.
+
+Example:
+
+    (require 'color-theme)
+    (defun my-color-theme ()
+      \"Color theme by Alex Schroeder, created 2000-05-17.\"
+      (interactive)
+      (color-theme-install
+       '(...
+	 ...
+	 ...)))
+    (my-color-theme)
+
+If you want to use a specific color theme function, you can call the
+color theme function in your .emacs directly.
+
+Example:
+
+    (require 'color-theme)
+    (color-theme-gnome2)
+
+\(fn &optional BUF)" t nil)
+
+(autoload 'color-theme-analyze-defun "color-theme/color-theme" "\
+Once you have a color-theme printed, check for missing faces.
+This is used by maintainers who receive a color-theme submission
+and want to make sure it follows the guidelines by the color-theme
+author.
+
+\(fn)" t nil)
+
+(autoload 'color-theme-make-snapshot "color-theme/color-theme" "\
+Return the definition of the current color-theme.
+The function returned will recreate the color-theme in use at the moment.
+
+\(fn)" nil nil)
+
+(autoload 'color-theme-compare "color-theme/color-theme" "\
+Compare two color themes.
+This will print the differences between installing THEME-A and
+installing THEME-B.  Note that the order is important: If a face is
+defined in THEME-A and not in THEME-B, then this will not show up as a
+difference, because there is no reset before installing THEME-B.  If a
+face is defined in THEME-B and not in THEME-A, then this will show up as
+a difference.
+
+\(fn THEME-A THEME-B)" t nil)
+
+(autoload 'color-theme-install "color-theme/color-theme" "\
+Install a color theme defined by frame parameters, variables and faces.
+
+The theme is installed for all present and future frames; any missing
+faces are created.  See `color-theme-install-faces'.
+
+THEME is a color theme definition.  See below for more information.
+
+If you want to install a color theme from your .emacs, use the output
+generated by `color-theme-print'.  This produces color theme function
+which you can copy to your .emacs.
+
+A color theme definition is a list:
+\([FUNCTION] FRAME-PARAMETERS VARIABLE-SETTINGS FACE-DEFINITIONS)
+
+FUNCTION is the color theme function which called `color-theme-install'.
+This is no longer used.  There was a time when this package supported
+automatic factoring of color themes.  This has been abandoned.
+
+FRAME-PARAMETERS is an alist of frame parameters.  These are installed
+with `color-theme-install-frame-params'.  These are installed last such
+that any changes to the default face can be changed by the frame
+parameters.
+
+VARIABLE-DEFINITIONS is an alist of variable settings.  These are
+installed with `color-theme-install-variables'.
+
+FACE-DEFINITIONS is an alist of face definitions.  These are installed
+with `color-theme-install-faces'.
+
+If `color-theme-is-cumulative' is nil, a color theme will undo face and
+frame-parameter settings of previous color themes.
+
+\(fn THEME)" nil nil)
+
+(autoload 'color-theme-submit "color-theme/color-theme" "\
+Submit your color-theme to the maintainer.
+
+\(fn)" t nil)
+
+(autoload 'color-theme-initialize "color-theme/color-theme" "\
+Initialize the color theme package by loading color-theme-libraries.
+
+\(fn)" t nil)
+
+;;;***
+
+;;;### (autoloads (g-app-view g-app-publish) "g-client/g-app" "g-client/g-app.el"
+;;;;;;  (20311 29240))
+;;; Generated autoloads from g-client/g-app.el
+
+(autoload 'g-app-publish "g-client/g-app" "\
+Publish current entry.
+
+\(fn)" t nil)
+
+(autoload 'g-app-view "g-client/g-app" "\
+View feed using auth credentials in auth-handle.
+
+\(fn AUTH-HANDLE FEED-URL)" t nil)
+
+;;;***
+
+;;;### (autoloads (g-auth-lifetime) "g-client/g-auth" "g-client/g-auth.el"
+;;;;;;  (20311 29240))
+;;; Generated autoloads from g-client/g-auth.el
+
+(defvar g-auth-lifetime "4 hours" "\
+Auth lifetime.")
+
+(custom-autoload 'g-auth-lifetime "g-client/g-auth" nil)
+
+;;;***
+
+;;;### (autoloads (gblogger-sign-in gblogger-sign-out gblogger-add-label
+;;;;;;  gblogger-delete-entry gblogger-new-entry gblogger-edit-entry
+;;;;;;  gblogger-atom-display gblogger-blog) "g-client/gblogger"
+;;;;;;  "g-client/gblogger.el" (20311 29240))
+;;; Generated autoloads from g-client/gblogger.el
+
+(autoload 'gblogger-blog "g-client/gblogger" "\
+Retrieve and display feed of feeds after authenticating.
+
+\(fn)" t nil)
+
+(autoload 'gblogger-atom-display "g-client/gblogger" "\
+Retrieve and display specified feed after authenticating.
+
+\(fn FEED-URL)" t nil)
+
+(autoload 'gblogger-edit-entry "g-client/gblogger" "\
+Retrieve entry and prepare it for editting.
+The retrieved entry is placed in a buffer ready for editing.
+`url' is the URL of the entry.
+
+\(fn URL)" t nil)
+
+(autoload 'gblogger-new-entry "g-client/gblogger" "\
+Create a new Blog post.
+
+\(fn URL &optional TITLE TEXT)" t nil)
+
+(autoload 'gblogger-delete-entry "g-client/gblogger" "\
+Delete item at specified edit URL.
+
+\(fn EDIT-URL)" t nil)
+
+(autoload 'gblogger-add-label "g-client/gblogger" "\
+Adds labels to gblogger entry being editted.
+
+\(fn LABEL)" t nil)
+
+(autoload 'gblogger-sign-out "g-client/gblogger" "\
+Resets client so you can start with a different userid.
+
+\(fn)" t nil)
+
+(autoload 'gblogger-sign-in "g-client/gblogger" "\
+Resets client so you can start with a different userid.
+
+\(fn)" t nil)
+
+;;;***
+
+;;;### (autoloads (gcal-sign-in gcal-sign-out gcal-emacs-calendar-setup
+;;;;;;  gcal-show-event gcal-view gcal-calendar-agenda-days gcal-reject-event
+;;;;;;  gcal-delete-event gcal-quickadd-event gcal-add-event gcal-user-email
+;;;;;;  gcal-default-user-email) "g-client/gcal" "g-client/gcal.el"
+;;;;;;  (20311 29240))
+;;; Generated autoloads from g-client/gcal.el
+
+(defvar gcal-default-user-email nil "\
+Default user id for Calendar.")
+
+(custom-autoload 'gcal-default-user-email "g-client/gcal" t)
+
+(defvar gcal-user-email nil "\
+Mail address that identifies calendar user.")
+
+(custom-autoload 'gcal-user-email "g-client/gcal" t)
+
+(autoload 'gcal-add-event "g-client/gcal" "\
+Add a calendar event.
+
+\(fn)" t nil)
+
+(autoload 'gcal-quickadd-event "g-client/gcal" "\
+Add a calendar event.
+Specify the event in plain English.
+
+\(fn EVENT-DESC)" t nil)
+
+(autoload 'gcal-delete-event "g-client/gcal" "\
+Delete a calendar event.
+
+\(fn EVENT-URI)" t nil)
+
+(autoload 'gcal-reject-event "g-client/gcal" "\
+Reject (RSVP)  a calendar event.
+
+\(fn EVENT-URI)" t nil)
+
+(defvar gcal-calendar-agenda-days 5 "\
+Number of days for which we show an agenda by default.")
+
+(custom-autoload 'gcal-calendar-agenda-days "g-client/gcal" t)
+
+(autoload 'gcal-view "g-client/gcal" "\
+Retrieve and display resource after authenticating.
+
+\(fn RESOURCE)" t nil)
+
+(autoload 'gcal-show-event "g-client/gcal" "\
+Show event at URL.
+
+\(fn URL)" t nil)
+
+(define-prefix-command 'gcal-calendar-prefix-map)
+
+(autoload 'gcal-emacs-calendar-setup "g-client/gcal" "\
+Setup GCal keybindings in Emacs calendar.
+
+\(fn)" nil nil)
+
+(autoload 'gcal-sign-out "g-client/gcal" "\
+Resets client so you can start with a different userid.
+
+\(fn)" t nil)
+
+(autoload 'gcal-sign-in "g-client/gcal" "\
+Sign in, useful when changing to a different user profile.
+
+\(fn)" t nil)
+
+;;;***
+
+;;;### (autoloads (gcontacts-create gcontacts-initialize) "g-client/gcontacts"
+;;;;;;  "g-client/gcontacts.el" (20311 29240))
+;;; Generated autoloads from g-client/gcontacts.el
+
+(autoload 'gcontacts-initialize "g-client/gcontacts" "\
+Initialize GContacts process handle.
+
+\(fn USERNAME)" t nil)
+
+(autoload 'gcontacts-create "g-client/gcontacts" "\
+Create a new contact as specified.
+
+\(fn NAME EMAIL MOBILE)" t nil)
+
+;;;***
+
+;;;### (autoloads (gdocs-sign-in gdocs-sign-out gdocs-view-item gdocs-delete-item
+;;;;;;  gdocs-add-collaborator gdocs-doclist) "g-client/gdocs" "g-client/gdocs.el"
+;;;;;;  (20311 29240))
+;;; Generated autoloads from g-client/gdocs.el
+
+(autoload 'gdocs-doclist "g-client/gdocs" "\
+Retrieve and display feed of feeds after authenticating.
+Interactive prefix arg prompts for a query string.
+
+\(fn &optional QUERY)" t nil)
+
+(autoload 'gdocs-add-collaborator "g-client/gdocs" "\
+Add collaborator to ACL at acl-url.
+You can find the acl-url through the DocList.
+
+\(fn EMAIL ACL-URL)" t nil)
+
+(autoload 'gdocs-delete-item "g-client/gdocs" "\
+Delete specified item.
+
+\(fn URL)" t nil)
+
+(autoload 'gdocs-view-item "g-client/gdocs" "\
+View specified item.
+
+\(fn URL)" t nil)
+
+(autoload 'gdocs-sign-out "g-client/gdocs" "\
+Resets client so you can start with a different userid.
+
+\(fn)" t nil)
+
+(autoload 'gdocs-sign-in "g-client/gdocs" "\
+Resets client so you can start with a different userid.
+
+\(fn)" t nil)
+
+;;;***
+
+;;;### (autoloads (gfeeds-lookup-and-view gfeeds-view gfeeds-titles
+;;;;;;  gfeeds-freshness) "g-client/gfeeds" "g-client/gfeeds.el"
+;;;;;;  (20311 29240))
+;;; Generated autoloads from g-client/gfeeds.el
+
+(defsubst gfeeds-feed (feed-url) "\
+Return feed structure." (declare (special gfeeds-feeds-url gfeeds-referer)) (let ((result nil)) (g-using-scratch (call-process g-curl-program nil t nil "-s" "-e" gfeeds-referer (format gfeeds-feeds-url (g-url-encode feed-url))) (goto-char (point-min)) (setq result (json-read)) (when (= 200 (g-json-get (quote responseStatus) result)) (g-json-get (quote feed) (g-json-get (quote responseData) result))))))
+
+(defsubst gfeeds-lookup (url) "\
+Lookup feed for a given Web page." (declare (special gfeeds-lookup-url gfeeds-referer)) (let ((result nil)) (g-using-scratch (call-process g-curl-program nil t nil "-s" "-e" gfeeds-referer (format gfeeds-lookup-url (g-url-encode url))) (goto-char (point-min)) (setq result (json-read)) (when (= 200 (g-json-get (quote responseStatus) result)) (g-json-get (quote url) (g-json-get (quote responseData) result))))))
+
+(defsubst gfeeds-find (query) "\
+Find feeds matching a query." (declare (special gfeeds-find-url gfeeds-referer)) (let ((result nil)) (g-using-scratch (call-process g-curl-program nil t nil "-s" "-e" gfeeds-referer (format gfeeds-find-url (g-url-encode query))) (goto-char (point-min)) (setq result (json-read)) (when (= 200 (g-json-get (quote responseStatus) result)) (g-json-get (quote entries) (g-json-get (quote responseData) result))))))
+
+(defvar gfeeds-freshness "1 hour" "\
+Freshness used to decide if we return titles.")
+
+(custom-autoload 'gfeeds-freshness "g-client/gfeeds" nil)
+
+(autoload 'gfeeds-titles "g-client/gfeeds" "\
+Return list of titles from feed at feed-url.
+
+\(fn FEED-URL)" nil nil)
+
+(autoload 'gfeeds-view "g-client/gfeeds" "\
+Display Feed in a browser.
+Interactive prefix arg causes the feed url to be looked up given a Web site.
+
+\(fn URL &optional LOOKUP)" t nil)
+
+(autoload 'gfeeds-lookup-and-view "g-client/gfeeds" "\
+Lookup feed URL for a site and browse result.
+
+\(fn SITE)" t nil)
+
+;;;***
+
+;;;### (autoloads (gfinance-sign-in gfinance-sign-out gfinance-display-feed
+;;;;;;  gfinance-portfolios) "g-client/gfinance" "g-client/gfinance.el"
+;;;;;;  (20311 29240))
+;;; Generated autoloads from g-client/gfinance.el
+
+(autoload 'gfinance-portfolios "g-client/gfinance" "\
+Retrieve and display feed of feeds after authenticating.
+
+\(fn)" t nil)
+
+(autoload 'gfinance-display-feed "g-client/gfinance" "\
+Retrieve and display feedat feed-url  after authenticating.
+
+\(fn FEED-URL)" t nil)
+
+(autoload 'gfinance-sign-out "g-client/gfinance" "\
+Resets client so you can start with a different userid.
+
+\(fn)" t nil)
+
+(autoload 'gfinance-sign-in "g-client/gfinance" "\
+Resets client so you can start with a different userid.
+
+\(fn)" t nil)
+
+;;;***
+
+;;;### (autoloads (ghealth-sign-in ghealth-sign-out) "g-client/ghealth"
+;;;;;;  "g-client/ghealth.el" (20311 29240))
+;;; Generated autoloads from g-client/ghealth.el
+
+(autoload 'ghealth-sign-out "g-client/ghealth" "\
+Resets client so you can start with a different userid.
+
+\(fn)" t nil)
+
+(autoload 'ghealth-sign-in "g-client/ghealth" "\
+Resets client so you can start with a different userid.
+
+\(fn)" t nil)
+
+;;;***
+
+;;;### (autoloads (gphoto-edit-entry gphoto-sign-in gphoto-sign-out
+;;;;;;  gphoto-comment-or-tag gphoto-directory-add-photos gphoto-photo-add
+;;;;;;  gphoto-album-create gphoto-user-tagsearch gphoto-user-search
+;;;;;;  gphoto-recent gphoto-community-search gphoto-download gphoto-view
+;;;;;;  gphoto-tags gphoto-albums gphoto-feeds) "g-client/gphoto"
+;;;;;;  "g-client/gphoto.el" (20311 29240))
+;;; Generated autoloads from g-client/gphoto.el
+
+(autoload 'gphoto-feeds "g-client/gphoto" "\
+Retrieve and display feed of albums or tags after authenticating.
+
+\(fn KIND USER)" t nil)
+
+(autoload 'gphoto-albums "g-client/gphoto" "\
+Display feed of albums.
+Interactive prefix arg prompts for userid whose albums we request.
+
+\(fn &optional PROMPT)" t nil)
+
+(autoload 'gphoto-tags "g-client/gphoto" "\
+View feed of tags.
+
+\(fn)" t nil)
+
+(autoload 'gphoto-view "g-client/gphoto" "\
+Retrieve and display resource after authenticating.
+
+\(fn RESOURCE)" t nil)
+
+(autoload 'gphoto-download "g-client/gphoto" "\
+Download resource after authenticating.
+
+\(fn RESOURCE)" t nil)
+
+(autoload 'gphoto-community-search "g-client/gphoto" "\
+Search all public photos.
+
+\(fn QUERY)" t nil)
+
+(autoload 'gphoto-recent "g-client/gphoto" "\
+Retrieve feed of recently uploaded photos or comments.
+
+\(fn USER KIND)" t nil)
+
+(autoload 'gphoto-user-search "g-client/gphoto" "\
+Retrieve feed of recently uploaded comments for  specified user.
+
+\(fn USER QUERY)" t nil)
+
+(autoload 'gphoto-user-tagsearch "g-client/gphoto" "\
+Retrieve feed o matches comments for  specified user.
+
+\(fn USER TAG)" t nil)
+
+(autoload 'gphoto-album-create "g-client/gphoto" "\
+Create a new GPhoto album.
+
+\(fn)" t nil)
+
+(autoload 'gphoto-photo-add "g-client/gphoto" "\
+Add a photo to an existing album.
+
+\(fn ALBUM-NAME PHOTO)" t nil)
+
+(autoload 'gphoto-directory-add-photos "g-client/gphoto" "\
+Add all jpeg files in a directory to specified album.
+
+\(fn DIRECTORY ALBUM-NAME)" t nil)
+
+(autoload 'gphoto-comment-or-tag "g-client/gphoto" "\
+Add comments or tags  to an existing photo.
+
+\(fn TYPE RESOURCE)" t nil)
+
+(autoload 'gphoto-sign-out "g-client/gphoto" "\
+Resets client so you can start with a different userid.
+
+\(fn)" t nil)
+
+(autoload 'gphoto-sign-in "g-client/gphoto" "\
+Resets client so you can start with a different userid.
+
+\(fn)" t nil)
+
+(autoload 'gphoto-edit-entry "g-client/gphoto" "\
+Retrieve metadata for entry and prepare it for editting.
+The retrieved entry is placed in a buffer ready for editing.
+`url' is the URL of the entry.
+
+\(fn URL)" t nil)
+
+;;;***
+
+;;;### (autoloads (greader-re-authenticate greader-sign-in greader-sign-out
+;;;;;;  greader-search greader-find-feeds greader-star greader-add-label
+;;;;;;  greader-update-subscription greader-untag-feed greader-tag-feed
+;;;;;;  greader-title-feed greader-unsubscribe-feed greader-subscribe-feed
+;;;;;;  greader-opml greader-feed-list greader-subscriptions greader-preferences
+;;;;;;  greader-reading-list) "g-client/greader" "g-client/greader.el"
+;;;;;;  (20311 29240))
+;;; Generated autoloads from g-client/greader.el
+
+(autoload 'greader-reading-list "g-client/greader" "\
+Ensure our cookies are live, and get the reading list.
+Optional interactive prefix `state' prompts for state to retrieve
+
+e.g., starred.
+
+\(fn &optional STATE)" t nil)
+
+(autoload 'greader-preferences "g-client/greader" "\
+Ensure our cookies are live, and get all preferences for this
+user.
+
+\(fn)" t nil)
+
+(autoload 'greader-subscriptions "g-client/greader" "\
+Return list of subscribed feeds.
+
+\(fn)" nil nil)
+
+(autoload 'greader-feed-list "g-client/greader" "\
+Retrieve list of subscribed feeds.
+
+\(fn)" t nil)
+
+(autoload 'greader-opml "g-client/greader" "\
+Retrieve OPML representation of our subscription list.
+
+\(fn)" t nil)
+
+(autoload 'greader-subscribe-feed "g-client/greader" "\
+Subscribe to specified feed.
+
+\(fn FEED-URL)" t nil)
+
+(autoload 'greader-unsubscribe-feed "g-client/greader" "\
+UnSubscribe from specified feed.
+
+\(fn FEED-URL)" t nil)
+
+(autoload 'greader-title-feed "g-client/greader" "\
+Title  specified feed.
+
+\(fn FEED-URL)" t nil)
+
+(autoload 'greader-tag-feed "g-client/greader" "\
+Tag  specified feed.
+
+\(fn FEED-URL)" t nil)
+
+(autoload 'greader-untag-feed "g-client/greader" "\
+Remove Tag from specified feed.
+
+\(fn FEED-URL)" t nil)
+
+(autoload 'greader-update-subscription "g-client/greader" "\
+Perform specified subscribe, unsubscribe, or edit action.
+
+\(fn FEED-URL ACTION)" nil nil)
+
+(autoload 'greader-add-label "g-client/greader" "\
+Add label to this item.
+
+\(fn ITEM-URL LABEL)" t nil)
+
+(autoload 'greader-star "g-client/greader" "\
+Star this item.
+
+\(fn ITEM-URL)" t nil)
+
+(autoload 'greader-find-feeds "g-client/greader" "\
+Find feeds matching query.
+
+\(fn QUERY)" t nil)
+
+(autoload 'greader-search "g-client/greader" "\
+GReader search.
+
+\(fn QUERY)" t nil)
+
+(autoload 'greader-sign-out "g-client/greader" "\
+Resets client so you can start with a different userid.
+
+\(fn)" t nil)
+
+(autoload 'greader-sign-in "g-client/greader" "\
+Resets client so you can start with a different userid.
+
+\(fn)" t nil)
+
+(autoload 'greader-re-authenticate "g-client/greader" "\
+Reauthenticate current user.
+
+\(fn)" t nil)
+
+;;;***
+
+;;;### (autoloads (gsheet-sign-in gsheet-sign-out gsheet-sheets gsheet-fetch)
+;;;;;;  "g-client/gsheet" "g-client/gsheet.el" (20311 29240))
+;;; Generated autoloads from g-client/gsheet.el
+
+(autoload 'gsheet-fetch "g-client/gsheet" "\
+Fetch specified sheet.
+
+\(fn SHEET-URL)" t nil)
+
+(autoload 'gsheet-sheets "g-client/gsheet" "\
+Retrieve and display feed of feeds after authenticating.
+
+\(fn)" t nil)
+
+(autoload 'gsheet-sign-out "g-client/gsheet" "\
+Resets client so you can start with a different userid.
+
+\(fn)" t nil)
+
+(autoload 'gsheet-sign-in "g-client/gsheet" "\
+Resets client so you can start with a different userid.
+
+\(fn)" t nil)
+
+;;;***
+
+;;;### (autoloads (gskeleton-sign-in gskeleton-sign-out) "g-client/gskeleton"
+;;;;;;  "g-client/gskeleton.el" (20311 29240))
+;;; Generated autoloads from g-client/gskeleton.el
+
+(autoload 'gskeleton-sign-out "g-client/gskeleton" "\
+Resets client so you can start with a different userid.
+
+\(fn)" t nil)
+
+(autoload 'gskeleton-sign-in "g-client/gskeleton" "\
+Resets client so you can start with a different userid.
+
+\(fn)" t nil)
+
+;;;***
+
+;;;### (autoloads (gtube-video-featured gtube-video-by-user gtube-video-popular
+;;;;;;  gtube-video-playlist gtube-video-by-category-and-tag gtube-video-by-tag
+;;;;;;  gtube-video-details gtube-user-friends gtube-user-favorites
+;;;;;;  gtube-user-profile) "g-client/gtube" "g-client/gtube.el"
+;;;;;;  (20311 29240))
+;;; Generated autoloads from g-client/gtube.el
+
+(autoload 'gtube-user-profile "g-client/gtube" "\
+Retrieve user profile.
+
+\(fn &optional USER)" t nil)
+
+(autoload 'gtube-user-favorites "g-client/gtube" "\
+Retrieve user favorites.
+
+\(fn &optional USER)" t nil)
+
+(autoload 'gtube-user-friends "g-client/gtube" "\
+Retrieve user profile.
+
+\(fn &optional USER)" t nil)
+
+(autoload 'gtube-video-details "g-client/gtube" "\
+Display details of specified video.
+
+\(fn VIDEO-ID)" t nil)
+
+(autoload 'gtube-video-by-tag "g-client/gtube" "\
+Retrieve content having specified tag.
+optional args page and count specify position in result-set and
+  number of results to retrieve.
+
+\(fn TAG &optional PAGE COUNT)" t nil)
+
+(autoload 'gtube-video-by-category-and-tag "g-client/gtube" "\
+Retrieve content from specified category having specified tag.
+optional args page and count specify position in result-set and
+  number of results to retrieve.
+
+\(fn CATEGORY TAG &optional PAGE COUNT)" t nil)
+
+(autoload 'gtube-video-playlist "g-client/gtube" "\
+Retrieve content in specified playlist.
+optional args page and count specify position in result-set and
+  number of results to retrieve.
+
+\(fn PLAYLIST-ID &optional PAGE COUNT)" t nil)
+
+(autoload 'gtube-video-popular "g-client/gtube" "\
+Retrieve popular content for specified time-range.
+  Time-range is one of day, week, month, or all.
+
+\(fn TIME-RANGE)" t nil)
+
+(autoload 'gtube-video-by-user "g-client/gtube" "\
+Retrieve content from specified user.
+optional args page and count specify position in result-set and
+  number of results to retrieve.
+
+\(fn USER &optional PAGE COUNT)" t nil)
+
+(autoload 'gtube-video-featured "g-client/gtube" "\
+Retrieved featured video list.
+
+\(fn)" t nil)
+
+;;;***
+
+;;;### (autoloads (gweb-my-address gweb-maps-reverse-geocode gweb-maps-geocode
+;;;;;;  gweb-google-at-point) "g-client/gweb" "g-client/gweb.el"
+;;;;;;  (20311 29240))
+;;; Generated autoloads from g-client/gweb.el
+
+(autoload 'gweb-google-at-point "g-client/gweb" "\
+Google for term at point, and display top result succinctly.
+Attach URL at point so we can follow it later --- subsequent invocations of this command simply follow that URL.
+Optional interactive prefix arg refresh forces this cached URL to be refreshed.
+
+\(fn SEARCH-TERM &optional REFRESH)" t nil)
+
+(autoload 'gweb-maps-geocode "g-client/gweb" "\
+Geocode given address.
+Optional argument `raw-p' returns complete JSON  object.
+
+\(fn ADDRESS &optional RAW-P)" nil nil)
+
+(autoload 'gweb-maps-reverse-geocode "g-client/gweb" "\
+Reverse geocode lat-long.
+Optional argument `raw-p' returns raw JSON  object.
+
+\(fn LAT-LONG &optional RAW-P)" nil nil)
+
+(defvar gweb-my-location nil "\
+Geo coordinates --- automatically set by reverse geocoding gweb-my-address")
+
+(defvar gweb-my-address nil "\
+Location address. Setting this updates gweb-my-location coordinates  via geocoding.")
+
+(custom-autoload 'gweb-my-address "g-client/gweb" nil)
+
+;;;***
+
+;;;### (autoloads (org-diary org-mode) "org/org" "org/org.el" (20312
+;;;;;;  3968))
+;;; Generated autoloads from org/org.el
+
+(autoload 'org-mode "org/org" "\
+Carsten's special outline mode for keeping notes about everything.
+
+\(fn)" t nil)
+
+(autoload 'org-diary "org/org" "\
+Returns diary information from an org-file.
+This function can be used in an \"sexp\" diary entry in the Emacs calendar.
+It accesses an org file and extracts information from that file to be
+listed in the diary.  The function accepts arguments specifying what
+items should be listed.  The following arguments are allowed:
+
+   :timestamp    List the headlines of items containing a date stamp or
+                 date range matching the selected date.  Deadlines will
+                 also be listed, on the expiration day.
+
+   :deadline     List any deadlines past due, or due within
+                 `org-deadline-warning-days'.  The listing occurs only
+                 in the diary for *today*, not at any other date.
+
+   :todo         List all TODO items from the org-file.  This may be a
+                 long list - so this is not turned on by default.
+                 Like deadlines, these entires only show up in the
+                 diary for *today*, not at any other date.
+
+The call in the diary file should look like this:
+
+   &%%(org-diary) ~/path/to/some/orgfile.org
+
+Use a separate line for each org file to check.
+
+If you don't give any arguments (as in the example above), the default
+arguments (:timestamp :deadline) are used.  So the example above may
+also be written as
+
+   &%%(org-diary :timestamp :deadline) ~/path/to/some/orgfile.org
+
+\(fn &rest ARGS)" nil nil)
+
+;;;***
+
+;;;### (autoloads (twit) "twittering-mode/twittering-mode" "twittering-mode/twittering-mode.el"
+;;;;;;  (20306 20953))
+;;; Generated autoloads from twittering-mode/twittering-mode.el
+
+(autoload 'twit "twittering-mode/twittering-mode" "\
+Start twittering-mode.
+
+\(fn)" t nil)
+
+;;;***
+
+;;;### (autoloads nil nil ("color-theme-solarized/color-theme-solarized-pkg.el"
+;;;;;;  "color-theme-solarized/solarized-dark-theme.el" "color-theme-solarized/solarized-definitions.el"
+;;;;;;  "color-theme-solarized/solarized-light-theme.el" "color-theme/color-theme-autoloads.el"
+;;;;;;  "el-get/el-get-install.el" "el-get/el-get.el" "g-client/g-autogen.el"
+;;;;;;  "g-client/g-load-path.el" "g-client/g-utils.el" "g-client/g.el"
+;;;;;;  "g-client/gnotebook.el" "g-client/gwis.el" "g-client/indent-files.el"
+;;;;;;  "g-client/org2blogger.el" "twittering-mode/test.el") (20312
+;;;;;;  3970 38705))
+
+;;;***
+
+(provide '.loaddefs)
+;; Local Variables:
+;; version-control: never
+;; no-update-autoloads: t
+;; coding: utf-8
+;; End:
+;;; .loaddefs.el ends here
