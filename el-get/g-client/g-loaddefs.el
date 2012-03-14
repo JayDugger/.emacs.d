@@ -571,8 +571,12 @@ Retrieved featured video list.
 ;;;***
 
 ;;;### (autoloads (gweb-my-address gweb-maps-reverse-geocode gweb-maps-geocode
-;;;;;;  gweb-google-at-point) "gweb" "gweb.el" (20315 25052))
+;;;;;;  gweb-google-at-point) "gweb" "gweb.el" (20320 41290))
 ;;; Generated autoloads from gweb.el
+
+(defsubst gweb-google-autocomplete-with-corpus (corpus) "\
+Read user input using Google Suggest for auto-completion.
+Uses specified corpus for prompting and suggest selection." (let* ((completer (intern (format "gweb-%s-suggest-completer" corpus))) (minibuffer-completing-file-name t) (completion-ignore-case t) (word (thing-at-point (quote word))) (query nil)) (unless (fboundp completer) (error "No  suggest handler for corpus %s" corpus)) (setq query (completing-read corpus completer nil nil word (quote gweb-history))) (pushnew query gweb-history) (g-url-encode query)))
 
 (autoload 'gweb-google-at-point "gweb" "\
 Google for term at point, and display top result succinctly.
@@ -605,7 +609,7 @@ Location address. Setting this updates gweb-my-location coordinates  via geocodi
 
 ;;;### (autoloads nil nil ("g-autogen.el" "g-cus-load.el" "g-load-path.el"
 ;;;;;;  "g-utils.el" "g.el" "gnotebook.el" "gwis.el" "indent-files.el"
-;;;;;;  "org2blogger.el") (20315 25053 506939))
+;;;;;;  "org2blogger.el") (20320 41311 148750))
 
 ;;;***
 

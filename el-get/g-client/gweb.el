@@ -1,5 +1,5 @@
 ;;; gweb.el --- Google Search
-;;;$Id: gweb.el 7564 2012-03-10 04:48:54Z tv.raman.tv $
+;;;$Id: gweb.el 7570 2012-03-11 16:20:35Z tv.raman.tv $
 ;;; $Author: raman $
 ;;; Description:  AJAX Search -> Lisp
 ;;; Keywords: Google   AJAX API
@@ -108,8 +108,6 @@
    (let ((url
           (format gweb-suggest-url (or corpus "psy")
                   (g-url-encode input))))
-     (when corpus
-       (setq url (format "%s&%s" url corpus)))
      (call-process
       g-curl-program
       nil t nil
@@ -146,20 +144,36 @@
                             (gweb-suggest string)
                             string predicate)))))
 
-(defun gweb-news-suggest-completer (string predicate action)
-  "Generate completions using Google News Suggest. "
-  (save-current-buffer 
-    (set-buffer 
-     (let ((window (minibuffer-selected-window))) 
-       (if (window-live-p window) 
-           (window-buffer window) 
-         (current-buffer))))
-    (cond
-     ((eq action 'metadata) gweb-google-suggest-metadata)
-     (t
-      (complete-with-action action 
-                            (gweb-suggest string "ds=n")
-                            string predicate)))  ))
+
+;;{{{  Generate suggest handlers for Google properties
+(loop for c in
+      '("news" "products" "youtube" "books")
+      do
+      (eval
+       `(defun
+          , (intern
+             (format  "gweb-%s-suggest-completer" c))
+          (string predicate action)
+          ,(format
+            "Generate completions using Google %s Suggest. " c)
+          (save-current-buffer 
+            (set-buffer 
+             (let ((window (minibuffer-selected-window))) 
+               (if (window-live-p window) 
+                   (window-buffer window) 
+                 (current-buffer))))
+            (cond
+             ((eq action 'metadata) gweb-google-suggest-metadata)
+             (t
+              (complete-with-action action 
+                                    (gweb-suggest string ,c)
+                                    string predicate)))))))
+
+;;}}}
+
+
+
+
 
 (defvar gweb-history nil
   "History of Google Search queries.")
@@ -185,7 +199,30 @@
            'gweb-history))
     (pushnew  query gweb-history)
     (g-url-encode query)))
-  
+
+
+;;;###autoload
+
+(defsubst gweb-google-autocomplete-with-corpus (corpus)
+  "Read user input using Google Suggest for auto-completion.
+Uses specified corpus for prompting and suggest selection."
+  (let* (
+         (completer (intern (format "gweb-%s-suggest-completer"  corpus)))
+         (minibuffer-completing-file-name t) ;; accept spaces
+         (completion-ignore-case t)
+         (word (thing-at-point 'word))
+         (query nil))
+    (unless (fboundp completer)
+      (error "No  suggest handler for corpus %s" corpus))
+    (setq query
+          (completing-read
+           corpus
+           completer                   ; collection
+           nil nil                     ; predicate required-match
+           word                        ; initial input
+           'gweb-history))
+    (pushnew  query gweb-history)
+    (g-url-encode query)))
 ;;; For news:
 
 (defsubst gweb-news-autocomplete (&optional prompt)
