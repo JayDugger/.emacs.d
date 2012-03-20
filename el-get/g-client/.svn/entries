@@ -1,14 +1,14 @@
 10
 
 dir
-7573
+7587
 https://emacspeak.googlecode.com/svn/trunk/lisp/g-client
 https://emacspeak.googlecode.com/svn
 
 
 
-2012-03-11T16:20:35.582664Z
-7570
+2012-03-16T16:34:14.436038Z
+7576
 tv.raman.tv
 has-props
 
@@ -1126,10 +1126,10 @@ file
 
 
 
-2012-03-07T14:35:36.000000Z
-665d8635c04e32c57949d36f0a4c4fb8
-2011-03-15T00:10:25.373610Z
-6936
+2012-03-18T04:05:45.000000Z
+f0e3ca6b748df4c0d42031f363ecba71
+2012-03-16T16:34:14.436038Z
+7576
 tv.raman.tv
 has-props
 
@@ -1152,7 +1152,7 @@ has-props
 
 
 
-26312
+26518
 
 gfinance.el
 file

@@ -4,7 +4,7 @@
 
 
 ;;;### (autoloads (artbollocks-mode) "artbollocks-mode/artbollocks-mode"
-;;;;;;  "artbollocks-mode/artbollocks-mode.el" (20311 29945))
+;;;;;;  "artbollocks-mode/artbollocks-mode.el" (20328 36208))
 ;;; Generated autoloads from artbollocks-mode/artbollocks-mode.el
 
 (autoload 'artbollocks-mode "artbollocks-mode/artbollocks-mode" "\
@@ -16,7 +16,7 @@ highlight passive voice, weasel words and artbollocks in text, provide useful te
 
 ;;;### (autoloads (color-theme-solarized-light color-theme-solarized-dark
 ;;;;;;  color-theme-solarized) "color-theme-solarized/color-theme-solarized"
-;;;;;;  "color-theme-solarized/color-theme-solarized.el" (20305 4790))
+;;;;;;  "color-theme-solarized/color-theme-solarized.el" (20325 24345))
 ;;; Generated autoloads from color-theme-solarized/color-theme-solarized.el
 
 (autoload 'color-theme-solarized "color-theme-solarized/color-theme-solarized" "\
@@ -207,7 +207,7 @@ Auth lifetime.")
 ;;;### (autoloads (gblogger-sign-in gblogger-sign-out gblogger-add-label
 ;;;;;;  gblogger-delete-entry gblogger-new-entry gblogger-edit-entry
 ;;;;;;  gblogger-atom-display gblogger-blog) "g-client/gblogger"
-;;;;;;  "g-client/gblogger.el" (20311 29240))
+;;;;;;  "g-client/gblogger.el" (20314 10482))
 ;;; Generated autoloads from g-client/gblogger.el
 
 (autoload 'gblogger-blog "g-client/gblogger" "\
@@ -558,9 +558,9 @@ The retrieved entry is placed in a buffer ready for editing.
 ;;;;;;  greader-search greader-find-feeds greader-star greader-add-label
 ;;;;;;  greader-update-subscription greader-untag-feed greader-tag-feed
 ;;;;;;  greader-title-feed greader-unsubscribe-feed greader-subscribe-feed
-;;;;;;  greader-opml greader-feed-list greader-subscriptions greader-preferences
-;;;;;;  greader-reading-list) "g-client/greader" "g-client/greader.el"
-;;;;;;  (20311 29240))
+;;;;;;  greader-opml greader-feed-list greader-subscriptions greader-subscription-list
+;;;;;;  greader-preferences greader-reading-list) "g-client/greader"
+;;;;;;  "g-client/greader.el" (20325 24345))
 ;;; Generated autoloads from g-client/greader.el
 
 (autoload 'greader-reading-list "g-client/greader" "\
@@ -576,6 +576,11 @@ Ensure our cookies are live, and get all preferences for this
 user.
 
 \(fn)" t nil)
+
+(autoload 'greader-subscription-list "g-client/greader" "\
+Return list of subscribed urls.
+
+\(fn)" nil nil)
 
 (autoload 'greader-subscriptions "g-client/greader" "\
 Return list of subscribed feeds.
@@ -771,8 +776,12 @@ Retrieved featured video list.
 
 ;;;### (autoloads (gweb-my-address gweb-maps-reverse-geocode gweb-maps-geocode
 ;;;;;;  gweb-google-at-point) "g-client/gweb" "g-client/gweb.el"
-;;;;;;  (20311 29240))
+;;;;;;  (20320 41290))
 ;;; Generated autoloads from g-client/gweb.el
+
+(defsubst gweb-google-autocomplete-with-corpus (corpus) "\
+Read user input using Google Suggest for auto-completion.
+Uses specified corpus for prompting and suggest selection." (let* ((completer (intern (format "gweb-%s-suggest-completer" corpus))) (minibuffer-completing-file-name t) (completion-ignore-case t) (word (thing-at-point (quote word))) (query nil)) (unless (fboundp completer) (error "No  suggest handler for corpus %s" corpus)) (setq query (completing-read corpus completer nil nil word (quote gweb-history))) (pushnew query gweb-history) (g-url-encode query)))
 
 (autoload 'gweb-google-at-point "g-client/gweb" "\
 Google for term at point, and display top result succinctly.
@@ -803,8 +812,8 @@ Location address. Setting this updates gweb-my-location coordinates  via geocodi
 
 ;;;***
 
-;;;### (autoloads (org-diary org-mode) "org/org" "org/org.el" (20312
-;;;;;;  3968))
+;;;### (autoloads (org-diary org-mode) "org/org" "org/org.el" (20328
+;;;;;;  36210))
 ;;; Generated autoloads from org/org.el
 
 (autoload 'org-mode "org/org" "\
@@ -849,7 +858,7 @@ also be written as
 ;;;***
 
 ;;;### (autoloads (twit) "twittering-mode/twittering-mode" "twittering-mode/twittering-mode.el"
-;;;;;;  (20306 20953))
+;;;;;;  (20325 24346))
 ;;; Generated autoloads from twittering-mode/twittering-mode.el
 
 (autoload 'twit "twittering-mode/twittering-mode" "\
@@ -859,14 +868,13 @@ Start twittering-mode.
 
 ;;;***
 
-;;;### (autoloads nil nil ("color-theme-solarized/color-theme-solarized-pkg.el"
-;;;;;;  "color-theme-solarized/solarized-dark-theme.el" "color-theme-solarized/solarized-definitions.el"
-;;;;;;  "color-theme-solarized/solarized-light-theme.el" "color-theme/color-theme-autoloads.el"
+;;;### (autoloads nil nil ("calfw/calfw-cal.el" "calfw/calfw-howm.el"
+;;;;;;  "calfw/calfw-ical.el" "calfw/calfw-org.el" "calfw/calfw.el"
+;;;;;;  "color-theme-solarized/color-theme-solarized-pkg.el" "color-theme/color-theme-autoloads.el"
 ;;;;;;  "el-get/el-get-install.el" "el-get/el-get.el" "g-client/g-autogen.el"
-;;;;;;  "g-client/g-load-path.el" "g-client/g-utils.el" "g-client/g.el"
-;;;;;;  "g-client/gnotebook.el" "g-client/gwis.el" "g-client/indent-files.el"
-;;;;;;  "g-client/org2blogger.el" "twittering-mode/test.el") (20312
-;;;;;;  3970 38705))
+;;;;;;  "g-client/g-load-path.el" "g-client/g.el" "g-client/gnotebook.el"
+;;;;;;  "g-client/gwis.el" "g-client/indent-files.el" "g-client/org2blogger.el"
+;;;;;;  "twittering-mode/test.el") (20328 37705 566394))
 
 ;;;***
 

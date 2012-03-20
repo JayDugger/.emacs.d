@@ -1,7 +1,7 @@
 K 25
 svn:wc:ra_dav:version-url
 V 38
-/svn/!svn/ver/7570/trunk/lisp/g-client
+/svn/!svn/ver/7576/trunk/lisp/g-client
 END
 g-autogen.el
 K 25
@@ -199,7 +199,7 @@ greader.el
 K 25
 svn:wc:ra_dav:version-url
 V 49
-/svn/!svn/ver/6936/trunk/lisp/g-client/greader.el
+/svn/!svn/ver/7576/trunk/lisp/g-client/greader.el
 END
 gfinance.el
 K 25

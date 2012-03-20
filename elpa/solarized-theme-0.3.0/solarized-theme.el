@@ -4,7 +4,7 @@
 
 ;; Author: Bozhidar Batsov <bozhidar.batsov@gmail.com>
 ;; URL: http://github.com/bbatsov/solarized-emacs
-;; Version: 0.2
+;; Version: 0.3.0
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -443,16 +443,20 @@
      `(wl-highlight-summary-displaying-face ((,class (:underline t :weight bold))))
 
      ;; which-func-mode
-     `(which-func ((,class (:foreground ,green))))))
+     `(which-func ((,class (:foreground ,green)))))
 
-  (custom-theme-set-variables
-   (if (eq variant 'light) 'solarized-light 'solarized-dark)
-   '(ansi-color-names-vector [solarized-bg red green yellow
-                                           blue magenta cyan solarized-fg])))
+    (custom-theme-set-variables
+     (if (eq variant 'light) 'solarized-light 'solarized-dark)
+     '(ansi-color-names-vector [solarized-bg red green yellow
+                                             blue magenta cyan solarized-fg])
+
+     ;; fill-column-indicator
+     `(fci-rule-color ,solarized-hl))))
 
 ;;;###autoload
-(add-to-list 'custom-theme-load-path
-             (file-name-as-directory (file-name-directory load-file-name)))
+(when load-file-name
+  (add-to-list 'custom-theme-load-path
+               (file-name-as-directory (file-name-directory load-file-name))))
 
 ;; Local Variables:
 ;; no-byte-compile: t

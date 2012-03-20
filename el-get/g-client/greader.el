@@ -1,5 +1,5 @@
 ;;; greader.el --- Google Reader
-;;;$Id: greader.el 6936 2011-03-15 00:10:25Z tv.raman.tv $
+;;;$Id: greader.el 7576 2012-03-16 16:34:14Z tv.raman.tv $
 ;;; $Author: raman $
 ;;; Description:  Google Reader
 ;;; Keywords: Google   Atom API
@@ -358,6 +358,15 @@ user."
               (t ""))))))
    (insert "</ol></body></html>\n")
    (browse-url-of-region (point-min) (point-max))))
+
+;;;###autoload
+(defun greader-subscription-list ()
+  "Return list of subscribed urls."
+   (loop for s across (greader-subscriptions)
+         collect
+          (greader-id-to-url(g-json-get 'id s))))
+   
+
 
 (defun greader-view-json-results (query results)
   "View Greader results list."

@@ -277,29 +277,34 @@ the \"Gen RGB\" column in solarized-definitions.el to improve them further."
              (eshell-ls-unreadable ((t (,@fg-base00))))
              (eshell-prompt ((t (,@fmt-bold ,@fg-green))))
              ;; font-lock
-             (font-lock-builtin-face ((t (,@fg-green)))) ; Statement
+             (font-lock-builtin-face ((t (,@fmt-none ,@fg-green)))) ; Statement
              (font-lock-comment-face ((t (,@fmt-ital ,@fg-base01)))) ; Comment
-             (font-lock-constant-face ((t (,@fg-cyan)))) ; Constant
-             (font-lock-function-name-face ((t (,@fg-blue)))) ; Identifier
-             (font-lock-keyword-face ((t (,@fg-green)))) ; Statement
-             (font-lock-string-face ((t (,@fg-cyan)))) ; Constant
-             (font-lock-type-face ((t (,@fg-yellow)))) ; Type
-             (font-lock-variable-name-face ((t (,@fg-blue)))) ; Identifier
+             (font-lock-constant-face ((t (,@fmt-none ,@fg-cyan)))) ; Constant
+             (font-lock-function-name-face ; Identifier
+              ((t (,@fmt-none ,@fg-blue))))
+             (font-lock-keyword-face ((t (,@fmt-none ,@fg-green)))) ; Statement
+             (font-lock-string-face ((t (,@fmt-none ,@fg-cyan)))) ; Constant
+             (font-lock-type-face ((t (,@fmt-none ,@fg-yellow)))) ; Type
+             (font-lock-variable-name-face ; Identifier
+              ((t (,@fmt-none ,@fg-blue))))
              (font-lock-warning-face ((t (,@fmt-bold ,@fg-red)))) ; Error
              (font-lock-doc-face ((t (,@fmt-ital ,@fg-cyan))))
-             (font-lock-color-constant-face ((t (,@fg-green))))
-             (font-lock-comment-delimiter-face  ; Comment
+             (font-lock-color-constant-face ((t (,@fmt-none ,@fg-green))))
+             (font-lock-comment-delimiter-face ; Comment
               ((t (,@fmt-ital ,@fg-base01))))
-             (font-lock-doc-string-face ((t (,@fg-green))))
-             (font-lock-preprocessor-face ((t (,@fg-orange)))) ; PreProc
-             (font-lock-reference-face ((t (,@fg-cyan))))
-             (font-lock-negation-char-face ((t (,@fg-red))))
+             (font-lock-doc-string-face ((t (,@fmt-none ,@fg-green))))
+             (font-lock-preprocessor-face ; PreProc
+              ((t (,@fmt-none ,@fg-orange))))
+             (font-lock-reference-face ((t (,@fmt-none ,@fg-cyan))))
+             (font-lock-negation-char-face ((t (,@fmt-none ,@fg-red))))
              (font-lock-other-type-face ((t (,@fmt-ital ,@fg-blue))))
-             (font-lock-regexp-grouping-construct ((t (,@fg-orange))))
-             (font-lock-special-keyword-face ((t (,@fg-magenta))))
-             (font-lock-exit-face ((t (,@fg-red))))
+             (font-lock-regexp-grouping-construct
+              ((t (,@fmt-none ,@fg-orange))))
+             (font-lock-special-keyword-face ((t (,@fmt-none ,@fg-magenta))))
+             (font-lock-exit-face ((t (,@fmt-none ,@fg-red))))
              (font-lock-other-emphasized-face ((t (,@fmt-bldi ,@fg-violet))))
-             (font-lock-regexp-grouping-backslash ((t (,@fg-yellow))))
+             (font-lock-regexp-grouping-backslash
+              ((t (,@fmt-none ,@fg-yellow))))
              ;; info
              (info-xref ((t (,@fmt-undr ,@fg-blue))))
              (info-xref-visited ((t (,@fg-magenta :inherit info-xref))))
@@ -328,6 +333,27 @@ the \"Gen RGB\" column in solarized-definitions.el to improve them further."
              ;; Flymake
              (flymake-errline ((t (,@bg-base3))))
              (flymake-warnline ((t (,@bg-base02))))
+             ;; column-marker
+             (column-marker-1 ((t (,@bg-base01))))
+             (column-marker-2 ((t (,@bg-cyan))))
+             (column-marker-3 ((t (,@bg-violet))))
+             ;; jabber
+             (jabber-activity-face ((t (,@fmt-bold ,@fg-red))))
+             (jabber-activity-personal-face ((t (,@fmt-bold ,@fg-blue))))
+             (jabber-chat-error ((t (,@fmt-bold ,@fg-red))))
+             (jabber-chat-prompt-foreign ((t (,@fmt-bold ,@fg-red))))
+             (jabber-chat-prompt-local ((t (,@fmt-bold ,@fg-blue))))
+             (jabber-chat-prompt-system ((t (,@fmt-bold ,@fg-green))))
+             (jabber-chat-text-foreign ((t (,@fg-base1))))
+             (jabber-chat-text-local ((t (,@fg-base0))))
+             (jabber-chat-rare-time-face ((t (,@fmt-undr ,@fg-green))))
+             (jabber-roster-user-away ((t (,@fmt-ital ,@fg-green))))
+             (jabber-roster-user-chatty ((t (,@fmt-bold ,@fg-orange))))
+             (jabber-roster-user-dnd ((t (,@fmt-ital ,@fg-red))))
+             (jabber-roster-user-error ((t (:weight light :slant italic ,@fg-red))))
+             (jabber-roster-user-offline ((t (,@fg-base01))))
+             (jabber-roster-user-online ((t (,@fmt-bold ,@fg-blue))))
+             (jabber-roster-user-xa ((t (,@fmt-ital ,@fg-magenta))))
              ;; gnus - these are taken from mutt, not VIM
              (gnus-cite-1 ((t (,@fmt-none ,@fg-blue)))) ; quoted
              (gnus-cite-2 ((t (,@fmt-none ,@fg-cyan)))) ; quoted1
@@ -414,6 +440,8 @@ the \"Gen RGB\" column in solarized-definitions.el to improve them further."
              (message-header-subject ((t (,@fg-base00))))
              (message-header-cc ((t (,@fmt-bold ,@fg-green))))
              (message-header-to ((t (,@fmt-bold ,@fg-base1))))
+             ;; parenface
+             (paren-face ((t (,@fg-base01))))
              ;; rainbow-delimiters
              (rainbow-delimiters-depth-1-face ((t (,@fg-cyan))))
              (rainbow-delimiters-depth-2-face ((t (,@fg-yellow))))
@@ -440,7 +468,16 @@ the \"Gen RGB\" column in solarized-definitions.el to improve them further."
              (whitespace-space-before-tab ((t (,@fmt-bold ,@fg-red))))
              (whitespace-tab ((t (,@fg-base02))))
              (whitespace-trailing ((t (,@fmt-bold ,@fg-red ,@bg-base02))))
-             (whitespace-highlight-face ((t (,@fg-red ,@bg-blue)))))
+             (whitespace-highlight-face ((t (,@fg-red ,@bg-blue))))
+             ;; rcirc
+             (rcirc-my-nick ((t (:foreground ,blue))))
+             (rcirc-nick-in-message ((t (:foreground ,orange))))
+             (rcirc-other-nick ((t (:foreground ,green))))
+             (rcirc-prompt ((t (:foreground ,yellow))))
+             (rcirc-bright-nick ((t (:foreground ,magenta))))
+             (rcirc-server ((t (:foreground ,base1))))
+             (rcirc-timestamp ((t (:foreground ,base01)))))
+
             ((foreground-color . ,base0)
              (background-color . ,back)
              (background-mode . ,mode)
@@ -458,9 +495,9 @@ the \"Gen RGB\" column in solarized-definitions.el to improve them further."
        (apply 'custom-theme-set-faces ',theme-name ',theme-faces)
        (provide-theme ',theme-name))))
 
-(defun load-into-load-path ()
-  (when load-file-name
-    (add-to-list 'custom-theme-load-path
-                 (file-name-as-directory (file-name-directory load-file-name)))))
+;;;###autoload
+(when (boundp 'custom-theme-load-path)
+  (add-to-list 'custom-theme-load-path
+               (file-name-as-directory (file-name-directory load-file-name))))
 
 (provide 'solarized-definitions)
