@@ -4,7 +4,7 @@
 
 
 ;;;### (autoloads (artbollocks-mode) "artbollocks-mode/artbollocks-mode"
-;;;;;;  "artbollocks-mode/artbollocks-mode.el" (20328 36208))
+;;;;;;  "artbollocks-mode/artbollocks-mode.el" (20330 36471))
 ;;; Generated autoloads from artbollocks-mode/artbollocks-mode.el
 
 (autoload 'artbollocks-mode "artbollocks-mode/artbollocks-mode" "\
@@ -812,48 +812,160 @@ Location address. Setting this updates gweb-my-location coordinates  via geocodi
 
 ;;;***
 
-;;;### (autoloads (org-diary org-mode) "org/org" "org/org.el" (20328
-;;;;;;  36210))
-;;; Generated autoloads from org/org.el
+;;;### (autoloads (magit-status) "magit/magit" "magit/magit.el" (20330
+;;;;;;  38125))
+;;; Generated autoloads from magit/magit.el
 
-(autoload 'org-mode "org/org" "\
-Carsten's special outline mode for keeping notes about everything.
+(autoload 'magit-status "magit/magit" "\
+Open a Magit status buffer for the Git repository containing
+DIR.  If DIR is not within a Git repository, offer to create a
+Git repository in DIR.
+
+Interactively, a prefix argument means to ask the user which Git
+repository to use even if `default-directory' is under Git control.
+Two prefix arguments means to ignore `magit-repo-dirs' when asking for
+user input.
+
+\(fn DIR)" t nil)
+
+;;;***
+
+;;;### (autoloads (turn-on-magit-stgit magit-stgit-mode) "magit/magit-stgit"
+;;;;;;  "magit/magit-stgit.el" (20330 38125))
+;;; Generated autoloads from magit/magit-stgit.el
+
+(autoload 'magit-stgit-mode "magit/magit-stgit" "\
+StGit support for Magit
+
+\(fn &optional ARG)" t nil)
+
+(autoload 'turn-on-magit-stgit "magit/magit-stgit" "\
+Unconditionally turn on `magit-stgit-mode'.
+
+\(fn)" nil nil)
+
+;;;***
+
+;;;### (autoloads (turn-on-magit-svn magit-svn-mode) "magit/magit-svn"
+;;;;;;  "magit/magit-svn.el" (20330 38125))
+;;; Generated autoloads from magit/magit-svn.el
+
+(autoload 'magit-svn-mode "magit/magit-svn" "\
+SVN support for Magit
+
+\(fn &optional ARG)" t nil)
+
+(autoload 'turn-on-magit-svn "magit/magit-svn" "\
+Unconditionally turn on `magit-svn-mode'.
+
+\(fn)" nil nil)
+
+;;;***
+
+;;;### (autoloads (turn-on-magit-topgit magit-topgit-mode) "magit/magit-topgit"
+;;;;;;  "magit/magit-topgit.el" (20330 38125))
+;;; Generated autoloads from magit/magit-topgit.el
+
+(autoload 'magit-topgit-mode "magit/magit-topgit" "\
+Topgit support for Magit
+
+\(fn &optional ARG)" t nil)
+
+(autoload 'turn-on-magit-topgit "magit/magit-topgit" "\
+Unconditionally turn on `magit-topgit-mode'.
+
+\(fn)" nil nil)
+
+;;;***
+
+;;;### (autoloads (rebase-mode) "magit/rebase-mode" "magit/rebase-mode.el"
+;;;;;;  (20330 38125))
+;;; Generated autoloads from magit/rebase-mode.el
+
+(autoload 'rebase-mode "magit/rebase-mode" "\
+Major mode for editing of a Git rebase file.
+
+Rebase files are generated when you run 'git rebase -i' or run
+`magit-interactive-rebase'.  They describe how Git should perform
+the rebase.  See the documentation for git-rebase (e.g., by
+running 'man git-rebase' at the command line) for details.
 
 \(fn)" t nil)
 
-(autoload 'org-diary "org/org" "\
-Returns diary information from an org-file.
-This function can be used in an \"sexp\" diary entry in the Emacs calendar.
-It accesses an org file and extracts information from that file to be
-listed in the diary.  The function accepts arguments specifying what
-items should be listed.  The following arguments are allowed:
+(add-to-list 'auto-mode-alist '("git-rebase-todo" . rebase-mode))
 
-   :timestamp    List the headlines of items containing a date stamp or
-                 date range matching the selected date.  Deadlines will
-                 also be listed, on the expiration day.
+;;;***
+
+;;;### (autoloads (list-packages describe-package package-initialize
+;;;;;;  package-refresh-contents package-install-file package-install-from-buffer
+;;;;;;  package-install package-enable-at-startup) "package24/package"
+;;;;;;  "package24/package.el" (20330 36523))
+;;; Generated autoloads from package24/package.el
 
-   :deadline     List any deadlines past due, or due within
-                 `org-deadline-warning-days'.  The listing occurs only
-                 in the diary for *today*, not at any other date.
+(defvar package-enable-at-startup t "\
+Whether to activate installed packages when Emacs starts.
+If non-nil, packages are activated after reading the init file
+and before `after-init-hook'.  Activation is not done if
+`user-init-file' is nil (e.g. Emacs was started with \"-q\").
 
-   :todo         List all TODO items from the org-file.  This may be a
-                 long list - so this is not turned on by default.
-                 Like deadlines, these entires only show up in the
-                 diary for *today*, not at any other date.
+Even if the value is nil, you can type \\[package-initialize] to
+activate the package system at any time.")
 
-The call in the diary file should look like this:
+(custom-autoload 'package-enable-at-startup "package24/package" t)
 
-   &%%(org-diary) ~/path/to/some/orgfile.org
+(autoload 'package-install "package24/package" "\
+Install the package named NAME.
+NAME should be the name of one of the available packages in an
+archive in `package-archives'.  Interactively, prompt for NAME.
 
-Use a separate line for each org file to check.
+\(fn NAME)" t nil)
 
-If you don't give any arguments (as in the example above), the default
-arguments (:timestamp :deadline) are used.  So the example above may
-also be written as
+(autoload 'package-install-from-buffer "package24/package" "\
+Install a package from the current buffer.
+When called interactively, the current buffer is assumed to be a
+single .el file that follows the packaging guidelines; see info
+node `(elisp)Packaging'.
 
-   &%%(org-diary :timestamp :deadline) ~/path/to/some/orgfile.org
+When called from Lisp, PKG-INFO is a vector describing the
+information, of the type returned by `package-buffer-info'; and
+TYPE is the package type (either `single' or `tar').
 
-\(fn &rest ARGS)" nil nil)
+\(fn PKG-INFO TYPE)" t nil)
+
+(autoload 'package-install-file "package24/package" "\
+Install a package from a file.
+The file can either be a tar file or an Emacs Lisp file.
+
+\(fn FILE)" t nil)
+
+(autoload 'package-refresh-contents "package24/package" "\
+Download the ELPA archive description if needed.
+This informs Emacs about the latest versions of all packages, and
+makes them available for download.
+
+\(fn)" t nil)
+
+(autoload 'package-initialize "package24/package" "\
+Load Emacs Lisp packages, and activate them.
+The variable `package-load-list' controls which packages to load.
+If optional arg NO-ACTIVATE is non-nil, don't activate packages.
+
+\(fn &optional NO-ACTIVATE)" t nil)
+
+(autoload 'describe-package "package24/package" "\
+Display the full documentation of PACKAGE (a symbol).
+
+\(fn PACKAGE)" t nil)
+
+(autoload 'list-packages "package24/package" "\
+Display a list of packages.
+This first fetches the updated list of packages before
+displaying, unless a prefix argument NO-FETCH is specified.
+The list is displayed in a buffer named `*Packages*'.
+
+\(fn &optional NO-FETCH)" t nil)
+
+(defalias 'package-list-packages 'list-packages)
 
 ;;;***
 
@@ -874,7 +986,9 @@ Start twittering-mode.
 ;;;;;;  "el-get/el-get-install.el" "el-get/el-get.el" "g-client/g-autogen.el"
 ;;;;;;  "g-client/g-load-path.el" "g-client/g.el" "g-client/gnotebook.el"
 ;;;;;;  "g-client/gwis.el" "g-client/indent-files.el" "g-client/org2blogger.el"
-;;;;;;  "twittering-mode/test.el") (20328 37705 566394))
+;;;;;;  "magit/50magit.el" "magit/magit-bisect.el" "magit/magit-key-mode.el"
+;;;;;;  "magit/magit-pkg.el" "magit/magit-wip.el" "twittering-mode/test.el")
+;;;;;;  (20330 38127 983510))
 
 ;;;***
 
