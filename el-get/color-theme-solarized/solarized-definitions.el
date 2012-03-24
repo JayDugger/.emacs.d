@@ -181,6 +181,7 @@ the \"Gen RGB\" column in solarized-definitions.el to improve them further."
           `((;; basic
              (default ((t (,@fg-base0 ,@bg-back)))) ; Normal
              (cursor ((t (,@fg-base03 ,@bg-base0)))) ; Cursor
+             (error ((t (,@fmt-bold ,@fg-red)))) ; Error
              (escape-glyph-face ((t (,@fg-red))))
              (fringe ((t (,@fg-base01 ,@bg-base02))))
              (linum ((t (,@fg-base01 ,@bg-base02))))
@@ -288,11 +289,11 @@ the \"Gen RGB\" column in solarized-definitions.el to improve them further."
              (font-lock-variable-name-face ; Identifier
               ((t (,@fmt-none ,@fg-blue))))
              (font-lock-warning-face ((t (,@fmt-bold ,@fg-red)))) ; Error
-             (font-lock-doc-face ((t (,@fmt-ital ,@fg-cyan))))
+             (font-lock-doc-face ((t (,@fmt-none ,@fg-red)))) ; Special
              (font-lock-color-constant-face ((t (,@fmt-none ,@fg-green))))
              (font-lock-comment-delimiter-face ; Comment
               ((t (,@fmt-ital ,@fg-base01))))
-             (font-lock-doc-string-face ((t (,@fmt-none ,@fg-green))))
+             (font-lock-doc-string-face ((t (,@fmt-none ,@fg-red)))) ; Special
              (font-lock-preprocessor-face ; PreProc
               ((t (,@fmt-none ,@fg-orange))))
              (font-lock-reference-face ((t (,@fmt-none ,@fg-cyan))))
@@ -457,7 +458,7 @@ the \"Gen RGB\" column in solarized-definitions.el to improve them further."
              (slime-note-face ((t (,@fg-yellow))))
              (slime-repl-inputted-output-face ((t (,@fg-red))))
              (slime-repl-output-mouseover-face ((t (:box (:color ,base3)))))
-             (slime-style-warning-face ((t (,@fg-orange))))
+             (slime-style-warning-face ((t (,@fmt-bold ,@fg-orange))))
              (slime-warning-face ((t (,@fmt-bold ,@fg-red)))) ; WarningMsg
              ;; whitespace
              (whitespace-empty ((t (,@fg-red))))
