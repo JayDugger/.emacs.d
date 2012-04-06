@@ -1251,7 +1251,7 @@ numbered sections and lower levels as unnumbered sections."
 					     org-export-target-aliases))))
 	 (sectioning org-export-latex-sectioning)
 	 (depth org-export-latex-sectioning-depth)
-	 main-heading sub-heading)
+	 main-heading sub-heading ctnt)
     (when (symbolp (car sectioning))
       (setq sectioning (funcall (car sectioning) level heading))
       (when sectioning
@@ -1318,16 +1318,20 @@ numbered sections and lower levels as unnumbered sections."
 		 (delete-region (point-at-bol 0) (point))
 	       (insert (format "\\begin{%s}\n"
 			       (symbol-name org-export-latex-low-levels))))
-	     (insert (format "\n\\item %s\\\\\n%s%%"
-			     heading
-			     (if label (format "\\label{%s}" label) "")))
-	     (insert (org-export-latex-content content))
+	     (let ((ctnt (org-export-latex-content content)))
+	       (insert (format (if (not (equal (replace-regexp-in-string "\n" "" ctnt) ""))
+				   "\n\\item %s\\\\\n%s%%"
+				 "\n\\item %s\n%s%%")
+			       heading
+			       (if label (format "\\label{%s}" label) "")))
+	       (insert ctnt))
 	     (cond ((stringp subcontent) (insert subcontent))
 		   ((listp subcontent) (org-export-latex-sub subcontent)))
 	     (insert (format "\\end{%s} %% ends low level\n"
 			     (symbol-name org-export-latex-low-levels))))
 
-	    ((listp org-export-latex-low-levels)
+	    ((and (listp org-export-latex-low-levels)
+		  org-export-latex-low-levels)
 	     (if (string-match "% ends low level$"
 			       (buffer-substring (point-at-bol 0) (point)))
 		 (delete-region (point-at-bol 0) (point))

@@ -1,7 +1,7 @@
 K 25
 svn:wc:ra_dav:version-url
 V 38
-/svn/!svn/ver/7576/trunk/lisp/g-client
+/svn/!svn/ver/7610/trunk/lisp/g-client
 END
 g-autogen.el
 K 25
@@ -104,6 +104,12 @@ K 25
 svn:wc:ra_dav:version-url
 V 54
 /svn/!svn/ver/5798/trunk/lisp/g-client/indent-files.el
+END
+gbooks.el
+K 25
+svn:wc:ra_dav:version-url
+V 48
+/svn/!svn/ver/7610/trunk/lisp/g-client/gbooks.el
 END
 gweb.el
 K 25

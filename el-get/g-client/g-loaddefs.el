@@ -60,6 +60,22 @@ Resets client so you can start with a different userid.
 
 ;;;***
 
+;;;### (autoloads (gbooks-sign-in gbooks-sign-out) "gbooks" "gbooks.el"
+;;;;;;  (20337 55979))
+;;; Generated autoloads from gbooks.el
+
+(autoload 'gbooks-sign-out "gbooks" "\
+Resets client so you can start with a different userid.
+
+\(fn)" t nil)
+
+(autoload 'gbooks-sign-in "gbooks" "\
+Resets client so you can start with a different userid.
+
+\(fn)" t nil)
+
+;;;***
+
 ;;;### (autoloads (gcal-sign-in gcal-sign-out gcal-emacs-calendar-setup
 ;;;;;;  gcal-show-event gcal-view gcal-calendar-agenda-days gcal-reject-event
 ;;;;;;  gcal-delete-event gcal-quickadd-event gcal-add-event gcal-user-email
@@ -615,7 +631,7 @@ Location address. Setting this updates gweb-my-location coordinates  via geocodi
 
 ;;;### (autoloads nil nil ("g-autogen.el" "g-cus-load.el" "g-load-path.el"
 ;;;;;;  "g-utils.el" "g.el" "gnotebook.el" "gwis.el" "indent-files.el"
-;;;;;;  "org2blogger.el") (20333 40283 169537))
+;;;;;;  "org2blogger.el") (20350 64161 208665))
 
 ;;;***
 
