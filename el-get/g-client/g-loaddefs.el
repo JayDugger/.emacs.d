@@ -631,7 +631,7 @@ Location address. Setting this updates gweb-my-location coordinates  via geocodi
 
 ;;;### (autoloads nil nil ("g-autogen.el" "g-cus-load.el" "g-load-path.el"
 ;;;;;;  "g-utils.el" "g.el" "gnotebook.el" "gwis.el" "indent-files.el"
-;;;;;;  "org2blogger.el") (20350 64161 208665))
+;;;;;;  "org2blogger.el") (20354 30528 940979))
 
 ;;;***
 
