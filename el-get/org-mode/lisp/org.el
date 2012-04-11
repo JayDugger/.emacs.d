@@ -2231,7 +2231,7 @@ property and include the word \"recursive\" into the value."
 (defcustom org-after-todo-state-change-hook nil
   "Hook which is run after the state of a TODO item was changed.
 The new state (a string with a TODO keyword, or nil) is available in the
-Lisp variable `state'."
+Lisp variable `org-state'."
   :group 'org-todo
   :type 'hook)
 
@@ -3945,7 +3945,9 @@ If TABLE-TYPE is non-nil, also check for table.el-type tables."
 	(unless quietly
 	  (message "Mapping tables: %d%%" (/ (* 100.0 (point)) (buffer-size))))
 	(beginning-of-line 1)
-	(when (looking-at org-table-line-regexp)
+	(when (and (looking-at org-table-line-regexp)
+		   ;; Exclude tables in src/example/verbatim/clocktable blocks
+		   (not (org-in-block-p '("src" "example"))))
 	  (save-excursion (funcall function))
 	  (or (looking-at org-table-line-regexp)
 	      (forward-char 1)))
@@ -5436,7 +5438,8 @@ will be prompted for."
 	    (when (re-search-forward
 		   (concat "^[ \t]*#\\+end" (match-string 4) "\\>.*")
 		   nil t)  ;; on purpose, we look further than LIMIT
-	      (setq end (match-end 0) end1 (1- (match-beginning 0)))
+	      (setq end (min (point-max) (match-end 0))
+		    end1 (min (point-max) (1- (match-beginning 0))))
 	      (setq block-end (match-beginning 0))
 	      (when quoting
 		(remove-text-properties beg end
@@ -5464,11 +5467,12 @@ will be prompted for."
 				     '(face org-block))) ; end of source block
 	       ((not org-fontify-quote-and-verse-blocks))
 	       ((string= block-type "quote")
-		(add-text-properties beg1 (1+ end1) '(face org-quote)))
+		(add-text-properties beg1 (min (point-max) (1+ end1)) '(face org-quote)))
 	       ((string= block-type "verse")
-		(add-text-properties beg1 (1+ end1) '(face org-verse))))
+		(add-text-properties beg1 (min (point-max) (1+ end1)) '(face org-verse))))
       	      (add-text-properties beg beg1 '(face org-block-begin-line))
-      	      (add-text-properties (1+ end) (1+ end1) '(face org-block-end-line))
+      	      (add-text-properties (min (point-max) (1+ end)) (min (point-max) (1+ end1))
+				   '(face org-block-end-line))
 	      t))
 	   ((member dc1 '("title:" "author:" "email:" "date:"))
 	    (add-text-properties
@@ -13449,8 +13453,7 @@ With prefix ARG, realign all tags in headings in the current buffer."
 	;; Get a new set of tags from the user
 	(save-excursion
 	  (setq table (append org-tag-persistent-alist
-			      org-tag-alist
-			      (org-get-buffer-tags)
+			      (or org-tag-alist (org-get-buffer-tags))
 			      (and
 			       org-complete-tags-always-offer-all-agenda-tags
 			       (org-global-tags-completion-table
@@ -13752,14 +13755,9 @@ Returns the new tags string, or nil to not change the current settings."
 		  (condition-case nil
 		      (setq tg (org-icompleting-read
 				"Tag: "
-				(delete-dups
-				 (append (or buffer-tags
-					     (with-current-buffer buf
-					       (mapcar 'car (org-get-buffer-tags))))
-					 (delq nil
-					       (mapcar (lambda (x)
-							 (if (stringp
-							      (car x)) x)) table))))))
+				(or buffer-tags
+				    (with-current-buffer buf
+				      (org-get-buffer-tags)))))
 		    (quit (setq tg "")))
 		  (when (string-match "\\S-" tg)
 		    (add-to-list 'buffer-tags (list tg))
@@ -20801,7 +20799,7 @@ depending on context."
 		(not (y-or-n-p "Kill hidden subtree along with headline? ")))
 	    (error "C-k aborted - would kill hidden subtree")))
     (call-interactively
-     (if visual-line-mode 'kill-visual-line 'kill-line)))
+     (if (and (boundp 'visual-line-mode) visual-line-mode) 'kill-visual-line 'kill-line)))
    ((looking-at (org-re ".*?\\S-\\([ \t]+\\(:[[:alnum:]_@#%:]+:\\)\\)[ \t]*$"))
     (kill-region (point) (match-beginning 1))
     (org-set-tags nil t))
@@ -20972,11 +20970,12 @@ This version does not only check the character property, but also
 If the heading only contains a TODO keyword, it is still still considered
 empty."
   (and (looking-at "[ \t]*$")
-       (save-excursion
-         (beginning-of-line 1)
-	 (let ((case-fold-search nil))
-	   (looking-at org-todo-line-regexp)))
-       (string= (match-string 3) "")))
+       (when org-todo-line-regexp
+	 (save-excursion
+	   (beginning-of-line 1)
+	   (let ((case-fold-search nil))
+	     (looking-at org-todo-line-regexp)
+	     (string= (match-string 3) ""))))))
 
 (defun org-at-heading-or-item-p ()
   (or (org-at-heading-p) (org-at-item-p)))
