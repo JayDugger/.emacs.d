@@ -136,7 +136,7 @@ exported html."
 			  "disposition=inline id=\"<%s>\">\n<#/part>\n")
 		  ext path id))
     ('semi (concat
-	    (format (concat "--[[%s\nContent-Disposition: "
+            (format (concat "--[[%s\nContent-Disposition: "
 			    "inline;\nContent-ID: <%s>][base64]]\n")
 		    ext id)
             (base64-encode-string
@@ -146,17 +146,26 @@ exported html."
                (buffer-string)))))
     ('vm "?")))
 
-(defun org-mime-multipart (plain html)
-  "Markup a multipart/alternative with text/plain and text/html
-  alternatives."
+(defun org-mime-multipart (plain html &optional images)
+  "Markup a multipart/alternative with text/plain and text/html alternatives.
+If the html portion of the message includes images wrap the html
+and images in a multipart/related part."
   (case org-mime-library
-    ('mml (format (concat "<#multipart type=alternative><#part type=text/plain>"
-                          "%s<#part type=text/html>%s<#/multipart>\n")
-                  plain html))
+    ('mml (concat "<#multipart type=alternative><#part type=text/plain>"
+		  plain
+		  (when images "<#multipart type=related>")
+		  "<#part type=text/html>"
+		  html
+		  images
+		  (when images "<#/multipart>\n")
+		  "<#/multipart>\n"))
     ('semi (concat
             "--" "<<alternative>>-{\n"
             "--" "[[text/plain]]\n" plain
+	    (when images (concat "--" "<<alternative>>-{\n"))
             "--" "[[text/html]]\n"  html
+	    images
+	    (when images (concat "--" "}-<<alternative>>\n"))
             "--" "}-<<alternative>>\n"))
     ('vm "?")))
 
@@ -220,8 +229,8 @@ export that region, otherwise export the entire body."
     (delete-region html-start html-end)
     (save-excursion
       (goto-char html-start)
-      (insert (org-mime-multipart body html)
-              (mapconcat 'identity html-images "\n")))))
+      (insert (org-mime-multipart
+	       body html (mapconcat 'identity html-images "\n"))))))
 
 (defun org-mime-apply-html-hook (html)
   (if org-mime-html-hook
