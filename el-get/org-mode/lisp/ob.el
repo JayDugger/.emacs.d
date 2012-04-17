@@ -83,6 +83,8 @@
 (declare-function org-list-prevs-alist "org-list" (struct))
 (declare-function org-list-get-list-end "org-list" (item struct prevs))
 (declare-function org-strip-protective-commas "org" (beg end))
+(declare-function org-remove-if "org" (predicate seq))
+(declare-function org-completing-read "org" (&rest args))
 
 (defgroup org-babel nil
   "Code block evaluation and management in `org-mode' documents."
@@ -693,7 +695,7 @@ arguments and pop open the results in a preview buffer."
 ;; Add support for completing-read insertion of header arguments after ":"
 (defun org-babel-header-arg-expand ()
   "Call `org-babel-enter-header-arg-w-completion' in appropriate contexts."
-  (when (and (= (char-before) ?\:) (org-babel-where-is-src-block-head))
+  (when (and (equal (char-before) ?\:) (org-babel-where-is-src-block-head))
     (org-babel-enter-header-arg-w-completion (match-string 2))))
 
 (defun org-babel-enter-header-arg-w-completion (&optional lang)
