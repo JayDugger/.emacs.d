@@ -22,7 +22,7 @@
 ;; Copyright (C) 2010 Nathan Weizenbaum.
 ;; Copyright (C) 2010 Oscar Fuentes.
 ;; Copyright (C) 2009 Pavel Holejsovsky.
-;; Copyright (C) 2011 Peter J Weisberg
+;; Copyright (C) 2011-2012 Peter J Weisberg
 ;; Copyright (C) 2009, 2010 Phil Jackson.
 ;; Copyright (C) 2010 Philip Weaver.
 ;; Copyright (C) 2010 Ramkumar Ramachandra.
@@ -901,6 +901,11 @@ Does not follow symlinks."
   "Return all values of the Git config entry specified by KEYS."
   (magit-git-lines "config" "--get-all" (mapconcat 'identity keys ".")))
 
+(defun magit-get-boolean (&rest keys)
+  "Return the boolean value of Git config entry specified by KEYS."
+  (equal (magit-git-string "config" "--bool" (mapconcat 'identity keys "."))
+         "true"))
+
 (defun magit-set (val &rest keys)
   "Set Git config settings specified by KEYS to VAL."
   (if val
@@ -929,6 +934,10 @@ Does not follow symlinks."
 
 (defun magit-git-repo-p (dir)
   (file-exists-p (expand-file-name ".git" dir)))
+
+(defun magit-git-dir ()
+  "Returns the .git directory for the current repository."
+  (concat (expand-file-name (magit-git-string "rev-parse" "--git-dir")) "/"))
 
 (defun magit-no-commit-p ()
   "Return non-nil if there is no commit in the current git repository."
@@ -3443,13 +3452,16 @@ FULLY-QUALIFIED-NAME is non-nil."
 
 (defvar magit-remote-string-hook nil)
 
-(defun magit-remote-string (remote remote-branch)
+(defun magit-remote-string (remote remote-branch remote-rebase)
   (cond
    ((string= "." remote)
-    (format "branch %s"
-            (propertize remote-branch 'face 'magit-branch)))
+    (concat
+     (when remote-rebase "onto ")
+     "branch "
+     (propertize remote-branch 'face 'magit-branch)))
    (remote
     (concat
+     (when remote-rebase "onto ")
      (propertize remote-branch 'face 'magit-branch)
      " @ "
      remote
@@ -3466,8 +3478,9 @@ FULLY-QUALIFIED-NAME is non-nil."
     (magit-with-section 'status nil
       (let* ((branch (magit-get-current-branch))
              (remote (and branch (magit-get "branch" branch "remote")))
+             (remote-rebase (and branch (magit-get-boolean "branch" branch "rebase")))
              (remote-branch (or (and branch (magit-remote-branch-for branch)) branch))
-             (remote-string (magit-remote-string remote remote-branch))
+             (remote-string (magit-remote-string remote remote-branch remote-rebase))
              (head (magit-git-string
                     "log"
                     "--max-count=1"
@@ -3483,7 +3496,8 @@ FULLY-QUALIFIED-NAME is non-nil."
                         (abbreviate-file-name default-directory)))
         (insert (format "Head:     %s\n"
                         (if no-commit "nothing commited (yet)" head)))
-        (let ((merge-heads (magit-file-lines ".git/MERGE_HEAD")))
+        (let ((merge-heads (magit-file-lines (concat (magit-git-dir)
+                                                     "MERGE_HEAD"))))
           (if merge-heads
               (insert (format "Merging:   %s\n"
                               (mapconcat 'identity
@@ -3874,35 +3888,36 @@ With a prefix-arg, the merge will be squashed.
 (defun magit-rebase-info ()
   "Returns a list indicating the state of an in-progress rebase,
 if any."
-  (cond ((file-exists-p ".git/rebase-merge")
-         (list
-          ;; The commit we're rebasing onto, i.e. git rebase -i <onto>
-          (magit-name-rev (car (magit-file-lines ".git/rebase-merge/onto")))
+  (let ((git-dir (magit-git-dir)))
+    (cond ((file-exists-p (concat git-dir "rebase-merge"))
+           (list
+            ;; The commit we're rebasing onto, i.e. git rebase -i <onto>
+            (magit-name-rev (car (magit-file-lines (concat git-dir "rebase-merge/onto"))))
 
-          ;; How many commits we've gone through
-          (length (magit-file-lines ".git/rebase-merge/done"))
+            ;; How many commits we've gone through
+            (length (magit-file-lines (concat git-dir "rebase-merge/done")))
 
-          ;; How many commits we have in total, without the comments
-          ;; at the end of git-rebase-todo.backup
-          (let ((todo-lines-with-comments (magit-file-lines ".git/rebase-merge/git-rebase-todo.backup")))
-            (loop for i in todo-lines-with-comments
-                  until (string= "" i)
-                  count i))))
-        ((and (file-exists-p ".git/rebase-apply")
-              (file-exists-p ".git/rebase-apply/onto"))
-         ;; we might be here because a non-interactive rebase failed: the
-         ;; patches didn't apply cleanly
-         (list
-          ;; The commit we're rebasing onto, i.e. git rebase -i <onto>
-          (magit-name-rev (car (magit-file-lines ".git/rebase-apply/onto")))
+            ;; How many commits we have in total, without the comments
+            ;; at the end of git-rebase-todo.backup
+            (let ((todo-lines-with-comments (magit-file-lines (concat git-dir "rebase-merge/git-rebase-todo.backup"))))
+              (loop for i in todo-lines-with-comments
+                    until (string= "" i)
+                    count i))))
+          ((and (file-exists-p (concat git-dir "rebase-apply"))
+                (file-exists-p (concat git-dir "rebase-apply/onto")))
+           ;; we might be here because a non-interactive rebase failed: the
+           ;; patches didn't apply cleanly
+           (list
+            ;; The commit we're rebasing onto, i.e. git rebase -i <onto>
+            (magit-name-rev (car (magit-file-lines (concat git-dir "rebase-apply/onto"))))
 
-          ;; How many commits we've gone through
-          (- (string-to-number (car (magit-file-lines ".git/rebase-apply/next"))) 1)
+            ;; How many commits we've gone through
+            (- (string-to-number (car (magit-file-lines (concat git-dir "rebase-apply/next")))) 1)
 
-          ;; How many commits we have in total
-          (string-to-number (car (magit-file-lines ".git/rebase-apply/last")))
-          ))
-        (t nil)))
+            ;; How many commits we have in total
+            (string-to-number (car (magit-file-lines (concat git-dir "rebase-apply/last"))))
+            ))
+          (t nil))))
 
 (defun magit-rebase-step ()
   (interactive)
@@ -3975,14 +3990,14 @@ With a prefix arg, also remove untracked files."
 ;;; Rewriting
 
 (defun magit-read-rewrite-info ()
-  (when (file-exists-p ".git/magit-rewrite-info")
+  (when (file-exists-p (concat (magit-git-dir) "magit-rewrite-info"))
     (with-temp-buffer
-      (insert-file-contents ".git/magit-rewrite-info")
+      (insert-file-contents (concat (magit-git-dir) "magit-rewrite-info"))
       (goto-char (point-min))
       (read (current-buffer)))))
 
 (defun magit-write-rewrite-info (info)
-  (with-temp-file ".git/magit-rewrite-info"
+  (with-temp-file (concat (magit-git-dir) "magit-rewrite-info")
     (prin1 info (current-buffer))
     (princ "\n" (current-buffer))))
 
@@ -4398,7 +4413,7 @@ environment (potentially empty)."
                 allow-empty
                 amend
                 tag-name
-                (file-exists-p ".git/MERGE_HEAD")
+                (file-exists-p (concat (magit-git-dir) "MERGE_HEAD"))
                 (and commit-all
                      (not (magit-everything-clean-p))))
       (error "Refusing to create empty commit. Maybe you want to amend (%s) or allow-empty (%s)?"
@@ -4434,8 +4449,8 @@ environment (potentially empty)."
     ;; shouldn't we kill that buffer altogether?
     (erase-buffer)
     (bury-buffer)
-    (when (file-exists-p ".git/MERGE_MSG")
-      (delete-file ".git/MERGE_MSG"))
+    (when (file-exists-p (concat (magit-git-dir) "MERGE_MSG"))
+      (delete-file (concat (magit-git-dir) "MERGE_MSG")))
     ;; potentially the local environment has been altered with settings that
     ;; were specific to this commit. Let's revert it
     (kill-local-variable 'process-environment)
@@ -4491,8 +4506,8 @@ This means that the eventual commit does 'git commit --allow-empty'."
     (setq magit-pre-log-edit-window-configuration
           (current-window-configuration))
     (pop-to-buffer buf)
-    (when (file-exists-p ".git/MERGE_MSG")
-      (insert-file-contents ".git/MERGE_MSG"))
+    (when (file-exists-p (concat (magit-git-dir) "MERGE_MSG"))
+      (insert-file-contents (concat (magit-git-dir) "MERGE_MSG")))
     (setq default-directory dir)
     (magit-log-edit-mode)
     (message "Type C-c C-c to %s (C-c C-k to cancel)." operation)))
@@ -5033,7 +5048,7 @@ This is only meaningful in wazzup buffers.")
 (make-variable-buffer-local 'magit-wazzup-all-p)
 
 (defun magit-wazzup-toggle-ignore (branch edit)
-  (let ((ignore-file ".git/info/wazzup-exclude"))
+  (let ((ignore-file (concat (magit-git-dir) "info/wazzup-exclude")))
     (if edit
         (setq branch (read-string "Branch to ignore for wazzup: " branch)))
     (let ((ignored (magit-file-lines ignore-file)))
@@ -5054,7 +5069,7 @@ This is only meaningful in wazzup buffers.")
     (magit-create-buffer-sections
       (magit-with-section 'wazzupbuf nil
         (insert (format "Wazzup, %s\n\n" branch-desc))
-        (let* ((excluded (magit-file-lines ".git/info/wazzup-exclude"))
+        (let* ((excluded (magit-file-lines (concat (magit-git-dir) "info/wazzup-exclude")))
                (all-branches (magit-list-interesting-refs))
                (branches (if all all-branches
                            (delq nil (mapcar
@@ -5144,7 +5159,7 @@ values (such as wildcards) that might be of interest.
 
 If LOCAL is nil, the `.gitignore' file is updated.
 Otherwise, it is `.git/info/exclude'."
-  (let ((ignore-file (if local ".git/info/exclude" ".gitignore")))
+  (let ((ignore-file (if local (concat (magit-git-dir) "info/exclude") ".gitignore")))
     (if edit
       (setq file (magit-ignore-modifiable-file file edit)))
     (with-temp-buffer
