@@ -1,7 +1,7 @@
 10
 
 dir
-7715
+7722
 https://emacspeak.googlecode.com/svn/trunk/lisp/g-client
 https://emacspeak.googlecode.com/svn
 
@@ -440,40 +440,6 @@ tv.raman.tv
 
 8555
 
-gwis.el
-file
-
-
-
-
-2012-03-07T14:35:36.000000Z
-ab073ba532e75deb0364e3954206acb5
-2009-10-29T15:16:50.119641Z
-6353
-tv.raman.tv
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-7225
-
 COPYING
 file
 
@@ -507,6 +473,40 @@ tv.raman.tv
 
 
 3280
+
+gwis.el
+file
+
+
+
+
+2012-03-07T14:35:36.000000Z
+ab073ba532e75deb0364e3954206acb5
+2009-10-29T15:16:50.119641Z
+6353
+tv.raman.tv
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+7225
 
 Makefile
 file
@@ -610,50 +610,16 @@ has-props
 
 842
 
-gbooks.el
+g-utils.el
 file
 
 
 
 
-2012-03-27T15:20:11.000000Z
-793c4d001c9dbdab732496e05b904e6a
-2012-03-25T16:33:52.539622Z
-7610
-tv.raman.tv
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-5519
-
-gweb.el
-file
-
-
-
-
-2012-03-14T13:46:50.000000Z
-3854c550831fde7211d1c8ff1f80b04a
-2012-03-11T16:20:35.582664Z
-7570
+2012-03-09T15:59:46.000000Z
+55adf934e99dffc8f4e7f52e3d69c393
+2012-03-08T16:55:53.385863Z
+7562
 tv.raman.tv
 has-props
 
@@ -676,7 +642,7 @@ has-props
 
 
 
-14858
+12729
 
 gcal-view.xsl
 file
@@ -712,16 +678,16 @@ tv.raman.tv
 
 912
 
-g-utils.el
+gweb.el
 file
 
 
 
 
-2012-03-09T15:59:46.000000Z
-55adf934e99dffc8f4e7f52e3d69c393
-2012-03-08T16:55:53.385863Z
-7562
+2012-03-14T13:46:50.000000Z
+3854c550831fde7211d1c8ff1f80b04a
+2012-03-11T16:20:35.582664Z
+7570
 tv.raman.tv
 has-props
 
@@ -744,18 +710,18 @@ has-props
 
 
 
-12729
+14858
 
-gcontacts.el
+gbooks.el
 file
 
 
 
 
-2012-03-07T14:35:36.000000Z
-870b4658a5891296ceb2691bb05b8b9a
-2009-10-31T17:57:56.653370Z
-6356
+2012-03-27T15:20:11.000000Z
+793c4d001c9dbdab732496e05b904e6a
+2012-03-25T16:33:52.539622Z
+7610
 tv.raman.tv
 
 
@@ -778,7 +744,7 @@ tv.raman.tv
 
 
 
-5104
+5519
 
 g-auth.el
 file
@@ -813,6 +779,40 @@ has-props
 
 
 7571
+
+gcontacts.el
+file
+
+
+
+
+2012-03-07T14:35:36.000000Z
+870b4658a5891296ceb2691bb05b8b9a
+2009-10-31T17:57:56.653370Z
+6356
+tv.raman.tv
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+5104
 
 g.el
 file
