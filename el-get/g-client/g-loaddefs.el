@@ -1,6 +1,6 @@
 ;;;Auto generated
 
-;;;### (autoloads (g-auth-lifetime) "g-auth" "g-auth.el" (20375 16342))
+;;;### (autoloads (g-auth-lifetime) "g-auth" "g-auth.el" (20379 32099))
 ;;; Generated autoloads from g-auth.el
 
 (defvar g-auth-lifetime "4 hours" "\
@@ -631,7 +631,7 @@ Location address. Setting this updates gweb-my-location coordinates  via geocodi
 
 ;;;### (autoloads nil nil ("g-autogen.el" "g-cus-load.el" "g-load-path.el"
 ;;;;;;  "g-utils.el" "g.el" "gnotebook.el" "gwis.el" "indent-files.el"
-;;;;;;  "org2blogger.el") (20377 58343 305172))
+;;;;;;  "org2blogger.el") (20386 39734 282504))
 
 ;;;***
 

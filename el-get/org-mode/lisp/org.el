@@ -218,13 +218,15 @@ With prefix arg HERE, insert it at point."
   (let* ((origin default-directory)
 	 (version (if (boundp 'org-release) org-release "N/A"))
 	 (git-version (if (boundp 'org-git-version) org-git-version "N/A"))
-	 (org-install (ignore-errors (find-library-name "org-install"))))
-    (setq version (format "Org-mode version %s (%s @ %s)"
-			  version
-			  git-version
-			  (if org-install org-install "org-install.el can not be found!")))
-    (if here (insert version))
-    (message version)))
+	 (org-install (ignore-errors (find-library-name "org-install")))
+	 (version_ (format "Org-mode version %s (%s @ %s)"
+			   version
+			   git-version
+			   (if org-install org-install "org-install.el can not be found!"))))
+    (if (org-called-interactively-p 'interactive)
+	(if here (insert version_)
+	  (message version_))
+      version)))
 
 ;;; Compatibility constants
 
@@ -4806,10 +4808,11 @@ but the stars and the body are.")
 		    "\\|" org-clock-string "\\)\\)?"
 		    " *\\([[<][0-9]\\{4\\}-[0-9]\\{2\\}-[0-9]\\{2\\} ?[^]\r\n>]*?[]>]\\|<%%([^\r\n>]*>\\)")
 	    org-planning-or-clock-line-re
-	    (concat "\\(?:^[ \t]*\\(" org-scheduled-string
-		    "\\|" org-deadline-string
-		    "\\|" org-closed-string "\\|" org-clock-string
-		    "\\)\\>\\)")
+	    (concat "^[ \t]*\\("
+		    org-scheduled-string "\\|"
+		    org-deadline-string "\\|"
+		    org-closed-string "\\|"
+		    org-clock-string "\\)")
 	    org-all-time-keywords
 	    (mapcar (lambda (w) (substring w 0 -1))
 		    (list org-scheduled-string org-deadline-string
@@ -4940,12 +4943,6 @@ Stars are put in group 1 and the trimmed body in group 2.")
 
 (defvar bidi-paragraph-direction)
 (defvar buffer-face-mode-face)
-(defvar org-auto-fill-fallback-function nil)
-(defvar org-indent-line-fallback-function nil)
-(defvar org-fill-paragraph-fallback-function nil)
-(make-variable-buffer-local 'org-auto-fill-fallback-function)
-(make-variable-buffer-local 'org-indent-line-fallback-function)
-(make-variable-buffer-local 'org-fill-paragraph-fallback-function)
 
 ;;;###autoload
 (define-derived-mode org-mode outline-mode "Org"
@@ -5893,7 +5890,7 @@ needs to be inserted at a specific position in the font-lock sequence.")
 		 (0 (org-get-checkbox-statistics-face) t)))
 	   ;; Description list items
 	   '("^[ \t]*[-+*][ \t]+\\(.*?[ \t]+::\\)\\([ \t]+\\|$\\)"
-	     1 'bold prepend)
+	     1 'org-list-dt prepend)
 	   ;; ARCHIVEd headings
 	   (list (concat
 		  org-outline-regexp-bol
@@ -8363,6 +8360,8 @@ C-c C-c     Set tags / toggle checkbox"
   "Unconditionally turn on `orgstruct-mode'."
   (orgstruct-mode 1))
 
+(defvar org-fb-vars nil)
+(make-variable-buffer-local 'org-fb-vars)
 (defun orgstruct++-mode (&optional arg)
   "Toggle `orgstruct-mode', the enhanced version of it.
 In addition to setting orgstruct-mode, this also exports all indentation
@@ -8372,14 +8371,15 @@ Note that turning off orgstruct-mode will *not* remove the
 indentation/paragraph settings.  This can only be done by refreshing the
 major mode, for example with \\[normal-mode]."
   (interactive "P")
-  (setq arg (prefix-numeric-value (or arg (if orgstruct-mode -1 1)))
-	;; Set fallback functions
-	org-auto-fill-fallback-function auto-fill-function
-	org-indent-line-fallback-function indent-line-function
-	org-fill-paragraph-fallback-function fill-paragraph-function)
+  (setq arg (prefix-numeric-value (or arg (if orgstruct-mode -1 1))))
   (if (< arg 1)
-      (orgstruct-mode -1)
+      (progn (orgstruct-mode -1)
+	     (mapc (lambda(v)
+		     (org-set-local (car v)
+				    (if (eq (car-safe (cadr v)) 'quote) (cadadr v) (cadr v))))
+		   org-fb-vars))
     (orgstruct-mode 1)
+    (setq org-fb-vars nil)
     (let (var val)
       (mapc
        (lambda (x)
@@ -8387,6 +8387,7 @@ major mode, for example with \\[normal-mode]."
 		"^\\(paragraph-\\|auto-fill\\|fill-paragraph\\|adaptive-fill\\|indent-\\)"
 		(symbol-name (car x)))
 	   (setq var (car x) val (nth 1 x))
+	   (push (list var `(quote ,(eval var))) org-fb-vars)
 	   (org-set-local var (if (eq (car-safe val) 'quote) (nth 1 val) val))))
        org-local-vars)
       (org-set-local 'orgstruct-is-++ t))))
@@ -8610,7 +8611,7 @@ call CMD."
 ;;; Link abbreviations
 
 (defun org-link-expand-abbrev (link)
-  "Apply replacements as defined in `org-link-abbrev-alist."
+  "Apply replacements as defined in `org-link-abbrev-alist'."
   (if (string-match "^\\([^:]*\\)\\(::?\\(.*\\)\\)?$" link)
       (let* ((key (match-string 1 link))
 	     (as (or (assoc key org-link-abbrev-alist-local)
@@ -9474,7 +9475,7 @@ If the link is in hidden text, expose it."
 	   (string-match "\\([a-zA-Z0-9]+\\):\\(.*\\)" s))
       (progn
 	(setq s (funcall org-link-translation-function
-			 (match-string 1) (match-string 2)))
+			 (match-string 1 s) (match-string 2 s)))
 	(concat (car s) ":" (cdr s)))
     s))
 
@@ -14713,10 +14714,10 @@ in the current file."
   (interactive (list nil nil))
   (let* ((property (or property (org-read-property-name)))
 	 (value (or value (org-read-property-value property)))
-	 (fn (assoc property org-properties-postprocess-alist)))
+	 (fn (cadr (assoc property org-properties-postprocess-alist))))
     (setq org-last-set-property property)
     ;; Possibly postprocess the inserted value:
-    (when fn (setq value (funcall (cadr fn) value)))
+    (when fn (setq value (funcall fn value)))
     (unless (equal (org-entry-get nil property) value)
       (org-entry-put nil property value))))
 
@@ -16367,7 +16368,7 @@ effort string \"2hours\" is equivalent to 120 minutes."
   :type '(alist :key-type (string :tag "Modifier")
 		:value-type (number :tag "Minutes")))
 
-(defun org-duration-string-to-minutes (s)
+(defun org-duration-string-to-minutes (s &optional output-to-string)
   "Convert a duration string S to minutes.
 
 A bare number is interpreted as minutes, modifiers can be set by
@@ -16376,15 +16377,16 @@ customizing `org-effort-durations' (which see).
 Entries containing a colon are interpreted as H:MM by
 `org-hh:mm-string-to-minutes'."
   (let ((result 0)
-	(re (concat "\\([0-9]+\\) *\\("
+	(re (concat "\\([0-9.]+\\) *\\("
 		    (regexp-opt (mapcar 'car org-effort-durations))
 		    "\\)")))
     (while (string-match re s)
       (incf result (* (cdr (assoc (match-string 2 s) org-effort-durations))
 		      (string-to-number (match-string 1 s))))
       (setq s (replace-match "" nil t s)))
+    (setq result (floor result))
     (incf result (org-hh:mm-string-to-minutes s))
-    result))
+    (if output-to-string (number-to-string result) result)))
 
 ;;;; Files
 
@@ -17034,7 +17036,7 @@ Some of the options can be changed using the variable
 	       ((eq processing-type 'imagemagick)
 		(unless executables-checked
 		  (org-check-external-command
-		   "converte" "you need to install imagemagick")
+		   "convert" "you need to install imagemagick")
 		  (setq executables-checked t))
 		(unless (file-exists-p movefile)
 		  (org-create-formula-image-with-imagemagick
@@ -17309,7 +17311,8 @@ inspection."
 			   (save-match-data
 			     (shell-quote-argument (file-name-directory texfile)))
 			   t t cmd)))
-	      (shell-command cmd)))
+	      (setq cmd (split-string cmd))
+	      (eval (append (list 'call-process (pop cmd) nil nil nil) cmd))))
 	(error nil))
       (cd dir))
     (if (not (file-exists-p pdffile))
@@ -20398,11 +20401,13 @@ If point is in an inline task, mark that task instead."
 ;;; Paragraph filling stuff.
 ;; We want this to be just right, so use the full arsenal.
 
+(declare-function orgstruct++-ignore-org-filling "org-macs.el" (&rest body))
 (defun org-indent-line-function ()
   "Indent line depending on context."
   (interactive)
-  (if org-indent-line-fallback-function
-      (funcall org-indent-line-fallback-function)
+  (if orgstruct-is-++
+      (orgstruct++-ignore-org-filling
+       (funcall indent-line-function))
     (let* ((pos (point))
 	   (itemp (org-at-item-p))
 	   (case-fold-search t)
@@ -20705,8 +20710,11 @@ the functionality can be provided as a fall-back.")
 			       (save-excursion (forward-paragraph 1) (point)))
 	     (fill-paragraph justify) t))
 	  ;; Else falls back on `org-fill-paragraph-fallback-function'
-	  (org-fill-paragraph-fallback-function
-	   (funcall org-fill-paragraph-fallback-function))
+	  (orgstruct-is-++
+	   (orgstruct++-ignore-org-filling
+	    (fill-paragraph)))
+	  ;; (org-fill-paragraph-fallback-function
+	  ;;  (funcall org-fill-paragraph-fallback-function justify))
 	  ;; Else simply call `fill-paragraph'.
 	  (t nil))))
 
@@ -20750,10 +20758,9 @@ the functionality can be provided as a fall-back.")
 	     (setq prefix (make-string (org-list-item-body-column itemp) ?\ ))
 	     (flet ((fill-context-prefix (from to &optional flr) prefix))
 	       (do-auto-fill))))
-	  (org-auto-fill-fallback-function
-	   (let ((fill-prefix ""))
-	     (funcall org-auto-fill-fallback-function)))
-	  ;; Else just use `do-auto-fill'.
+	  (orgstruct-is-++
+	   (orgstruct++-ignore-org-filling
+	    (do-auto-fill)))
 	  (t (do-auto-fill)))))
 
 ;;; Other stuff.

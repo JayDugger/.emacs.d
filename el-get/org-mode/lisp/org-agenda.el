@@ -1953,11 +1953,10 @@ The following commands are available:
   (org-add-hook 'post-command-hook 'org-agenda-post-command-hook nil 'local)
   (org-add-hook 'pre-command-hook 'org-unhighlight nil 'local)
   ;; Make sure properties are removed when copying text
-  (when (boundp 'buffer-substring-filters)
-    (org-set-local 'buffer-substring-filters
-		   (cons (lambda (x)
-                           (set-text-properties 0 (length x) nil x) x)
-			 buffer-substring-filters)))
+  (make-local-variable 'filter-buffer-substring-functions)
+  (add-hook 'filter-buffer-substring-functions
+	    (lambda (fun start end delete)
+	      (substring-no-properties (funcall fun start end delete))))
   (unless org-agenda-keep-modes
     (setq org-agenda-follow-mode org-agenda-start-with-follow-mode
 	  org-agenda-entry-text-mode org-agenda-start-with-entry-text-mode
@@ -4748,7 +4747,9 @@ function from a program - use `org-agenda-get-day-entries' instead."
     ;; I am not sure if this works with sticky agendas, because the marker
     ;; list is then no longer a global variable.
     (org-agenda-reset-markers))
-  (org-compile-prefix-format 'agenda)
+  ;; Prevent `org-compile-prefix-format' to fail when there is no agenda
+  (when (buffer-live-p org-agenda-buffer)
+    (org-compile-prefix-format 'agenda))
   (org-set-sorting-strategy 'agenda)
   (setq args (or args '(:deadline :scheduled :timestamp :sexp)))
   (let* ((files (if (and entry (stringp entry) (string-match "\\S-" entry))
@@ -8635,13 +8636,13 @@ This is a command that has to be installed in `calendar-mode-map'."
 (defun org-agenda-bulk-mark-regexp (regexp)
   "Mark entries match REGEXP."
   (interactive "sMark entries matching regexp: ")
-  (let (entries-marked)
+  (let ((entries-marked 0))
     (save-excursion
       (goto-char (point-min))
       (goto-char (next-single-property-change (point) 'txt))
       (while (re-search-forward regexp nil t)
 	(when (string-match regexp (get-text-property (point) 'txt))
-	  (setq entries-marked (+ entries-marked 1))
+	  (setq entries-marked (1+ entries-marked))
 	  (call-interactively 'org-agenda-bulk-mark))))
     (if (not entries-marked)
 	(message "No entry matching this regexp."))))
