@@ -3073,7 +3073,8 @@ and the clock summary:
                      (org-minutes-to-hh:mm-string (- effort clocksum))))))"
   :group 'org-properties
   :version "24.1"
-  :type 'alist)
+  :type '(alist :key-type (string     :tag "Property")
+		:value-type (function :tag "Function")))
 
 (defcustom org-use-property-inheritance nil
   "Non-nil means properties apply also for sublevels.
@@ -5410,6 +5411,13 @@ will be prompted for."
   :group 'org-appearance
   :group 'org-babel)
 
+(defcustom org-src-prevent-auto-filling nil
+  "When non-nil, prevent auto-filling in src blocks."
+  :type 'boolean
+  :version "24.1"
+  :group 'org-appearance
+  :group 'org-babel)
+
 (defun org-fontify-meta-lines-and-blocks (limit)
   (condition-case nil
       (org-fontify-meta-lines-and-blocks-1 limit)
@@ -5938,16 +5946,19 @@ needs to be inserted at a specific position in the font-lock sequence.")
     (when org-pretty-entities
       (catch 'match
 	(while (re-search-forward
-		"\\\\\\(frac[13][24]\\|[a-zA-Z]+\\)\\($\\|[^[:alpha:]\n]\\)"
+		"\\\\\\(frac[13][24]\\|[a-zA-Z]+\\)\\($\\|{}\\|[^[:alpha:]\n]\\)"
 		limit t)
 	  (if (and (not (org-in-indented-comment-line))
 		   (setq ee (org-entity-get (match-string 1)))
 		   (= (length (nth 6 ee)) 1))
-	      (progn
+	      (let*
+		  ((end (if (equal (match-string 2) "{}")
+			    (match-end 2)
+			  (match-end 1))))
 		(add-text-properties
-		 (match-beginning 0) (match-end 1)
+		 (match-beginning 0) end
 		 (list 'font-lock-fontified t))
-		(compose-region (match-beginning 0) (match-end 1)
+		(compose-region (match-beginning 0) end
 				(nth 6 ee) nil)
 		(backward-char 1)
 		(throw 'match t))))
@@ -10686,7 +10697,7 @@ RFLOC can be a refile location obtained in a different way.
 See also `org-refile-use-outline-path' and `org-completion-use-ido'.
 
 If you are using target caching (see `org-refile-use-cache'),
-You have to clear the target cache in order to find new targets.
+you have to clear the target cache in order to find new targets.
 This can be done with a 0 prefix (`C-0 C-c C-w') or a triple
 prefix argument (`C-u C-u C-u C-c C-w')."
 
@@ -10969,8 +10980,7 @@ this is used for the GOTO interface."
 	    rtn))
 	  ((eq flag 'lambda)
 	   ;; exact match?
-	   (assoc string thetable)))
-	 ))
+	   (assoc string thetable)))))
      args)))
 
 ;;;; Dynamic blocks
@@ -14714,7 +14724,7 @@ in the current file."
   (interactive (list nil nil))
   (let* ((property (or property (org-read-property-name)))
 	 (value (or value (org-read-property-value property)))
-	 (fn (cadr (assoc property org-properties-postprocess-alist))))
+	 (fn (cdr (assoc property org-properties-postprocess-alist))))
     (setq org-last-set-property property)
     ;; Possibly postprocess the inserted value:
     (when fn (setq value (funcall fn value)))
@@ -19058,13 +19068,18 @@ argument ARG, change each line in region into an item."
   "Convert headings to normal text, or items or text to headings.
 If there is no active region, only the current line is considered.
 
-If the first non blank line is an headline, remove the stars from
-all headlines in the region.
+With a \\[universal-argument] prefix, convert the whole list at
+point into heading.
 
-If it is a plain list item, turn all plain list items into headings.
+In a region:
 
-If it is a normal line, turn each and every normal line (i.e. not
-an heading or an item) in the region into a heading.
+- If the first non blank line is an headline, remove the stars
+  from all headlines in the region.
+
+- If it is a normal line turn each and every normal line (i.e. not an
+  heading or an item) in the region into a heading.
+
+- If it is a plain list item, turn all plain list items into headings.
 
 When converting a line into a heading, the number of stars is chosen
 such that the lines become children of the current entry.  However,
@@ -19081,8 +19096,14 @@ stars to add."
 	      (skip-chars-forward " \r\t\n")
 	      (point-at-bol)))))
 	beg end)
-    ;; Determine boundaries of changes. If region ends at a bol, do
-    ;; not consider the last line to be in the region.
+    ;; Determine boundaries of changes.  If a universal prefix has
+    ;; been given, put the list in a region.  If region ends at a bol,
+    ;; do not consider the last line to be in the region.
+
+    (when (and current-prefix-arg (org-at-item-p))
+      (if (equal current-prefix-arg '(4)) (setq current-prefix-arg 1))
+      (org-mark-list))
+
     (if (org-region-active-p)
 	(setq beg (funcall skip-blanks (region-beginning))
 	      end (copy-marker (save-excursion
@@ -20405,116 +20426,116 @@ If point is in an inline task, mark that task instead."
 (defun org-indent-line-function ()
   "Indent line depending on context."
   (interactive)
-  (if orgstruct-is-++
-      (orgstruct++-ignore-org-filling
-       (funcall indent-line-function))
-    (let* ((pos (point))
-	   (itemp (org-at-item-p))
-	   (case-fold-search t)
-	   (org-drawer-regexp (or org-drawer-regexp "\000"))
-	   (inline-task-p (and (featurep 'org-inlinetask)
-			       (org-inlinetask-in-task-p)))
-	   (inline-re (and inline-task-p
-			   (org-inlinetask-outline-regexp)))
-	   column)
-      (beginning-of-line 1)
+  (let* ((pos (point))
+	 (itemp (org-at-item-p))
+	 (case-fold-search t)
+	 (org-drawer-regexp (or org-drawer-regexp "\000"))
+	 (inline-task-p (and (featurep 'org-inlinetask)
+			     (org-inlinetask-in-task-p)))
+	 (inline-re (and inline-task-p
+			 (org-inlinetask-outline-regexp)))
+	 column)
+    (beginning-of-line 1)
+    (cond
+     ;; Comments
+     ((looking-at "# ") (setq column 0))
+     ;; Headings
+     ((looking-at org-outline-regexp) (setq column 0))
+     ;; Included files
+     ((looking-at "#\\+include:") (setq column 0))
+     ;; Footnote definition
+     ((looking-at org-footnote-definition-re) (setq column 0))
+     ;; Literal examples
+     ((looking-at "[ \t]*:\\( \\|$\\)")
+      (setq column (org-get-indentation))) ; do nothing
+     ;; Lists
+     ((ignore-errors (goto-char (org-in-item-p)))
+      (setq column (if itemp
+		       (org-get-indentation)
+		     (org-list-item-body-column (point))))
+      (goto-char pos))
+     ;; Drawers
+     ((and (looking-at "[ \t]*:END:")
+	   (save-excursion (re-search-backward org-drawer-regexp nil t)))
+      (save-excursion
+	(goto-char (1- (match-beginning 1)))
+	(setq column (current-column))))
+     ;; Special blocks
+     ((and (looking-at "[ \t]*#\\+end_\\([a-z]+\\)")
+	   (save-excursion
+	     (re-search-backward
+	      (concat "^[ \t]*#\\+begin_" (downcase (match-string 1))) nil t)))
+      (setq column (org-get-indentation (match-string 0))))
+     ((and (not (looking-at "[ \t]*#\\+begin_"))
+	   (org-between-regexps-p "^[ \t]*#\\+begin_" "[ \t]*#\\+end_"))
+      (save-excursion
+	(re-search-backward "^[ \t]*#\\+begin_\\([a-z]+\\)" nil t))
+      (setq column
+	    (cond ((equal (downcase (match-string 1)) "src")
+		   ;; src blocks: let `org-edit-src-exit' handle them
+		   (org-get-indentation))
+		  ((equal (downcase (match-string 1)) "example")
+		   (max (org-get-indentation)
+			(org-get-indentation (match-string 0))))
+		  (t
+		   (org-get-indentation (match-string 0))))))
+     ;; This line has nothing special, look at the previous relevant
+     ;; line to compute indentation
+     (t
+      (beginning-of-line 0)
+      (while (and (not (bobp))
+		  (not (looking-at org-drawer-regexp))
+		  ;; When point started in an inline task, do not move
+		  ;; above task starting line.
+		  (not (and inline-task-p (looking-at inline-re)))
+		  ;; Skip drawers, blocks, empty lines, verbatim,
+		  ;; comments, tables, footnotes definitions, lists,
+		  ;; inline tasks.
+		  (or (and (looking-at "[ \t]*:END:")
+			   (re-search-backward org-drawer-regexp nil t))
+		      (and (looking-at "[ \t]*#\\+end_")
+			   (re-search-backward "[ \t]*#\\+begin_"nil t))
+		      (looking-at "[ \t]*[\n:#|]")
+		      (looking-at org-footnote-definition-re)
+		      (and (ignore-errors (goto-char (org-in-item-p)))
+			   (goto-char
+			    (org-list-get-top-point (org-list-struct))))
+		      (and (not inline-task-p)
+			   (featurep 'org-inlinetask)
+			   (org-inlinetask-in-task-p)
+			   (or (org-inlinetask-goto-beginning) t))))
+	(beginning-of-line 0))
       (cond
-       ;; Comments
-       ((looking-at "# ") (setq column 0))
-       ;; Headings
-       ((looking-at org-outline-regexp) (setq column 0))
-       ;; Included files
-       ((looking-at "#\\+include:") (setq column 0))
-       ;; Footnote definition
-       ((looking-at org-footnote-definition-re) (setq column 0))
-       ;; Literal examples
-       ((looking-at "[ \t]*:\\( \\|$\\)")
-	(setq column (org-get-indentation))) ; do nothing
-       ;; Lists
-       ((ignore-errors (goto-char (org-in-item-p)))
-	(setq column (if itemp
-			 (org-get-indentation)
-		       (org-list-item-body-column (point))))
-	(goto-char pos))
-       ;; Drawers
-       ((and (looking-at "[ \t]*:END:")
-	     (save-excursion (re-search-backward org-drawer-regexp nil t)))
-	(save-excursion
-	  (goto-char (1- (match-beginning 1)))
+       ;; There was an heading above.
+       ((looking-at "\\*+[ \t]+")
+	(if (not org-adapt-indentation)
+	    (setq column 0)
+	  (goto-char (match-end 0))
 	  (setq column (current-column))))
-       ;; Special blocks
-       ((and (looking-at "[ \t]*#\\+end_\\([a-z]+\\)")
-	     (save-excursion
-	       (re-search-backward
-		(concat "^[ \t]*#\\+begin_" (downcase (match-string 1))) nil t)))
-	(setq column (org-get-indentation (match-string 0))))
-       ((and (not (looking-at "[ \t]*#\\+begin_"))
-	     (org-between-regexps-p "^[ \t]*#\\+begin_" "[ \t]*#\\+end_"))
-	(save-excursion
-	  (re-search-backward "^[ \t]*#\\+begin_\\([a-z]+\\)" nil t))
-	(setq column
-	      (cond ((equal (downcase (match-string 1)) "src")
-		     ;; src blocks: let `org-edit-src-exit' handle them
-		     (org-get-indentation))
-		    ((equal (downcase (match-string 1)) "example")
-		     (max (org-get-indentation)
-			  (org-get-indentation (match-string 0))))
-		    (t
-		     (org-get-indentation (match-string 0))))))
-       ;; This line has nothing special, look at the previous relevant
-       ;; line to compute indentation
-       (t
-	(beginning-of-line 0)
-	(while (and (not (bobp))
-		    (not (looking-at org-drawer-regexp))
-		    ;; When point started in an inline task, do not move
-		    ;; above task starting line.
-		    (not (and inline-task-p (looking-at inline-re)))
-		    ;; Skip drawers, blocks, empty lines, verbatim,
-		    ;; comments, tables, footnotes definitions, lists,
-		    ;; inline tasks.
-		    (or (and (looking-at "[ \t]*:END:")
-			     (re-search-backward org-drawer-regexp nil t))
-			(and (looking-at "[ \t]*#\\+end_")
-			     (re-search-backward "[ \t]*#\\+begin_"nil t))
-			(looking-at "[ \t]*[\n:#|]")
-			(looking-at org-footnote-definition-re)
-			(and (ignore-errors (goto-char (org-in-item-p)))
-			     (goto-char
-			      (org-list-get-top-point (org-list-struct))))
-			(and (not inline-task-p)
-			     (featurep 'org-inlinetask)
-			     (org-inlinetask-in-task-p)
-			     (or (org-inlinetask-goto-beginning) t))))
-	  (beginning-of-line 0))
-	(cond
-	 ;; There was an heading above.
-	 ((looking-at "\\*+[ \t]+")
-	  (if (not org-adapt-indentation)
-	      (setq column 0)
-	    (goto-char (match-end 0))
-	    (setq column (current-column))))
-	 ;; A drawer had started and is unfinished
-	 ((looking-at org-drawer-regexp)
-	  (goto-char (1- (match-beginning 1)))
-	  (setq column (current-column)))
-	 ;; Else, nothing noticeable found: get indentation and go on.
-	 (t (setq column (org-get-indentation))))))
-      ;; Now apply indentation and move cursor accordingly
-      (goto-char pos)
-      (if (<= (current-column) (current-indentation))
-	  (org-indent-line-to column)
-	(save-excursion (org-indent-line-to column)))
-      ;; Special polishing for properties, see `org-property-format'
-      (setq column (current-column))
-      (beginning-of-line 1)
-      (if (looking-at
-	   "\\([ \t]+\\)\\(:[-_0-9a-zA-Z]+:\\)[ \t]*\\(\\S-.*\\(\\S-\\|$\\)\\)")
-	  (replace-match (concat (match-string 1)
-				 (format org-property-format
-					 (match-string 2) (match-string 3)))
-			 t t))
-      (org-move-to-column column))))
+       ;; A drawer had started and is unfinished
+       ((looking-at org-drawer-regexp)
+	(goto-char (1- (match-beginning 1)))
+	(setq column (current-column)))
+       ;; Else, nothing noticeable found: get indentation and go on.
+       (t (setq column (org-get-indentation))))))
+    ;; Now apply indentation and move cursor accordingly
+    (goto-char pos)
+    (if (<= (current-column) (current-indentation))
+	(org-indent-line-to column)
+      (save-excursion (org-indent-line-to column)))
+    ;; Special polishing for properties, see `org-property-format'
+    (setq column (current-column))
+    (beginning-of-line 1)
+    (if (looking-at
+	 "\\([ \t]+\\)\\(:[-_0-9a-zA-Z]+:\\)[ \t]*\\(\\S-.*\\(\\S-\\|$\\)\\)")
+	(replace-match (concat (match-string 1)
+			       (format org-property-format
+				       (match-string 2) (match-string 3)))
+		       t t))
+    (org-move-to-column column)
+    (when (and orgstruct-is-++ (eq pos (point)))
+      (orgstruct++-ignore-org-filling
+       (indent-according-to-mode)))))
 
 (defun org-indent-drawer ()
   "Indent the drawer at point."
@@ -20750,18 +20771,19 @@ the functionality can be provided as a fall-back.")
 
 (defun org-auto-fill-function ()
   "Auto-fill function."
-  (let (itemp prefix)
-    ;; When in a list, compute an appropriate fill-prefix and make
-    ;; sure it will be used by `do-auto-fill'.
-    (cond ((setq itemp (org-in-item-p))
-	   (progn
-	     (setq prefix (make-string (org-list-item-body-column itemp) ?\ ))
-	     (flet ((fill-context-prefix (from to &optional flr) prefix))
-	       (do-auto-fill))))
-	  (orgstruct-is-++
-	   (orgstruct++-ignore-org-filling
-	    (do-auto-fill)))
-	  (t (do-auto-fill)))))
+  (unless (and org-src-prevent-auto-filling (org-in-src-block-p))
+    (let (itemp prefix)
+      ;; When in a list, compute an appropriate fill-prefix and make
+      ;; sure it will be used by `do-auto-fill'.
+      (cond ((setq itemp (org-in-item-p))
+	     (progn
+	       (setq prefix (make-string (org-list-item-body-column itemp) ?\ ))
+	       (flet ((fill-context-prefix (from to &optional flr) prefix))
+		 (do-auto-fill))))
+	    (orgstruct-is-++
+	     (orgstruct++-ignore-org-filling
+	      (do-auto-fill)))
+	    (t (do-auto-fill))))))
 
 ;;; Other stuff.
 
