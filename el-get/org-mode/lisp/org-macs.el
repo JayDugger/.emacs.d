@@ -372,7 +372,8 @@ point nowhere."
 
 (defmacro org-with-limited-levels (&rest body)
   "Execute BODY with limited number of outline levels."
-  `(let* ((org-outline-regexp (org-get-limited-outline-regexp))
+  `(let* ((org-called-with-limited-levels t)
+	  (org-outline-regexp (org-get-limited-outline-regexp))
 	  (outline-regexp org-outline-regexp)
 	  (org-outline-regexp-at-bol (concat "^" org-outline-regexp)))
      ,@body))
@@ -409,12 +410,6 @@ the value in cdr."
   (when flat
     (cons (list (car flat) (cadr flat))
          (org-make-parameter-alist (cddr flat)))))
-
-(defmacro orgstruct++-ignore-org-filling (&rest body)
-  "Ignore org filling in `orgstruct++-mode'."
-  `(let ,org-fb-vars
-     ,@body))
-(def-edebug-spec orgstruct++-ignore-org-filling (body))
 
 (provide 'org-macs)
 
