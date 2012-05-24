@@ -89,7 +89,8 @@
   (unless (boundp 'diary-fancy-buffer)
     (defvaralias 'diary-fancy-buffer 'fancy-diary-buffer)))
 
-(require 'outline) (require 'noutline)
+(require 'outline)
+(require 'noutline "noutline" 'noerror) ;; stock XEmacs does not have it
 ;; Other stuff we need.
 (require 'time-date)
 (unless (fboundp 'time-subtract) (defalias 'time-subtract 'subtract-time))
@@ -208,25 +209,36 @@ identifier."
   :group 'org-id)
 
 ;;; Version
-
-(defvaralias 'org-version 'org-release)
+(eval-when-compile
+  (defun org-release () "N/A")
+  (defun org-git-version () "N/A !!check installation!!")
+  (and (load (concat (org-find-library-dir "org") "../UTILITIES/org-fixup.el")
+	    'noerror 'nomessage 'nosuffix)
+       (org-no-warnings (org-fixup))))
 ;;;###autoload
-(defun org-version (&optional here)
+(defun org-version (&optional here full message)
   "Show the org-mode version in the echo area.
 With prefix arg HERE, insert it at point."
   (interactive "P")
-  (let* ((origin default-directory)
-	 (version (if (boundp 'org-release) org-release "N/A"))
-	 (git-version (if (boundp 'org-git-version) org-git-version "N/A"))
-	 (org-install (ignore-errors (find-library-name "org-install")))
-	 (version_ (format "Org-mode version %s (%s @ %s)"
-			   version
-			   git-version
-			   (if org-install org-install "org-install.el can not be found!"))))
+  (let* ((org-dir         (ignore-errors (org-find-library-dir "org")))
+	 (org-install-dir (ignore-errors (org-find-library-dir "org-install.el")))
+	 (org-version (org-release))
+	 (git-version (org-git-version))
+	 (version (format "Org-mode version %s (%s @ %s)"
+			  org-version
+			  git-version
+			  (if org-install-dir
+			      (if (string= org-dir org-install-dir)
+				  org-install-dir
+				(concat "mixed installation! " org-install-dir " and " org-dir))
+			    "org-install.el can not be found!")))
+	 (_version (if full version org-version)))
     (if (org-called-interactively-p 'interactive)
-	(if here (insert version_)
-	  (message version_))
-      version)))
+	(if here
+	    (insert version)
+	  (message version))
+      (if message (message _version))
+      _version)))
 
 ;;; Compatibility constants
 
@@ -4891,9 +4903,9 @@ This is for getting out of special buffers like remember.")
 
 ;; FIXME: Occasionally check by commenting these, to make sure
 ;;        no other functions uses these, forgetting to let-bind them.
-(with-no-warnings (defvar entry)) ;; unprefixed, from calendar.el
+(org-no-warnings (defvar entry)) ;; unprefixed, from calendar.el
 (defvar org-last-state)
-(with-no-warnings (defvar date)) ;; unprefixed, from calendar.el
+(org-no-warnings (defvar date)) ;; unprefixed, from calendar.el
 
 ;; Defined somewhere in this file, but used before definition.
 (defvar org-entities)     ;; defined in org-entities.el
@@ -15567,7 +15579,7 @@ user function argument order change dependent on argument order."
 	(list arg2 arg1 arg3))
        ((eq calendar-date-style 'iso)
 	(list arg2 arg3 arg1)))
-    (with-no-warnings ;; european-calendar-style is obsolete as of version 23.1
+    (org-no-warnings ;; european-calendar-style is obsolete as of version 23.1
       (if (org-bound-and-true-p european-calendar-style)
 	  (list arg2 arg1 arg3)
 	(list arg1 arg2 arg3)))))
@@ -19490,7 +19502,7 @@ information about your Org-mode version and configuration."
   (let ((reporter-prompt-for-summary-p "Bug report subject: "))
     (reporter-submit-bug-report
      "emacs-orgmode@gnu.org"
-     (org-version)
+     (org-version nil 'full)
      (let (list)
        (save-window-excursion
 	 (org-pop-to-buffer-same-window (get-buffer-create "*Warn about privacy*"))
@@ -19571,13 +19583,13 @@ Your bug report will be posted to the Org-mode mailing list.
 With prefix arg UNCOMPILED, load the uncompiled versions."
   (interactive "P")
   (require 'find-func)
-  (let* ((file-re "^\\(org\\|orgtbl\\)\\(\\.el\\|-.*\\.el\\)")
-	 (dir-org (file-name-directory (org-find-library-name "org")))
+  (let* ((file-re "^org\\(-.*\\)?\\.el")
+	 (dir-org (file-name-directory (org-find-library-dir "org")))
 	 (dir-org-contrib (ignore-errors
 			   (file-name-directory
-			    (org-find-library-name "org-contribdir"))))
+			    (org-find-library-dir "org-contribdir"))))
 	 (babel-files
-	  (mapcar (lambda (el) (concat "ob" (when el (format "-%s" el)) ".el"))
+	  (mapcar (lambda (el) (concat  (concat dir-org "ob") (when el (format "-%s" el)) ".el"))
 		  (append (list nil "comint" "eval" "exp" "keys"
 				    "lob" "ref" "table" "tangle")
 			  (delq nil
@@ -19586,10 +19598,10 @@ With prefix arg UNCOMPILED, load the uncompiled versions."
 				   (when (cdr lang) (symbol-name (car lang))))
 				 org-babel-load-languages)))))
 	 (files
-	  (append (directory-files dir-org t file-re)
-		  babel-files
+	  (append  babel-files
 		  (and dir-org-contrib
-		       (directory-files dir-org-contrib t file-re))))
+		       (directory-files dir-org-contrib t file-re))
+		   (directory-files dir-org t file-re)))
 	 (remove-re (concat (if (featurep 'xemacs)
 				"org-colview" "org-colview-xemacs")
 			    "\\'")))
@@ -19603,10 +19615,11 @@ With prefix arg UNCOMPILED, load the uncompiled versions."
        (when (featurep (intern (file-name-nondirectory f)))
 	 (if (and (not uncompiled)
 		  (file-exists-p (concat f ".elc")))
-	     (load (concat f ".elc") nil nil t)
-	   (load (concat f ".el") nil nil t))))
-     files))
-  (org-version))
+	     (load (concat f ".elc") nil nil 'nosuffix)
+	   (load (concat f ".el") nil nil 'nosuffix))))
+     files)
+    (load (concat dir-org "org-version.el") 'noerror nil 'nosuffix))
+  (org-version nil 'full 'message))
 
 ;;;###autoload
 (defun org-customize ()

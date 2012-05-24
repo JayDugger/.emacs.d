@@ -42,10 +42,6 @@
 
 (declare-function org-element-property "org-element" (property element))
 (declare-function org-element-normalize-string "org-element" (s))
-(declare-function org-element-parse-secondary-string
-		  "org-element" (string restriction &optional buffer))
-(defvar org-element-string-restrictions)
-(defvar org-element-object-restrictions)
 
 (declare-function org-export-data "org-export" (data info))
 (declare-function org-export-directory "org-export" (type plist))
@@ -71,6 +67,7 @@
 		  "org-export" (extension &optional subtreep pub-dir))
 (declare-function org-export-resolve-coderef "org-export" (ref info))
 (declare-function org-export-resolve-fuzzy-link "org-export" (link info))
+(declare-function org-export-resolve-radio-link "org-export" (link info))
 (declare-function org-export-solidify-link-text "org-export" (s))
 (declare-function
  org-export-to-buffer "org-export"
@@ -81,16 +78,72 @@
 
 
 
-;;; Internal Variables
+;;; Define Back-End
 
-(defconst org-e-latex-option-alist
+(defvar org-e-latex-translate-alist
+  '((babel-call . org-e-latex-babel-call)
+    (bold . org-e-latex-bold)
+    (center-block . org-e-latex-center-block)
+    (clock . org-e-latex-clock)
+    (code . org-e-latex-code)
+    (comment . org-e-latex-comment)
+    (comment-block . org-e-latex-comment-block)
+    (drawer . org-e-latex-drawer)
+    (dynamic-block . org-e-latex-dynamic-block)
+    (entity . org-e-latex-entity)
+    (example-block . org-e-latex-example-block)
+    (export-block . org-e-latex-export-block)
+    (export-snippet . org-e-latex-export-snippet)
+    (fixed-width . org-e-latex-fixed-width)
+    (footnote-definition . org-e-latex-footnote-definition)
+    (footnote-reference . org-e-latex-footnote-reference)
+    (headline . org-e-latex-headline)
+    (horizontal-rule . org-e-latex-horizontal-rule)
+    (inline-babel-call . org-e-latex-inline-babel-call)
+    (inline-src-block . org-e-latex-inline-src-block)
+    (inlinetask . org-e-latex-inlinetask)
+    (italic . org-e-latex-italic)
+    (item . org-e-latex-item)
+    (keyword . org-e-latex-keyword)
+    (latex-environment . org-e-latex-latex-environment)
+    (latex-fragment . org-e-latex-latex-fragment)
+    (line-break . org-e-latex-line-break)
+    (link . org-e-latex-link)
+    (macro . org-e-latex-macro)
+    (paragraph . org-e-latex-paragraph)
+    (plain-list . org-e-latex-plain-list)
+    (plain-text . org-e-latex-plain-text)
+    (planning . org-e-latex-planning)
+    (property-drawer . org-e-latex-property-drawer)
+    (quote-block . org-e-latex-quote-block)
+    (quote-section . org-e-latex-quote-section)
+    (radio-target . org-e-latex-radio-target)
+    (section . org-e-latex-section)
+    (special-block . org-e-latex-special-block)
+    (src-block . org-e-latex-src-block)
+    (statistics-cookie . org-e-latex-statistics-cookie)
+    (strike-through . org-e-latex-strike-through)
+    (subscript . org-e-latex-subscript)
+    (superscript . org-e-latex-superscript)
+    (table . org-e-latex-table)
+    (table-cell . org-e-latex-table-cell)
+    (table-row . org-e-latex-table-row)
+    (target . org-e-latex-target)
+    (template . org-e-latex-template)
+    (timestamp . org-e-latex-timestamp)
+    (underline . org-e-latex-underline)
+    (verbatim . org-e-latex-verbatim)
+    (verse-block . org-e-latex-verse-block))
+  "Alist between element or object types and translators.")
+
+(defconst org-e-latex-options-alist
   '((:date "DATE" nil org-e-latex-date-format t)
     (:latex-class "LATEX_CLASS" nil org-e-latex-default-class t)
     (:latex-class-options "LATEX_CLASS_OPTIONS" nil nil t)
     (:latex-header-extra "LATEX_HEADER" nil nil newline))
   "Alist between LaTeX export properties and ways to set them.
-See `org-export-option-alist' for more information on the
-structure of the value.")
+See `org-export-options-alist' for more information on the
+structure of the values.")
 
 
 
@@ -345,6 +398,11 @@ default we use here encompasses both."
   :group 'org-export-e-latex
   :type '(alist :key-type (string :tag "Type")
 		:value-type (regexp :tag "Path")))
+
+(defcustom org-e-latex-link-with-unknown-path-format "\\texttt{%s}"
+  "Format string for links with unknown path type."
+  :group 'org-export-latex
+  :type 'string)
 
 
 ;;;; Tables
@@ -1519,24 +1577,20 @@ INFO is a plist holding contextual information.  See
 		   (setq raw-path (match-string 1 raw-path)))
 		 (if (file-name-absolute-p raw-path)
 		     (concat "file://" (expand-file-name raw-path))
-		   ;; TODO: Not implemented yet.  Concat also:
-		   ;; (org-export-directory :LaTeX info)
 		   (concat "file://" raw-path)))
 		(t raw-path)))
 	 protocol)
     (cond
      ;; Image file.
      (imagep (org-e-latex-link--inline-image link info))
-     ;; Radioed target: Target's name is obtained from original raw
-     ;; link.  Path is parsed and transcoded in order to have a proper
-     ;; display of the contents.
+     ;; Radio link: Transcode target's contents and use them as link's
+     ;; description.
      ((string= type "radio")
-      (format "\\hyperref[%s]{%s}"
-	      (org-export-solidify-link-text path)
-	      (org-export-data
-	       (org-element-parse-secondary-string
-		path (cdr (assq 'radio-target org-element-object-restrictions)))
-	       info)))
+      (let ((destination (org-export-resolve-radio-link link info)))
+	(when destination
+	  (format "\\hyperref[%s]{%s}"
+		  (org-export-solidify-link-text path)
+		  (org-export-data (org-element-contents destination) info)))))
      ;; Links pointing to an headline: Find destination and build
      ;; appropriate referencing command.
      ((member type '("custom-id" "fuzzy" "id"))
@@ -1546,7 +1600,7 @@ INFO is a plist holding contextual information.  See
 	(case (org-element-type destination)
 	  ;; Fuzzy link points nowhere.
 	  ('nil
-	   (format "\\texttt{%s}"
+	   (format org-e-latex-link-with-unknown-path-format
 		   (or desc
 		       (org-export-data
 			(org-element-property :raw-link link) info))))
@@ -1587,7 +1641,7 @@ INFO is a plist holding contextual information.  See
      ;; External link without a description part.
      (path (format "\\url{%s}" path))
      ;; No path, only description.  Try to do something useful.
-     (t (format "\\texttt{%s}" desc)))))
+     (t (format org-e-latex-link-with-unknown-path-format desc)))))
 
 
 ;;;; Macro

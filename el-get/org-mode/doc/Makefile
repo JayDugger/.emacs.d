@@ -3,8 +3,7 @@ ifeq ($(MAKELEVEL), 0)
   $(error This make needs to be started as a sub-make from the toplevel directory.)
 endif
 .PHONY:		all info html pdf card manual guide install \
-		clean cleanall clean-install \
-		org-version.inc
+		clean cleanall clean-install
 
 all:		$(ORG_MAKE_DOC)
 
@@ -17,15 +16,16 @@ pdf:		org.pdf orgguide.pdf
 card:		orgcard.pdf orgcard_letter.pdf orgguide.pdf
 
 manual guide::
-	$(RMR) $@ ; $(MKDIR) $@
-manual::	org.texi
+	-$(RMR) $@
+	$(MKDIR) $@
+manual::	org.texi org-version.inc
 	$(TEXI2HTML) -o $@ $<
 	../UTILITIES/mansplit.pl $@/*
-guide::		orgguide.texi
+guide::		orgguide.texi org-version.inc
 	$(TEXI2HTML) -o $@ $<
 	../UTILITIES/guidesplit.pl $@/*
 
-org-version.inc:
+org-version.inc:	org.texi
 	@echo "org-version: $(ORGVERSION) ($(GITVERSION))"
 	@echo "@c automatically generated, do not edit"  > org-version.inc
 	@echo "@set VERSION $(ORGVERSION) ($(GITVERSION))" >> org-version.inc
@@ -38,9 +38,9 @@ install:	org
 	$(INSTALL_INFO) --infodir=$(DESTDIR)$(infodir) org
 
 clean:
-	$(RM) org *.pdf *.html *_letter.tex \
+	$(RM) org *.pdf *.html *_letter.tex org-version.inc \
 	      *.aux *.cp *.cps *.dvi *.fn *.fns *.ky *.kys *.pg *.pgs \
-	      *.toc *.tp *.tps *.vr *.vrs *.log *.html *.ps org-version.inc
+	      *.toc *.tp *.tps *.vr *.vrs *.log *.html *.ps
 cleanall:	clean
 	$(RMR) guide manual
 

@@ -61,35 +61,94 @@
 (declare-function org-export-resolve-coderef "org-export" (ref info))
 (declare-function org-export-resolve-fuzzy-link "org-export" (link info))
 (declare-function org-export-resolve-id-link "org-export" (link info))
-(declare-function org-export-resolve-ref-link "org-export" (link info))
+(declare-function org-export-resolve-radio-link "org-export" (link info))
 (declare-function
  org-export-to-file "org-export"
  (backend file &optional subtreep visible-only body-only ext-plist))
 
 
-
-;;; Internal Variables
-
+;;; Define Back-End
+;;
 ;; The following setting won't allow to modify preferred charset
 ;; through a buffer keyword or an option item, but, since the property
 ;; will appear in communication channel nonetheless, it allows to
 ;; override `org-e-ascii-charset' variable on the fly by the ext-plist
 ;; mechanism.
-
+;;
 ;; We also install a filter for headlines and sections, in order to
 ;; control blank lines separating them in output string.
 
-(defconst org-e-ascii-option-alist
+(defvar org-e-ascii-translate-alist
+  '((babel-call . org-e-ascii-babel-call)
+    (bold . org-e-ascii-bold)
+    (center-block . org-e-ascii-center-block)
+    (clock . org-e-ascii-clock)
+    (code . org-e-ascii-code)
+    (comment . org-e-ascii-comment)
+    (comment-block . org-e-ascii-comment-block)
+    (drawer . org-e-ascii-drawer)
+    (dynamic-block . org-e-ascii-dynamic-block)
+    (entity . org-e-ascii-entity)
+    (example-block . org-e-ascii-example-block)
+    (export-block . org-e-ascii-export-block)
+    (export-snippet . org-e-ascii-export-snippet)
+    (fixed-width . org-e-ascii-fixed-width)
+    (footnote-definition . org-e-ascii-footnote-definition)
+    (footnote-reference . org-e-ascii-footnote-reference)
+    (headline . org-e-ascii-headline)
+    (horizontal-rule . org-e-ascii-horizontal-rule)
+    (inline-babel-call . org-e-ascii-inline-babel-call)
+    (inline-src-block . org-e-ascii-inline-src-block)
+    (inlinetask . org-e-ascii-inlinetask)
+    (italic . org-e-ascii-italic)
+    (item . org-e-ascii-item)
+    (keyword . org-e-ascii-keyword)
+    (latex-environment . org-e-ascii-latex-environment)
+    (latex-fragment . org-e-ascii-latex-fragment)
+    (line-break . org-e-ascii-line-break)
+    (link . org-e-ascii-link)
+    (macro . org-e-ascii-macro)
+    (paragraph . org-e-ascii-paragraph)
+    (plain-list . org-e-ascii-plain-list)
+    (plain-text . org-e-ascii-plain-text)
+    (planning . org-e-ascii-planning)
+    (property-drawer . org-e-ascii-property-drawer)
+    (quote-block . org-e-ascii-quote-block)
+    (quote-section . org-e-ascii-quote-section)
+    (radio-target . org-e-ascii-radio-target)
+    (section . org-e-ascii-section)
+    (special-block . org-e-ascii-special-block)
+    (src-block . org-e-ascii-src-block)
+    (statistics-cookie . org-e-ascii-statistics-cookie)
+    (strike-through . org-e-ascii-strike-through)
+    (subscript . org-e-ascii-subscript)
+    (superscript . org-e-ascii-superscript)
+    (table . org-e-ascii-table)
+    (table-cell . org-e-ascii-table-cell)
+    (table-row . org-e-ascii-table-row)
+    (target . org-e-ascii-target)
+    (template . org-e-ascii-template)
+    (timestamp . org-e-ascii-timestamp)
+    (underline . org-e-ascii-underline)
+    (verbatim . org-e-ascii-verbatim)
+    (verse-block . org-e-ascii-verse-block))
+  "Alist between element or object types and translators.")
+
+(defconst org-e-ascii-options-alist
   '((:ascii-charset nil nil org-e-ascii-charset))
   "Alist between ASCII export properties and ways to set them.
-See `org-export-option-alist' for more information on the
-structure or the values.")
+See `org-export-options-alist' for more information on the
+structure of the values.")
 
 (defconst org-e-ascii-filters-alist
   '((:filter-headline . org-e-ascii-filter-headline-blank-lines)
     (:filter-section . org-e-ascii-filter-headline-blank-lines))
   "Alist between filters keywords and back-end specific filters.
 See `org-export-filters-alist' for more information.")
+
+
+
+;;; Internal Variables
 
 (defconst org-e-ascii-dictionary
   '(("Footnotes\n"
@@ -617,6 +676,16 @@ title."
 	      (concat "\n"
 		      (make-string (length first-part) under-char))))))))
 
+(defun org-e-ascii--has-caption-or-name-p (element info)
+  "Non-nil when ELEMENT has a caption or a name affiliated keyword.
+
+INFO is a plist used as a communication channel.
+
+This function is meant to be used as a predicate for
+`org-export-get-ordinal'."
+  (or (org-element-property :caption element)
+      (org-element-property :name element)))
+
 (defun org-e-ascii--build-caption (element info)
   "Return caption string for ELEMENT, if applicable.
 
@@ -633,9 +702,7 @@ keyword."
       ;; src-block with either a caption or a name.
       (let ((reference
 	     (org-export-get-ordinal
-	      element info nil
-	      (lambda (el info) (or (org-element-property :caption el)
-			       (org-element-property :name el)))))
+	      element info nil 'org-e-ascii--has-caption-or-name-p))
 	    (title-fmt (org-e-ascii--translate
 			(case (org-element-type element)
 			  (table "Table %d: %s")
@@ -1389,23 +1456,24 @@ INFO is a plist holding contextual information."
       (let ((ref (org-element-property :path link)))
 	(format (org-export-get-coderef-format ref desc)
 		(org-export-resolve-coderef ref info))))
-     ;; Do not apply a special syntax on radio links.  Though, parse
-     ;; and transcode path to have a proper display of contents.
+     ;; Do not apply a special syntax on radio links.  Though, use
+     ;; transcoded target's contents as output.
      ((string= type "radio")
-      (org-export-data
-       (org-element-parse-secondary-string
-	(org-element-property :path link)
-	(cdr (assq 'radio-target org-element-object-restrictions)))
-       info))
+      (let ((destination (org-export-resolve-radio-link link info)))
+	(when destination
+	  (org-export-data (org-element-contents destination) info))))
      ;; Do not apply a special syntax on fuzzy links pointing to
      ;; targets.
      ((string= type "fuzzy")
       (let ((destination (org-export-resolve-fuzzy-link link info)))
-	;; Ignore invisible "#+target: path".
+	;; Ignore invisible "#+TARGET: path".
 	(unless (eq (org-element-type destination) 'keyword)
 	  (if (org-string-nw-p desc) desc
 	    (when destination
-	      (let ((number (org-export-get-ordinal destination info)))
+	      (let ((number
+		     (org-export-get-ordinal
+		      destination info nil
+		      'org-e-ascii--has-caption-or-name-p)))
 		(when number
 		  (if (atom number) (number-to-string number)
 		    (mapconcat 'number-to-string number ".")))))))))
@@ -1667,7 +1735,8 @@ are ignored. "
 				(org-element-contents row))
 			      col))
 			info))
-		      max-width))))
+		      max-width)))
+	 info)
 	max-width)))
 
 (defun org-e-ascii-table-cell (table-cell contents info)

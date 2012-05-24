@@ -44,10 +44,6 @@
 
 (declare-function org-element-get-property "org-element" (property element))
 (declare-function org-element-normalize-string "org-element" (s))
-(declare-function org-element-parse-secondary-string
-		  "org-element" (string restriction &optional buffer))
-(defvar org-element-string-restrictions)
-(defvar org-element-object-restrictions)
 
 (declare-function org-export-data "org-export" (data info))
 (declare-function org-export-directory "org-export" (type plist))
@@ -71,6 +67,7 @@
 		  "org-export" (extension &optional subtreep pub-dir))
 (declare-function org-export-resolve-coderef "org-export" (ref info))
 (declare-function org-export-resolve-fuzzy-link "org-export" (link info))
+(declare-function org-export-resolve-radio-link "org-export" (link info))
 (declare-function org-export-solidify-link-text "org-export" (s))
 (declare-function
  org-export-to-buffer "org-export"
@@ -85,11 +82,65 @@
 		  "org-compat" (&optional buffer-or-name norecord label))
 
 
+;;; Define Back-End
 
-
-;;; Internal Variables
+(defvar org-e-html-translate-alist
+  '((babel-call . org-e-html-babel-call)
+    (bold . org-e-html-bold)
+    (center-block . org-e-html-center-block)
+    (clock . org-e-html-clock)
+    (code . org-e-html-code)
+    (comment . org-e-html-comment)
+    (comment-block . org-e-html-comment-block)
+    (drawer . org-e-html-drawer)
+    (dynamic-block . org-e-html-dynamic-block)
+    (entity . org-e-html-entity)
+    (example-block . org-e-html-example-block)
+    (export-block . org-e-html-export-block)
+    (export-snippet . org-e-html-export-snippet)
+    (fixed-width . org-e-html-fixed-width)
+    (footnote-definition . org-e-html-footnote-definition)
+    (footnote-reference . org-e-html-footnote-reference)
+    (headline . org-e-html-headline)
+    (horizontal-rule . org-e-html-horizontal-rule)
+    (inline-babel-call . org-e-html-inline-babel-call)
+    (inline-src-block . org-e-html-inline-src-block)
+    (inlinetask . org-e-html-inlinetask)
+    (italic . org-e-html-italic)
+    (item . org-e-html-item)
+    (keyword . org-e-html-keyword)
+    (latex-environment . org-e-html-latex-environment)
+    (latex-fragment . org-e-html-latex-fragment)
+    (line-break . org-e-html-line-break)
+    (link . org-e-html-link)
+    (macro . org-e-html-macro)
+    (paragraph . org-e-html-paragraph)
+    (plain-list . org-e-html-plain-list)
+    (plain-text . org-e-html-plain-text)
+    (planning . org-e-html-planning)
+    (property-drawer . org-e-html-property-drawer)
+    (quote-block . org-e-html-quote-block)
+    (quote-section . org-e-html-quote-section)
+    (radio-target . org-e-html-radio-target)
+    (section . org-e-html-section)
+    (special-block . org-e-html-special-block)
+    (src-block . org-e-html-src-block)
+    (statistics-cookie . org-e-html-statistics-cookie)
+    (strike-through . org-e-html-strike-through)
+    (subscript . org-e-html-subscript)
+    (superscript . org-e-html-superscript)
+    (table . org-e-html-table)
+    (table-cell . org-e-html-table-cell)
+    (table-row . org-e-html-table-row)
+    (target . org-e-html-target)
+    (template . org-e-html-template)
+    (timestamp . org-e-html-timestamp)
+    (underline . org-e-html-underline)
+    (verbatim . org-e-html-verbatim)
+    (verse-block . org-e-html-verse-block))
+  "Alist between element or object types and translators.")
 
-(defconst org-e-html-option-alist
+(defconst org-e-html-options-alist
   '((:agenda-style nil nil org-agenda-export-html-style)
     (:convert-org-links nil nil org-e-html-link-org-files-as-html)
     ;; FIXME Use (org-xml-encode-org-text-skip-links s) ??
@@ -109,31 +160,18 @@
     (:xml-declaration nil nil org-e-html-xml-declaration)
     (:LaTeX-fragments nil "LaTeX" org-export-with-LaTeX-fragments)
     (:mathjax "MATHJAX" nil "" space))
-  "Alist between export properties and ways to set them.
+  "Alist between HTML export properties and ways to set them.
+See `org-export-options-alist' for more information on the
+structure of the values.")
 
-The car of the alist is the property name, and the cdr is a list
-like \(KEYWORD OPTION DEFAULT BEHAVIOUR\) where:
+(defconst org-e-html-filters-alist
+  '((:filter-final-output . org-e-html-final-function))
+  "Alist between filters keywords and back-end specific filters.
+See `org-export-filters-alist' for more information.")
 
-KEYWORD is a string representing a buffer keyword, or nil.
-OPTION is a string that could be found in an #+OPTIONS: line.
-DEFAULT is the default value for the property.
-BEHAVIOUR determine how Org should handle multiple keywords for
-the same property.  It is a symbol among:
-  nil       Keep old value and discard the new one.
-  t         Replace old value with the new one.
-  `space'   Concatenate the values, separating them with a space.
-  `newline' Concatenate the values, separating them with
-            a newline.
-  `split'   Split values at white spaces, and cons them to the
-            previous list.
 
-KEYWORD and OPTION have precedence over DEFAULT.
-
-All these properties should be back-end agnostic.  For back-end
-specific properties, define a similar variable named
-`org-BACKEND-option-alist', replacing BACKEND with the name of
-the appropriate back-end.  You can also redefine properties
-there, as they have precedence over these.")
+
+;;; Internal Variables
 
 ;; FIXME: it already exists in org-e-html.el
 (defconst org-e-html-cvt-link-fn
@@ -2423,8 +2461,6 @@ INFO is a plist holding contextual information.  See
 		   (setq raw-path (match-string 1 raw-path)))
 		 (if (file-name-absolute-p raw-path)
 		     (concat "file://" (expand-file-name raw-path))
-		   ;; TODO: Not implemented yet.  Concat also:
-		   ;; (org-export-directory :HTML info)
 		   (concat "file://" raw-path)))
 		(t raw-path)))
 	 protocol)
@@ -2434,16 +2470,14 @@ INFO is a plist holding contextual information.  See
 	       (and org-e-html-inline-images (not desc)))
 	   (org-export-inline-image-p link org-e-html-inline-image-rules))
       (org-e-html-link--inline-image link desc info))
-     ;; Radioed target: Target's name is obtained from original raw
-     ;; link.  Path is parsed and transcoded in order to have a proper
-     ;; display of the contents.
+     ;; Radio target: Transcode target's contents and use them as
+     ;; link's description.
      ((string= type "radio")
-      (format "<a href=\"#%s\">%s</a>"
-	      (org-export-solidify-link-text path)
-	      (org-export-data
-	       (org-element-parse-secondary-string
-		path (org-element-restriction 'radio-target))
-	       info)))
+      (let ((destination (org-export-resolve-radio-link link info)))
+	(when destination
+	  (format "<a href=\"#%s\">%s</a>"
+		  (org-export-solidify-link-text path)
+		  (org-export-data (org-element-contents destination) info)))))
      ;; Links pointing to an headline: Find destination and build
      ;; appropriate referencing command.
      ((member type '("custom-id" "fuzzy" "id"))
@@ -3022,16 +3056,6 @@ contextual information."
 
 
 ;;; Filter Functions
-
-;;;; Filter Settings
-
-(defconst org-e-html-filters-alist
-  '((:filter-final-output . org-e-html-final-function))
-  "Alist between filters keywords and back-end specific filters.
-See `org-export-filters-alist' for more information.")
-
-
-;;;; Filters
 
 (defun org-e-html-final-function (contents backend info)
   (if (not org-e-html-pretty-output) contents

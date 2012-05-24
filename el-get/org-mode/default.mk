@@ -45,9 +45,12 @@ BTEST_EXTRA = # extra packages to require for testing
 # How to run tests
 req-ob-lang = --eval '(require '"'"'ob-$(ob-lang))'
 req-extra   = --eval '(require '"'"'$(req))'
-BTEST	= $(EMACS) -batch -Q \
-	  $(BTEST_PRE) -L lisp/ -L testing/ $(BTEST_POST) \
-	  --eval '(defconst org-release "$(ORGVERSION)-Test")' \
+BTEST	= $(BATCH) \
+	  $(BTEST_PRE) \
+	  --eval '(add-to-list '"'"'load-path "./lisp")' \
+	  --eval '(add-to-list '"'"'load-path "./testing")' \
+	  $(BTEST_POST) \
+	  -l org-install.el \
 	  -l testing/org-test.el \
 	  $(foreach ob-lang,$(BTEST_OB_LANGUAGES),$(req-ob-lang)) \
 	  $(foreach req,$(BTEST_EXTRA),$(req-extra)) \
@@ -55,16 +58,28 @@ BTEST	= $(EMACS) -batch -Q \
 	  -f org-test-run-batch-tests
 
 # Using emacs in batch mode.
-BATCH	= $(EMACS) -batch -Q \
-	  -L . \
-	  --eval '(defconst org-release "$(ORGVERSION)-Make")' \
+# BATCH = $(EMACS) -batch -vanilla # XEmacs
+BATCH	= $(EMACS) -batch -Q
+
+# Emacs must be started in lisp directory
+BATCHL	= $(BATCH) \
+	  --eval '(add-to-list '"'"'load-path ".")'
+
+# How to generate org-install.el
+MAKE_ORG_INSTALL = $(BATCHL) \
+	  --eval '(load "org-compat.el")' \
+	  --eval '(load "../UTILITIES/org-fixup.el")' \
+	  --eval '(org-make-org-install)'
+
+# How to generate org-version.el
+MAKE_ORG_VERSION = $(BATCHL) \
+	  --eval '(load "org-compat.el")' \
+	  --eval '(load "../UTILITIES/org-fixup.el")' \
+	  --eval '(org-make-org-version "$(ORGVERSION)" "$(GITVERSION)" "$(datadir)")'
 
 # How to byte-compile the whole source directory
-ELCDIR	= $(BATCH) \
+ELCDIR	= $(BATCHL) \
 	  --eval '(batch-byte-recompile-directory 0)'
-
-# How to byte-compile a single source file
-ELC	= $(BATCH) -f batch-byte-compile
 
 # How to make a pdf file from a texinfo file
 TEXI2PDF = texi2pdf --batch --clean

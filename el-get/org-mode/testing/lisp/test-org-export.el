@@ -23,20 +23,27 @@
 (defmacro org-test-with-backend (backend &rest body)
   "Execute body with an export back-end defined.
 
-BACKEND is the name, as a string, of the back-end.  BODY is the
-body to execute.  The defined back-end simply returns parsed data
-as Org syntax."
+BACKEND is the name of the back-end.  BODY is the body to
+execute.  The defined back-end simply returns parsed data as Org
+syntax."
   (declare (debug (form body)) (indent 1))
-  `(flet ,(let (transcoders)
-	    (dolist (type (append org-element-all-elements
-				  org-element-all-objects)
-			  transcoders)
-	      (push `(,(intern (format "org-%s-%s" backend type))
-		      (obj contents info)
-		      (,(intern (format "org-element-%s-interpreter" type))
-		       obj contents))
-		    transcoders)))
-     ,@body))
+  `(let ((,(intern (format "org-%s-translate-alist" backend))
+	  ',(let (transcode-table)
+	      (dolist (type (append org-element-all-elements
+				    org-element-all-objects)
+			    transcode-table)
+		(push (cons type (intern (format "org-%s-%s" backend type)))
+		      transcode-table)))))
+     (flet ,(let (transcoders)
+	      (dolist (type (append org-element-all-elements
+				    org-element-all-objects)
+			    transcoders)
+		(push `(,(intern (format "org-%s-%s" backend type))
+			(obj contents info)
+			(,(intern (format "org-element-%s-interpreter" type))
+			 obj contents))
+		      transcoders)))
+       ,@body)))
 
 (defmacro org-test-with-parsed-data (data &rest body)
   "Execute body with parsed data available.
@@ -52,7 +59,8 @@ already filled in `info'."
   (declare (debug (form body)) (indent 1))
   `(org-test-with-temp-text ,data
      (let* ((tree (org-element-parse-buffer))
-	    (info (org-export-collect-tree-properties tree nil)))
+	    (info (org-export-collect-tree-properties
+		   tree (org-export-get-environment))))
        ,@body)))
 
 (ert-deftest test-org-export/parse-option-keyword ()
@@ -104,43 +112,11 @@ already filled in `info'."
       :exclude-tags ("noexport" "invisible") :keywords "test" :language "en"
       :select-tags ("export") :title ("Some title with spaces")))))
 
-(ert-deftest test-org-export/define-macro ()
-  "Try defining various Org macro using in-buffer #+MACRO: keyword."
-  ;; Parsed macro.
-  (should (equal (org-test-with-temp-text "#+MACRO: one 1"
-		   (org-export-get-inbuffer-options))
-		 '(:macro-one ("1"))))
-  ;; Evaled macro.
-  (should (equal (org-test-with-temp-text "#+MACRO: two (eval (+ 1 1))"
-		   (org-export-get-inbuffer-options))
-		 '(:macro-two "(eval (+ 1 1))")))
-  ;; Incomplete macro.
-  (should-not (org-test-with-temp-text "#+MACRO: three"
-		(org-export-get-inbuffer-options)))
-  ;; Macro with newline character.
-  (should (equal (org-test-with-temp-text "#+MACRO: four a\\nb"
-		   (org-export-get-inbuffer-options))
-		 '(:macro-four ("a\nb"))))
-  ;; Macro with protected newline character.
-  (should (equal (org-test-with-temp-text "#+MACRO: five a\\\\nb"
-		   (org-export-get-inbuffer-options))
-		 '(:macro-five ("a\\nb"))))
-  ;; Recursive macro.
-  (org-test-with-temp-text "#+MACRO: six 6\n#+MACRO: seven 1 + {{{six}}}"
-    (should
-     (equal
-      (org-export-get-inbuffer-options)
-      '(:macro-six
-	("6")
-	:macro-seven
-	("1 + " (macro (:key "six" :value "{{{six}}}" :args nil :begin 5 :end 14
-			     :post-blank 0))))))))
-
 (ert-deftest test-org-export/handle-options ()
   "Test if export options have an impact on output."
   ;; Test exclude tags.
   (org-test-with-temp-text "* Head1 :noexport:"
-    (org-test-with-backend "test"
+    (org-test-with-backend test
       (should
        (equal (org-export-as 'test nil nil nil '(:exclude-tags ("noexport")))
 	      ""))))
@@ -150,7 +126,7 @@ already filled in `info'."
 ** Sub-Head1.1 :export:
 *** Sub-Head1.1.1
 * Head2"
-    (org-test-with-backend "test"
+    (org-test-with-backend test
       (should
        (string-match
 	"\\* Head1\n\\*\\* Sub-Head1.1[ \t]+:export:\n\\*\\*\\* Sub-Head1.1.1\n"
@@ -162,7 +138,7 @@ already filled in `info'."
 ** Sub-Head2
 * Head2 :noexport:
 ** Sub-Head1 :export:"
-    (org-test-with-backend "test"
+    (org-test-with-backend test
       (should
        (string-match
 	"\\* Head1[ \t]+:export:\n\\*\\* Sub-Head2\n"
@@ -172,24 +148,24 @@ already filled in `info'."
   ;; Ignore tasks.
   (let ((org-todo-keywords '((sequence "TODO" "DONE"))))
     (org-test-with-temp-text "* TODO Head1"
-      (org-test-with-backend "test"
+      (org-test-with-backend test
 	(should (equal (org-export-as 'test nil nil nil '(:with-tasks nil))
 		       "")))))
   (let ((org-todo-keywords '((sequence "TODO" "DONE"))))
     (org-test-with-temp-text "* TODO Head1"
-      (org-test-with-backend "test"
+      (org-test-with-backend test
 	(should (equal (org-export-as 'test nil nil nil '(:with-tasks t))
 		       "* TODO Head1\n")))))
   ;; Archived tree.
   (org-test-with-temp-text "* Head1 :archive:"
     (let ((org-archive-tag "archive"))
-      (org-test-with-backend "test"
+      (org-test-with-backend test
 	(should
 	 (equal (org-export-as 'test nil nil nil '(:with-archived-trees nil))
 		"")))))
   (org-test-with-temp-text "* Head1 :archive:\nbody\n** Sub-head 2"
     (let ((org-archive-tag "archive"))
-      (org-test-with-backend "test"
+      (org-test-with-backend test
 	(should
 	 (string-match
 	  "\\* Head1[ \t]+:archive:"
@@ -197,7 +173,7 @@ already filled in `info'."
 			 '(:with-archived-trees headline)))))))
   (org-test-with-temp-text "* Head1 :archive:"
     (let ((org-archive-tag "archive"))
-      (org-test-with-backend "test"
+      (org-test-with-backend test
 	(should
 	 (string-match
 	  "\\`\\* Head1[ \t]+:archive:\n\\'"
@@ -205,20 +181,20 @@ already filled in `info'."
   ;; Drawers.
   (let ((org-drawers '("TEST")))
     (org-test-with-temp-text ":TEST:\ncontents\n:END:"
-      (org-test-with-backend "test"
+      (org-test-with-backend test
 	(should (equal (org-export-as 'test nil nil nil '(:with-drawers nil))
 		       ""))
 	(should (equal (org-export-as 'test nil nil nil '(:with-drawers t))
 		       ":TEST:\ncontents\n:END:\n")))))
   (let ((org-drawers '("FOO" "BAR")))
     (org-test-with-temp-text ":FOO:\nkeep\n:END:\n:BAR:\nremove\n:END:"
-      (org-test-with-backend "test"
+      (org-test-with-backend test
 	(should
 	 (equal (org-export-as 'test nil nil nil '(:with-drawers ("FOO")))
 		":FOO:\nkeep\n:END:\n")))))
   ;; Timestamps.
   (org-test-with-temp-text "[2012-04-29 sun. 10:45]<2012-04-29 sun. 10:45>"
-    (org-test-with-backend "test"
+    (org-test-with-backend test
       (should
        (equal (org-export-as 'test nil nil nil '(:with-timestamps t))
 	      "[2012-04-29 sun. 10:45]<2012-04-29 sun. 10:45>\n"))
@@ -233,7 +209,7 @@ already filled in `info'."
   ;; Clocks.
   (let ((org-clock-string "CLOCK:"))
     (org-test-with-temp-text "CLOCK: [2012-04-29 sun. 10:45]"
-      (org-test-with-backend "test"
+      (org-test-with-backend test
 	(should
 	 (equal (org-export-as 'test nil nil nil '(:with-clocks t))
 		"CLOCK: [2012-04-29 sun. 10:45]\n"))
@@ -242,7 +218,7 @@ already filled in `info'."
   ;; Plannings.
   (let ((org-closed-string "CLOSED:"))
     (org-test-with-temp-text "CLOSED: [2012-04-29 sun. 10:45]"
-      (org-test-with-backend "test"
+      (org-test-with-backend test
 	(should
 	 (equal (org-export-as 'test nil nil nil '(:with-plannings t))
 		"CLOSED: [2012-04-29 sun. 10:45]\n"))
@@ -254,7 +230,7 @@ already filled in `info'."
   "Test if export process ignores commented trees."
   (let ((org-comment-string "COMMENT"))
     (org-test-with-temp-text "* COMMENT Head1"
-      (org-test-with-backend "test"
+      (org-test-with-backend test
 	(should (equal (org-export-as 'test) ""))))))
 
 (ert-deftest test-org-export/export-scope ()
@@ -264,7 +240,7 @@ already filled in `info'."
 ** Head2
 text
 *** Head3"
-    (org-test-with-backend "test"
+    (org-test-with-backend test
       ;; Subtree.
       (forward-line 3)
       (should (equal (org-export-as 'test 'subtree) "text\n*** Head3\n"))
@@ -297,14 +273,14 @@ text
 #+BEGIN_SRC emacs-lisp
 \(+ 1 2)
 #+END_SRC"
-    (org-test-with-backend "test"
+    (org-test-with-backend test
       (forward-line 1)
       (should (equal (org-export-as 'test 'subtree) ": 3\n")))))
 
 (ert-deftest test-org-export/export-snippet ()
   "Test export snippets transcoding."
   (org-test-with-temp-text "<test@A><t@B>"
-    (org-test-with-backend "test"
+    (org-test-with-backend test
       (flet ((org-test-export-snippet
 	      (snippet contents info)
 	      (when (eq (org-export-snippet-backend snippet) 'test)
@@ -363,7 +339,7 @@ body\n")))
 
 (ert-deftest test-org-export/user-ignore-list ()
   "Test if `:ignore-list' accepts user input."
-  (org-test-with-backend "test"
+  (org-test-with-backend test
     (flet ((skip-note-head
 	    (data backend info)
 	    ;; Ignore headlines with the word "note" in their title.
@@ -382,7 +358,7 @@ body\n")))
 
 (ert-deftest test-org-export/before-parsing-hook ()
   "Test `org-export-before-parsing-hook'."
-  (org-test-with-backend "test"
+  (org-test-with-backend test
     (org-test-with-temp-text "* Headline 1\nBody 1\n* Headline 2\nBody 2"
       (let ((org-export-before-parsing-hook
 	     '((lambda ()
@@ -457,7 +433,7 @@ body\n")))
     (org-test-with-temp-text "[fn:1] Out of scope
 * Title
 Paragraph[fn:1]"
-      (org-test-with-backend "test"
+      (org-test-with-backend test
 	(flet ((org-test-footnote-reference
 		(fn-ref contents info)
 		(org-element-interpret-data
@@ -537,7 +513,7 @@ Paragraph[1][2][fn:lbl3:C<<target>>][[test]][[target]]\n[1] A\n\n[2] <<test>>B"
 	       (org-export-get-ordinal
 		(org-export-resolve-fuzzy-link link info) info)) info t)))))
 
-(defun test-org-export/resolve-coderef ()
+(ert-deftest test-org-export/resolve-coderef ()
   "Test `org-export-resolve-coderef' specifications."
   (let ((org-coderef-label-format "(ref:%s)"))
     ;; 1. A link to a "-n -k -r" block returns line number.
@@ -629,6 +605,99 @@ Another text. (ref:text)
       (let ((tree (org-element-parse-buffer)))
 	(should (equal (org-export-resolve-coderef "text" `(:parse-tree ,tree))
 		       "text"))))))
+
+(ert-deftest test-org-export/resolve-radio-link ()
+  "Test `org-export-resolve-radio-link' specifications."
+  ;; Standard test.
+  (org-test-with-temp-text "<<<radio>>> radio"
+    (org-update-radio-target-regexp)
+    (should
+     (let* ((tree (org-element-parse-buffer))
+	    (info `(:parse-tree ,tree)))
+       (org-export-resolve-radio-link
+	(org-element-map tree 'link 'identity info t)
+	info))))
+  ;; Radio target with objects.
+  (org-test-with-temp-text "<<<radio \\alpha>>> radio \\alpha"
+    (org-update-radio-target-regexp)
+    (should
+     (let* ((tree (org-element-parse-buffer))
+	    (info `(:parse-tree ,tree)))
+       (org-export-resolve-radio-link
+	(org-element-map tree 'link 'identity info t)
+	info)))))
+
+
+
+;;; Macro
+
+(ert-deftest test-org-export/define-macro ()
+  "Try defining various Org macro using in-buffer #+MACRO: keyword."
+  ;; Parsed macro.
+  (should (equal (org-test-with-temp-text "#+MACRO: one 1"
+		   (org-export-get-inbuffer-options))
+		 '(:macro-one ("1"))))
+  ;; Evaled macro.
+  (should (equal (org-test-with-temp-text "#+MACRO: two (eval (+ 1 1))"
+		   (org-export-get-inbuffer-options))
+		 '(:macro-two ("(eval (+ 1 1))"))))
+  ;; Incomplete macro.
+  (should-not (org-test-with-temp-text "#+MACRO: three"
+		(org-export-get-inbuffer-options)))
+  ;; Macro with newline character.
+  (should (equal (org-test-with-temp-text "#+MACRO: four a\\nb"
+		   (org-export-get-inbuffer-options))
+		 '(:macro-four ("a\nb"))))
+  ;; Macro with protected newline character.
+  (should (equal (org-test-with-temp-text "#+MACRO: five a\\\\nb"
+		   (org-export-get-inbuffer-options))
+		 '(:macro-five ("a\\nb"))))
+  ;; Recursive macro.
+  (org-test-with-temp-text "#+MACRO: six 6\n#+MACRO: seven 1 + {{{six}}}"
+    (should
+     (equal
+      (org-export-get-inbuffer-options)
+      '(:macro-six
+	("6")
+	:macro-seven
+	("1 + " (macro (:key "six" :value "{{{six}}}" :args nil :begin 5 :end 14
+			     :post-blank 0))))))))
+
+(ert-deftest test-org-export/expand-macro ()
+  "Test `org-export-expand-macro' specifications."
+  ;; Standard test.
+  (should
+   (equal
+    "some text"
+    (org-test-with-parsed-data "#+MACRO: macro some text\n{{{macro}}}"
+      (org-export-expand-macro
+       (org-element-map tree 'macro 'identity info t) info))))
+  ;; Macro with arguments.
+  (should
+   (equal
+    "some text"
+    (org-test-with-parsed-data "#+MACRO: macro $1 $2\n{{{macro(some,text)}}}"
+      (org-export-expand-macro
+       (org-element-map tree 'macro 'identity info t) info))))
+  ;; Macro with "eval"
+  (should
+   (equal
+    "3"
+    (org-test-with-parsed-data "#+MACRO: add (eval (+ $1 $2))\n{{{add(1,2)}}}"
+      (org-export-expand-macro
+       (org-element-map tree 'macro 'identity info t) info))))
+  ;; Nested macros.
+  (should
+   (equal
+    "inner outer"
+    (org-test-with-parsed-data
+	"#+MACRO: in inner\n#+MACRO: out {{{in}}} outer\n{{{out}}}"
+      (flet ((translate-macro (macro contents info)
+			      (org-export-expand-macro macro info)))
+	(org-export-expand-macro
+	 (org-element-map tree 'macro 'identity info t)
+	 (org-combine-plists
+	  info `(:translate-alist ((macro . translate-macro))))))))))
 
 
 
@@ -864,45 +933,39 @@ Another text. (ref:text)
 	  (mapcar (lambda (cell) (org-export-table-cell-alignment cell info))
 		  (org-element-map tree 'table-cell 'identity))))))
     ;; 2. The last alignment cookie has precedence.
-    (org-test-with-temp-text "
+    (org-test-with-parsed-data "
 | <l8> |
 | cell |
 | <r9> |"
-      (let* ((tree (org-element-parse-buffer))
-	     (info `(:parse-tree ,tree)))
-	(should
-	 (equal
-	  '(right right right)
-	  (mapcar (lambda (cell) (org-export-table-cell-alignment cell info))
-		  (org-element-map tree 'table-cell 'identity))))))
+      (should
+       (equal
+	'(right right right)
+	(mapcar (lambda (cell) (org-export-table-cell-alignment cell info))
+		(org-element-map tree 'table-cell 'identity)))))
     ;; 3. If there's no cookie, cell's contents determine alignment.
     ;;    A column mostly made of cells containing numbers will align
     ;;    its cells to the right.
-    (org-test-with-temp-text "
+    (org-test-with-parsed-data "
 | 123       |
 | some text |
 | 12345     |"
-      (let* ((tree (org-element-parse-buffer))
-	     (info `(:parse-tree ,tree)))
-	(should
-	 (equal
-	  '(right right right)
-	  (mapcar (lambda (cell)
-		    (org-export-table-cell-alignment cell info))
-		  (org-element-map tree 'table-cell 'identity))))))
-    ;; 5. Otherwise, they will be aligned to the left.
-    (org-test-with-temp-text "
+      (should
+       (equal
+	'(right right right)
+	(mapcar (lambda (cell)
+		  (org-export-table-cell-alignment cell info))
+		(org-element-map tree 'table-cell 'identity)))))
+    ;; 4. Otherwise, they will be aligned to the left.
+    (org-test-with-parsed-data "
 | text      |
 | some text |
 | \alpha    |"
-      (let* ((tree (org-element-parse-buffer))
-	     (info `(:parse-tree ,tree)))
-	(should
-	 (equal
-	  '(left left left)
-	  (mapcar (lambda (cell)
-		    (org-export-table-cell-alignment cell info))
-		  (org-element-map tree 'table-cell 'identity))))))))
+      (should
+       (equal
+	'(left left left)
+	(mapcar (lambda (cell)
+		  (org-export-table-cell-alignment cell info))
+		(org-element-map tree 'table-cell 'identity)))))))
 
 (ert-deftest test-org-export/table-cell-borders ()
   "Test `org-export-table-cell-borders' specifications."
