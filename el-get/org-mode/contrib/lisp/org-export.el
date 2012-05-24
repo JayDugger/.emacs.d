@@ -3300,9 +3300,12 @@ code."
 
 ;;;; For Tables
 ;;
-;; `org-export-table-has-special-column-p' and
+;; `org-export-table-has-special-column-p' and and
 ;; `org-export-table-row-is-special-p' are predicates used to look for
 ;; meta-information about the table structure.
+;;
+;; `org-table-has-header-p' tells when the rows before the first rule
+;;  should be considered as table's header.
 ;;
 ;; `org-export-table-cell-width', `org-export-table-cell-alignment'
 ;; and `org-export-table-cell-borders' extract information from
@@ -3313,6 +3316,14 @@ code."
 ;; `org-export-table-cell-address', given a table-cell object, returns
 ;; the absolute address of a cell. On the other hand,
 ;; `org-export-get-table-cell-at' does the contrary.
+;;
+;; `org-export-table-cell-starts-colgroup-p',
+;; `org-export-table-cell-ends-colgroup-p',
+;; `org-export-table-row-starts-rowgroup-p',
+;; `org-export-table-row-ends-rowgroup-p',
+;; `org-export-table-row-starts-header-p' and
+;; `org-export-table-row-ends-header-p' indicate position of current
+;; row or cell within the table.
 
 (defun org-export-table-has-special-column-p (table)
   "Non-nil when TABLE has a special column.
@@ -3766,8 +3777,7 @@ Return a list of all exportable headlines as parsed elements."
   "Collect referenceable elements of a determined type.
 
 TYPE can be a symbol or a list of symbols specifying element
-types to search.  Only elements with a caption or a name are
-collected.
+types to search.  Only elements with a caption are collected.
 
 INFO is a plist used as a communication channel.
 
@@ -3779,18 +3789,16 @@ Return a list of all elements found, in order of appearance."
   (org-element-map
    (plist-get info :parse-tree) type
    (lambda (element)
-     (and (or (org-element-property :caption element)
-	      (org-element-property :name element))
+     (and (org-element-property :caption element)
 	  (or (not predicate) (funcall predicate element))
-	  element)) info))
+	  element))
+   info))
 
 (defun org-export-collect-tables (info)
   "Build a list of tables.
-
 INFO is a plist used as a communication channel.
 
-Return a list of table elements with a caption or a name
-affiliated keyword."
+Return a list of table elements with a caption."
   (org-export-collect-elements 'table info))
 
 (defun org-export-collect-figures (info predicate)
@@ -3801,9 +3809,9 @@ a function which accepts one argument: a paragraph element and
 whose return value is non-nil when that element should be
 collected.
 
-A figure is a paragraph type element, with a caption or a name,
-verifying PREDICATE.  The latter has to be provided since
-a \"figure\" is a vague concept that may depend on back-end.
+A figure is a paragraph type element, with a caption, verifying
+PREDICATE.  The latter has to be provided since a \"figure\" is
+a vague concept that may depend on back-end.
 
 Return a list of elements recognized as figures."
   (org-export-collect-elements 'paragraph info predicate))
@@ -3813,8 +3821,7 @@ Return a list of elements recognized as figures."
 
 INFO is a plist used as a communication channel.
 
-Return a list of src-block elements with a caption or a name
-affiliated keyword."
+Return a list of src-block elements with a caption."
   (org-export-collect-elements 'src-block info))
 
 

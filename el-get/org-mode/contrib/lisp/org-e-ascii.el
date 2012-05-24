@@ -676,41 +676,34 @@ title."
 	      (concat "\n"
 		      (make-string (length first-part) under-char))))))))
 
-(defun org-e-ascii--has-caption-or-name-p (element info)
-  "Non-nil when ELEMENT has a caption or a name affiliated keyword.
-
-INFO is a plist used as a communication channel.
-
-This function is meant to be used as a predicate for
-`org-export-get-ordinal'."
-  (or (org-element-property :caption element)
-      (org-element-property :name element)))
+(defun org-e-ascii--has-caption-p (element info)
+  "Non-nil when ELEMENT has a caption affiliated keyword.
+INFO is a plist used as a communication channel.  This function
+is meant to be used as a predicate for `org-export-get-ordinal'."
+  (org-element-property :caption element))
 
 (defun org-e-ascii--build-caption (element info)
   "Return caption string for ELEMENT, if applicable.
 
 INFO is a plist used as a communication channel.
 
-The caption string contains the sequence number of ELEMENT if it
-has a name affiliated keyword, along with the real caption, if
-any.  Return nil when ELEMENT has no affiliated caption or name
-keyword."
-  (let ((caption (org-element-property :caption element))
-	(name (org-element-property :name element)))
-    (when (or caption name)
+The caption string contains the sequence number of ELEMENT along
+with its real caption.  Return nil when ELEMENT has no affiliated
+caption keyword."
+  (let ((caption (org-element-property :caption element)))
+    (when caption
       ;; Get sequence number of current src-block among every
-      ;; src-block with either a caption or a name.
+      ;; src-block with a caption.
       (let ((reference
 	     (org-export-get-ordinal
-	      element info nil 'org-e-ascii--has-caption-or-name-p))
+	      element info nil 'org-e-ascii--has-caption-p))
 	    (title-fmt (org-e-ascii--translate
 			(case (org-element-type element)
 			  (table "Table %d: %s")
-			  (src-block "Listing %d: %s")) info)))
+			  (src-block "Listing %d: %s"))
+			info)))
 	(org-e-ascii--fill-string
-	 (format
-	  title-fmt reference
-	  (if (not caption) name (org-export-data (car caption) info)))
+	 (format title-fmt reference (org-export-data (car caption) info))
 	 (org-e-ascii--current-text-width element info) info)))))
 
 (defun org-e-ascii--build-toc (info &optional n keyword)
@@ -774,9 +767,8 @@ generation.  INFO is a plist used as a communication channel."
 	      (org-e-ascii--indent-string
 	       (org-e-ascii--fill-string
 		(let ((caption (org-element-property :caption src-block)))
-		  (if (not caption) (org-element-property :name src-block)
-		     ;; Use short name in priority, if available.
-		    (org-export-data (or (cdr caption) (car caption)) info)))
+		  ;; Use short name in priority, if available.
+		  (org-export-data (or (cdr caption) (car caption)) info))
 		(- text-width (length initial-text)) info)
 	       (length initial-text))))))
 	(org-export-collect-listings info) "\n")))))
@@ -812,9 +804,8 @@ generation.  INFO is a plist used as a communication channel."
 	      (org-e-ascii--indent-string
 	       (org-e-ascii--fill-string
 		(let ((caption (org-element-property :caption table)))
-		  (if (not caption) (org-element-property :name table)
-		    ;; Use short name in priority, if available.
-		    (org-export-data (or (cdr caption) (car caption)) info)))
+		  ;; Use short name in priority, if available.
+		  (org-export-data (or (cdr caption) (car caption)) info))
 		(- text-width (length initial-text)) info)
 	       (length initial-text))))))
 	(org-export-collect-tables info) "\n")))))
@@ -823,10 +814,7 @@ generation.  INFO is a plist used as a communication channel."
   "Return a list of unique link references in ELEMENT.
 
 ELEMENT is either an headline element or a section element.  INFO
-is a plist used as a communication channel.
-
-It covers links that may be found current headline's title, in
-the following section and in any inlinetask's title there."
+is a plist used as a communication channel."
   (let* (seen
 	 (unique-link-p
 	  (function
@@ -838,28 +826,14 @@ the following section and in any inlinetask's title there."
 			  (org-element-contents link))))
 	       (unless (member footprint seen)
 		 (push footprint seen) link)))))
-	 (harvest-links-in-title
-	  (function
-	   ;; Return a list of all unique links in ELEMENT.  ELEMENT
-	   ;; may be an headline or an inlinetask element.
-	   (lambda (element)
-	     (let (acc)
-	       (dolist (obj (org-element-property :title element) acc)
-		 (when (eq (org-element-type obj) 'link)
-		   (let ((link (funcall unique-link-p obj)))
-		     (and link (push link acc)))))))))
-	 ;; Retrieve HEADLINE's section, if it exists.
-	 (section (if (eq (org-element-type element) 'section) element
-		    (let ((sec (car (org-element-contents element))))
-		      (and (eq (org-element-type sec) 'section) sec))))
-	 (headline (if (eq (org-element-type element) 'headline) element
-		     (org-export-get-parent-headline element info))))
-    (append
-     ;; Links that may be in HEADLINE's title.
-     (funcall harvest-links-in-title headline)
-     ;; Get all links in SECTION.
-     (org-element-map
-      section 'link (lambda (link) (funcall unique-link-p link)) info))))
+	 ;; If at a section, find parent headline, if any, in order to
+	 ;; count links that might be in the title.
+	 (headline
+	  (if (eq (org-element-type element) 'headline) element
+	    (or (org-export-get-parent-headline element info) element))))
+    ;; Get all links in HEADLINE.
+    (org-element-map
+     headline 'link (lambda (link) (funcall unique-link-p link)) info)))
 
 (defun org-e-ascii--describe-links (links width info)
   "Return a string describing a list of links.
@@ -1472,8 +1446,7 @@ INFO is a plist holding contextual information."
 	    (when destination
 	      (let ((number
 		     (org-export-get-ordinal
-		      destination info nil
-		      'org-e-ascii--has-caption-or-name-p)))
+		      destination info nil 'org-e-ascii--has-caption-p)))
 		(when number
 		  (if (atom number) (number-to-string number)
 		    (mapconcat 'number-to-string number ".")))))))))
@@ -1695,7 +1668,8 @@ holding contextual information."
 
 (defun org-e-ascii-table (table contents info)
   "Transcode a TABLE element from Org to ASCII.
-CONTENTS is nil.  INFO is a plist holding contextual information."
+CONTENTS is the contents of the table.  INFO is a plist holding
+contextual information."
   (let ((caption (org-e-ascii--build-caption table info)))
     (concat
      ;; Possibly add a caption string above.
@@ -1713,11 +1687,14 @@ CONTENTS is nil.  INFO is a plist holding contextual information."
 (defun org-e-ascii--table-cell-width (table-cell info)
   "Return width of TABLE-CELL.
 
+INFO is a plist used as a communication channel.
+
 Width of a cell is determined either by a width cookie in the
-same column as the cell, or by the length of its contents.
+same column as the cell, or by the maximum cell's length in that
+column.
 
 When `org-e-ascii-table-widen-columns' is non-nil, width cookies
-are ignored. "
+are ignored."
   (or (and (not org-e-ascii-table-widen-columns)
 	   (org-export-table-cell-width table-cell info))
       (let* ((max-width 0)
