@@ -6039,14 +6039,15 @@ When FACE-OR-COLOR is not a string, just return it."
 (defun org-font-lock-add-priority-faces (limit)
   "Add the special priority faces."
   (while (re-search-forward "\\[#\\([A-Z0-9]\\)\\]" limit t)
-    (add-text-properties
-     (match-beginning 0) (match-end 0)
-     (list 'face (or (org-face-from-face-or-color
-		      'priority 'org-special-keyword
-		      (cdr (assoc (char-after (match-beginning 1))
-				  org-priority-faces)))
-		     'org-special-keyword)
-	   'font-lock-fontified t))))
+    (when (save-match-data (org-at-heading-p))
+      (add-text-properties
+       (match-beginning 0) (match-end 0)
+       (list 'face (or (org-face-from-face-or-color
+			'priority 'org-special-keyword
+			(cdr (assoc (char-after (match-beginning 1))
+				    org-priority-faces)))
+		       'org-special-keyword)
+	     'font-lock-fontified t)))))
 
 (defun org-get-tag-face (kwd)
   "Get the right face for a TODO keyword KWD.
@@ -18922,6 +18923,8 @@ See the individual commands for more information."
 	(if (org-looking-back org-list-end-re)
 	    (org-indent-line-function)
 	  (org-indent-line-to ind)))))
+   ((and org-return-follows-link (org-at-timestamp-p t))
+    (org-follow-timestamp-link))
    ((and org-return-follows-link
          (let ((tprop (get-text-property (point) 'face)))
 	   (or (eq tprop 'org-link)
