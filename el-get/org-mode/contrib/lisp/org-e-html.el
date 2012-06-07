@@ -43,40 +43,6 @@
 
 ;;; Function Declarations
 
-(declare-function org-element-get-property "org-element" (property element))
-(declare-function org-element-normalize-string "org-element" (s))
-
-(declare-function org-export-data "org-export" (data info))
-(declare-function org-export-directory "org-export" (type plist))
-(declare-function org-export-expand-macro "org-export" (macro info))
-(declare-function org-export-first-sibling-p "org-export" (headline info))
-(declare-function org-export-footnote-first-reference-p "org-export"
-		  (footnote-reference info))
-(declare-function org-export-get-coderef-format "org-export" (path desc))
-(declare-function org-export-get-footnote-definition "org-export"
-		  (footnote-reference info))
-(declare-function org-export-get-footnote-number "org-export" (footnote info))
-(declare-function org-export-get-previous-element "org-export" (blob info))
-(declare-function org-export-get-relative-level "org-export" (headline info))
-(declare-function org-export-handle-code
-		  "org-export" (element info &optional num-fmt ref-fmt delayed))
-(declare-function org-export-inline-image-p "org-export"
-		  (link &optional extensions))
-(declare-function org-export-last-sibling-p "org-export" (headline info))
-(declare-function org-export-low-level-p "org-export" (headline info))
-(declare-function org-export-output-file-name
-		  "org-export" (extension &optional subtreep pub-dir))
-(declare-function org-export-resolve-coderef "org-export" (ref info))
-(declare-function org-export-resolve-fuzzy-link "org-export" (link info))
-(declare-function org-export-resolve-radio-link "org-export" (link info))
-(declare-function org-export-solidify-link-text "org-export" (s))
-(declare-function
- org-export-to-buffer "org-export"
- (backend buffer &optional subtreep visible-only body-only ext-plist))
-(declare-function
- org-export-to-file "org-export"
- (backend file &optional subtreep visible-only body-only ext-plist))
-
 (declare-function org-id-find-id-file "org-id" (id))
 (declare-function htmlize-region "ext:htmlize" (beg end))
 (declare-function org-pop-to-buffer-same-window
@@ -1252,10 +1218,6 @@ ATTR is a string of other attributes of the \"a\" element."
 
 ;;;; Table
 
-(defun org-e-html-format-table (lines olines)
-  (let ((org-e-html-format-table-no-css nil))
-    (org-lparse-format-table lines olines)))
-
 (defun org-e-html-splice-attributes (tag attributes)
   "Read attributes in string ATTRIBUTES, add and replace in HTML tag TAG."
   (if (not attributes)
@@ -1364,7 +1326,7 @@ that uses these same face definitions."
 		   text
 		   (and tags "&nbsp;&nbsp;&nbsp;") (org-e-html--tags tags))))
     (format "<a href=\"#%s\">%s</a>"
-	    (org-solidify-link-text headline-label)
+	    (org-export-solidify-link-text headline-label)
 	    (if (not nil) headline
 	      (format "<span class=\"%s\">%s</span>" todo-type headline)))))
 
@@ -2186,7 +2148,7 @@ holding contextual information."
 			   (let ((id (org-solidify-link-text
 				      (if (org-uuidgen-p x) (concat "ID-" x)
 					x))))
-			     (format "<a id=\"%s\" name=\"%s\"/>" id id)))
+			     (format "<a id=\"%s\" name=\"%s\"></a>" id id)))
 			 extra-ids "")
 			full-text
 			level1)
@@ -2499,11 +2461,23 @@ INFO is a plist holding contextual information.  See
 		((member type '("http" "https" "ftp" "mailto"))
 		 (concat type ":" raw-path))
 		((string= type "file")
+		 ;; Extract just the file path and strip all other
+		 ;; components.
 		 (when (string-match "\\(.+\\)::.+" raw-path)
 		   (setq raw-path (match-string 1 raw-path)))
-		 (if (file-name-absolute-p raw-path)
-		     (concat "file://" (expand-file-name raw-path))
-		   (concat "file://" raw-path)))
+		 ;; If the link points to "*.org" file, rewrite it as
+		 ;; though it were a link to the corresponding
+		 ;; "*.html" file, if needed.
+		 (when (and org-e-html-link-org-files-as-html
+			    (string= ".org" (downcase (file-name-extension
+						       raw-path "."))))
+		   (setq raw-path (concat
+				   (file-name-sans-extension raw-path) "."
+				   (plist-get info :html-extension))))
+		 ;; If file path is absolute, prepend it with protocol
+		 ;; component - "file://".
+		 (if (not (file-name-absolute-p raw-path)) raw-path
+		   (concat "file://" (expand-file-name raw-path))))
 		(t raw-path)))
 	 protocol)
     (cond
@@ -2631,7 +2605,7 @@ the plist used as a communication channel."
 	 (extra (if class (format " class=\"%s\"" class) ""))
 	 (parent (org-export-get-parent paragraph info)))
     (cond
-     ((and (equal (car parent) 'item)
+     ((and (equal (org-element-type parent) 'item)
 	   (= (org-element-property :begin paragraph)
 	      (org-element-property :contents-begin parent)))
       ;; leading paragraph in a list item have no tags
@@ -3065,7 +3039,7 @@ CONTENTS is nil.  INFO is a plist holding contextual
 information."
   (let ((id (org-export-solidify-link-text
 	     (org-element-property :value target))))
-    (format "<a id=\"%s\" name=\"%s\"/>" id id)))
+    (format "<a id=\"%s\" name=\"%s\"></a>" id id)))
 
 
 ;;;; Timestamp

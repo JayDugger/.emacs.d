@@ -91,22 +91,8 @@
 (defconst org-e-odt-options-alist
   '(
     ;; (:agenda-style nil nil org-agenda-export-html-style)
-    ;; (:convert-org-links nil nil org-e-odt-link-org-files-as-html)
-    ;; ;; FIXME Use (org-xml-encode-org-text-skip-links s) ??
     ;; ;; (:expand-quoted-html nil "@" org-e-odt-expand)
-    ;; (:inline-images nil nil org-e-odt-inline-images)
-    ;; ;; (:link-home nil nil org-e-odt-link-home) FIXME
-    ;; ;; (:link-up nil nil org-e-odt-link-up) FIXME
-    ;; (:style nil nil org-e-odt-style)
-    ;; (:style-extra nil nil org-e-odt-style-extra)
-    ;; (:style-include-default nil nil org-e-odt-style-include-default)
-    ;; (:style-include-scripts nil nil org-e-odt-style-include-scripts)
     ;; ;; (:timestamp nil nil org-e-odt-with-timestamp)
-    ;; (:html-extension nil nil org-e-odt-extension)
-    ;; (:html-postamble nil nil org-e-odt-postamble)
-    ;; (:html-preamble nil nil org-e-odt-preamble)
-    ;; (:html-table-tag nil nil org-e-odt-table-tag)
-    ;; (:xml-declaration nil nil org-e-odt-xml-declaration)
     (:odt-styles-file "ODT_STYLES_FILE" nil nil t)
     (:LaTeX-fragments nil "LaTeX" org-export-with-LaTeX-fragments))
   "Alist between ODT export properties and ways to set them.
@@ -246,83 +232,14 @@ structure of the values.")
 (defun org-e-odt-end-annotation ()
   "</office:annotation>")
 
-(defun org-e-odt-begin-plain-list (ltype)
-  (let* ((style-name (org-e-odt-get-style-name-for-entity 'list ltype))
-	 (extra (concat
-		 ;; (if (or org-lparse-list-table-p
-		 ;; 	 (and (= 1 (length org-lparse-list-stack))
-		 ;; 	      (null org-e-odt-list-stack-stashed)))
-		 ;;     " text:continue-numbering=\"false\""
-		 ;;   " text:continue-numbering=\"true\"")
+(defun org-e-odt-begin-plain-list (ltype &optional continue-numbering)
+  (unless (member ltype '(ordered unordered descriptive))
+    (error "Unknown list type: %s"  ltype))
 
-		 " text:continue-numbering=\"true\""
-
-		 (when style-name
-		   (format " text:style-name=\"%s\""  style-name)))))
-    (case ltype
-      ((ordered unordered descriptive)
-       (concat
-	;; (org-e-odt-end-paragraph)
-	(format "<text:list%s>" extra)))
-      (t (error "Unknown list type: %s"  ltype)))))
-
-(defun org-e-odt-end-plain-list (ltype)
-  (if ltype "</text:list>"
-    (error "Unknown list type: %s" ltype)))
-
-(defun org-e-odt-begin-list-item (ltype &optional arg headline)
-  (case ltype
-    (ordered
-     (assert (not headline) t)
-     (let* ((counter arg) (extra ""))
-       (concat "<text:list-item>" ;; (org-e-odt-begin-paragraph)
-	       )
-       ;; (if (= (length org-lparse-list-stack)
-       ;;        (length org-e-odt-list-stack-stashed))
-       ;;     "<text:list-header>" "<text:list-item>")
-       ))
-    (unordered
-     (let* ((id arg) (extra ""))
-       (concat
-	"<text:list-item>"
-	;; (org-e-odt-begin-paragraph)
-	(if headline (org-e-odt-format-target headline id)
-	  (org-e-odt-format-bookmark "" id)))
-       ;; (if (= (length org-lparse-list-stack)
-       ;;        (length org-e-odt-list-stack-stashed))
-       ;;     "<text:list-header>" "<text:list-item>")
-       ))
-    (descriptive
-     (assert (not headline) t)
-     (let ((term (or arg "(no term)")))
-       (concat
-	(org-e-odt-format-tags
-    	 '("<text:list-item>" . "</text:list-item>")
-    	 (org-e-odt-format-stylized-paragraph 'definition-term term))
-	(org-e-odt-begin-list-item 'unordered)
-	(org-e-odt-begin-plain-list 'descriptive)
-	(org-e-odt-begin-list-item 'unordered))))
-    (t (error "Unknown list type"))))
-
-(defun org-e-odt-end-list-item (ltype)
-  (case ltype
-    ((ordered unordered)
-     ;; (org-lparse-insert-tag
-     ;; (if (= (length org-lparse-list-stack)
-     ;; 	     (length org-e-odt-list-stack-stashed))
-     ;; 	  (prog1 "</text:list-header>"
-     ;; 	    (setq org-e-odt-list-stack-stashed nil))
-     ;; 	"</text:list-item>")
-     "</text:list-item>"
-     ;; )
-     )
-    (descriptive
-     (concat
-      (org-e-odt-end-list-item 'unordered)
-      (org-e-odt-end-plain-list 'descriptive)
-      (org-e-odt-end-list-item 'unordered)
-      ))
-    (t (error "Unknown list type"))))
+  (format "<text:list text:style-name=\"%s\" %s>"
+	  (org-e-odt-get-style-name-for-entity 'list ltype)
+	  (format "text:continue-numbering=\"%s\""
+		  (if continue-numbering "true" "false"))))
 
 (defun org-e-odt-write-automatic-styles ()
   "Write automatic styles to \"content.xml\"."
@@ -485,10 +402,13 @@ new entry in `org-e-odt-automatic-styles'.  Return (OBJECT-NAME
 (defun org-e-odt-format-horizontal-line ()
   (org-e-odt-format-stylized-paragraph 'horizontal-line ""))
 
-(defun org-e-odt-encode-plain-text (line &optional no-whitespace-filling)
-  (setq line (org-e-html-encode-plain-text line))
-  (if no-whitespace-filling line
-    (org-e-odt-fill-tabs-and-spaces line)))
+(defun org-e-odt-encode-plain-text (text &optional no-whitespace-filling)
+  (mapc
+   (lambda (pair)
+     (setq text (replace-regexp-in-string (car pair) (cdr pair) text t t)))
+   '(("&" . "&amp;") ("<" . "&lt;") (">" . "&gt;")))
+  (if no-whitespace-filling text
+    (org-e-odt-fill-tabs-and-spaces text)))
 
 (defun org-e-odt-format-line (line)
   (case org-lparse-dyn-current-environment
@@ -1047,7 +967,6 @@ ATTR is a string of other attributes of the a element."
 	  org-e-odt-embedded-images-count 0
 	  org-e-odt-embedded-formulas-count 0
 	  org-e-odt-section-count 0
-	  org-e-odt-list-stack-stashed nil
 	  org-e-odt-automatic-styles nil
 	  org-e-odt-object-counters nil)
 
@@ -1057,7 +976,7 @@ ATTR is a string of other attributes of the a element."
     (setq hfy-user-sheet-assoc nil)
 
     ;; init conten.xml
-    (require 'nxml-mode)
+    (require 'nxml-mode)		; FIXME
     (with-current-buffer
 	(let ((nxml-auto-insert-xml-declaration-flag nil))
 	  (find-file-noselect content-file t))
@@ -1220,9 +1139,6 @@ ATTR is a string of other attributes of the a element."
 	   (t (error "Unknown OpenDocument backend %S" org-lparse-backend)))))
     (write-region mimetype nil (expand-file-name "mimetype"))
     mimetype))
-
-(declare-function org-create-math-formula "org"
-		  (latex-frag &optional mathml-file))
 
 (defun org-e-odt-do-preprocess-latex-fragments ()
   "Convert LaTeX fragments to images."
@@ -1410,56 +1326,16 @@ formula file."
 
 ;;; Hooks
 
-;; FIXME: it already exists in org-e-odt.el
 ;;; Function Declarations
 
-(declare-function org-element-property "org-element" (property element))
-(declare-function org-element-normalize-string "org-element" (s))
-
-(declare-function org-export-data "org-export" (data info))
-(declare-function org-export-directory "org-export" (type plist))
-(declare-function org-export-expand-macro "org-export" (macro info))
-(declare-function org-export-first-sibling-p "org-export" (headline info))
-(declare-function org-export-footnote-first-reference-p "org-export"
-		  (footnote-reference info))
-(declare-function org-export-get-coderef-format "org-export" (path desc))
-(declare-function org-export-get-footnote-definition "org-export"
-		  (footnote-reference info))
-(declare-function org-export-get-footnote-number "org-export" (footnote info))
-(declare-function org-export-get-previous-element "org-export" (blob info))
-(declare-function org-export-get-relative-level "org-export" (headline info))
-(declare-function org-export-handle-code
-		  "org-export" (element info &optional num-fmt ref-fmt delayed))
-(declare-function org-export-included-file "org-export" (keyword backend info))
-(declare-function org-export-inline-image-p "org-export"
-		  (link &optional extensions))
-(declare-function org-export-last-sibling-p "org-export" (headline info))
-(declare-function org-export-low-level-p "org-export" (headline info))
-(declare-function org-export-output-file-name
-		  "org-export" (extension &optional subtreep pub-dir))
-(declare-function org-export-resolve-coderef "org-export" (ref info))
-(declare-function org-export-resolve-fuzzy-link "org-export" (link info))
-(declare-function org-export-resolve-radio-link "org-export" (link info))
-(declare-function org-export-solidify-link-text "org-export" (s))
-(declare-function
- org-export-to-buffer "org-export"
- (backend buffer &optional subtreep visible-only body-only ext-plist))
-(declare-function
- org-export-to-file "org-export"
- (backend file &optional subtreep visible-only body-only ext-plist))
-
 (declare-function org-id-find-id-file "org-id" (id))
-(declare-function htmlize-region "ext:htmlize" (beg end))
-(declare-function org-pop-to-buffer-same-window
-		  "org-compat" (&optional buffer-or-name norecord label))
-
-
-
-
-
 (declare-function hfy-face-to-style "htmlfontify" (fn))
 (declare-function hfy-face-or-def-to-name "htmlfontify" (fn))
 (declare-function archive-zip-extract "arc-mode.el" (archive name))
+(declare-function org-create-math-formula "org" (latex-frag &optional mathml-file))
+
+
+
 
 ;;; Internal Variables
 
@@ -1555,8 +1431,6 @@ standard Emacs.")
   "
 <manifest:file-entry manifest:media-type=\"%s\" manifest:full-path=\"%s\"%s/>")
 
-
-
 (defvar org-lparse-dyn-first-heading-pos) ; let bound during org-do-lparse
 
 (defvar org-e-odt-suppress-xref nil)
@@ -1606,23 +1480,8 @@ standard Emacs.")
   "Default styles for various entities.")
 
 (defvar org-e-odt-org-styles-alist org-e-odt-default-org-styles-alist)
-
-;;;_. callbacks
-;;;_. control callbacks
-;;;_ , document body
-
 (defvar org-lparse-opt-plist)		    ; bound during org-do-lparse
-(defvar org-lparse-list-stack) ; dynamically bound in org-do-lparse
-(defvar org-e-odt-list-stack-stashed)
 (defvar org-lparse-table-ncols)
-
-(defvar org-e-odt-table-style nil
-  "Table style specified by \"#+ATTR_ODT: <style-name>\" line.
-This is set during `org-e-odt-begin-table'.")
-
-(defvar org-e-odt-table-style-spec nil
-  "Entry for `org-e-odt-table-style' in `org-e-odt-table-styles'.")
-
 
 (defvar org-e-odt-table-style-format
   "
@@ -1654,9 +1513,7 @@ Use `org-e-odt-add-automatic-style' to add update this variable.'")
 Use this to generate automatic names and style-names. See
 `org-e-odt-add-automatic-style'.")
 
-(defvar org-e-odt-table-indentedp nil)
 (defvar org-lparse-link-description-is-image nil)
-
 
 (defvar org-src-block-paragraph-format
   "<style:style style:name=\"OrgSrcBlock\" style:family=\"paragraph\" style:parent-style-name=\"Preformatted_20_Text\">
@@ -1695,7 +1552,6 @@ according to the default face identified by the `htmlfontify'.")
      ("OrgFormulaCaptionFrame" nil "as-char"))))
 
 (defvar org-e-odt-embedded-images-count 0)
-
 (defvar org-e-odt-image-size-probe-method
   (append (and (executable-find "identify") '(imagemagick)) ; See Bug#10675
 	  '(emacs fixed))
@@ -1832,14 +1688,6 @@ Intended to be locally bound around a call to `org-export-as-html'." )
   :tag "Org Export ODT"
   :group 'org-export)
 
-(defcustom org-e-odt-protect-char-alist
-  '(("&" . "&amp;")
-    ("<" . "&lt;")
-    (">" . "&gt;"))
-  "Alist of characters to be converted by `org-e-html-protect'."
-  :group 'org-export-e-html
-  :type '(repeat (cons (string :tag "Character")
-		       (string :tag "ODT equivalent"))))
 (defcustom org-e-odt-schema-dir
   (let* ((schema-dir
 	  (catch 'schema-dir
@@ -2027,7 +1875,7 @@ This is a list where each element is of the
 form (TABLE-STYLE-NAME TABLE-TEMPLATE-NAME TABLE-CELL-OPTIONS).
 
 TABLE-STYLE-NAME is the style associated with the table through
-`org-e-odt-table-style'.
+\"#+ATTR_ODT: :style TABLE-STYLE-NAME\" line.
 
 TABLE-TEMPLATE-NAME is a set of - upto 9 - automatic
 TABLE-CELL-STYLE-NAMEs and PARAGRAPH-STYLE-NAMEs (as defined
@@ -2116,7 +1964,7 @@ to make available an enhanced version of `htmlfontify' library."
   :group 'org-export-e-odt
   :version "24.1")
 
-(defcustom org-e-odt-prettify-xml t ; FIXME
+(defcustom org-e-odt-prettify-xml nil
   "Specify whether or not the xml output should be prettified.
 When this option is turned on, `indent-region' is run on all
 component xml buffers before they are saved.  Turn this off for
@@ -2511,39 +2359,9 @@ string defines the replacement string for this quote."
 
 ;;; Internal Functions (HTML)
 
-;; (defun org-e-odt-format-inline-image (path &optional caption label attr)
-;;   ;; FIXME: alt text missing here?
-;;   (let ((inline-image (format "<img src=\"%s\" alt=\"%s\"/>"
-;; 			      path (file-name-nondirectory path))))
-;;     (if (not label) inline-image
-;;       (org-e-odt-format-section inline-image "figure" label))))
-
 ;;;; Bibliography
 
-(defun org-e-odt-bibliography ()
-  "Find bibliography, cut it out and return it."
-  (catch 'exit
-    (let (beg end (cnt 1) bib)
-      (save-excursion
-	(goto-char (point-min))
-	(when (re-search-forward
-	       "^[ \t]*<div \\(id\\|class\\)=\"bibliography\"" nil t)
-	  (setq beg (match-beginning 0))
-	  (while (re-search-forward "</?div\\>" nil t)
-	    (setq cnt (+ cnt (if (string= (match-string 0) "<div") +1 -1)))
-	    (when (= cnt 0)
-	      (and (looking-at ">") (forward-char 1))
-	      (setq bib (buffer-substring beg (point)))
-	      (delete-region beg (point))
-	    (throw 'exit bib))))
-	nil))))
-
 ;;;; Table
-
-(defun org-e-odt-toc-entry-formatter
-  (level snumber todo todo-type priority
-	 headline tags target extra-targets extra-class)
-  (org-e-odt-format-toc-entry snumber todo headline tags target))
 
 (defun org-e-odt-make-string (n string)
   (let (out) (dotimes (i n out) (setq out (concat string out)))))
@@ -2592,12 +2410,6 @@ string defines the replacement string for this quote."
 	 (org-e-odt-toc-text toc-entries)
 	 (org-e-odt-end-toc))))))
 
-(defun org-e-odt-suffix-from-snumber (snumber)
-  (let* ((snu (replace-regexp-in-string "\\." "-" snumber))
-	 (href (cdr (assoc (concat "sec-" snu)
-			   org-export-preferred-target-alist))))
-    (org-solidify-link-text (or href snu))))
-
 ;; (defun org-e-odt-format-line (line)
 ;;   (case org-lparse-dyn-current-environment
 ;;     ((quote fixedwidth) (concat (org-e-odt-encode-plain-text line) "\n"))
@@ -2632,30 +2444,6 @@ Replaces invalid characters with \"_\"."
 		   (org-e-odt-fix-class-name x))))
       tags
       (org-e-odt-format-spaces 1)) "tag")))
-
-(defun org-e-odt-format-section-number (&optional snumber level)
-  ;; FIXME
-  (and nil org-export-with-section-numbers
-       ;; (not org-lparse-body-only)
-       snumber level
-       (org-e-odt-format-fontify snumber (format "section-number-%d" level))))
-
-;; (defun org-e-odt-format-headline (title extra-targets tags
-;; 				       &optional snumber level)
-;;   (concat
-;;    (org-e-odt-format-extra-targets extra-targets)
-;;    (concat (org-e-odt-format-section-number snumber level) " ")
-;;    title
-;;    (and tags (concat (org-e-odt-format-spaces 3)
-;; 		     (org-e-odt-format-org-tags tags)))))
-
-;; (defun org-e-odt-format-date (info)
-;;   (let ((date (plist-get info :date)))
-;;     (cond
-;;      ((and date (string-match "%" date))
-;;       (format-time-string date))
-;;      (date date)
-;;      (t (format-time-string "%Y-%m-%d %T %Z")))))
 
 
 
@@ -3099,17 +2887,18 @@ holding contextual information."
      ;; Case 2. This is a deep sub-tree: export it as a list item.
      ;;         Also export as items headlines for which no section
      ;;         format has been found.
-     ((org-export-low-level-p headline info) ; FIXME (or (not section-fmt))
-      ;; Build the real contents of the sub-tree.
-      (let* ((type (if numberedp 'unordered 'unordered)) ; FIXME
-	     (itemized-body (org-e-odt-format-list-item
-			     contents type nil nil full-text)))
-	(concat
-	 (and (org-export-first-sibling-p headline info)
-	      (org-e-odt-begin-plain-list type))
-	 itemized-body
-	 (and (org-export-last-sibling-p headline info)
-	      (org-e-odt-end-plain-list type)))))
+     ;; FIXME
+     ;; ((org-export-low-level-p headline info)
+     ;;  ;; Build the real contents of the sub-tree.
+     ;;  (let* ((type (if numberedp 'unordered 'unordered)) ; FIXME
+     ;; 	     (itemized-body (org-e-odt-format-list-item
+     ;; 			     contents type nil nil full-text)))
+     ;; 	(concat
+     ;; 	 (and (org-export-first-sibling-p headline info)
+     ;; 	      (org-e-odt-begin-plain-list type))
+     ;; 	 itemized-body
+     ;; 	 (and (org-export-last-sibling-p headline info)
+     ;; 	      "</text:list>"))))
      ;; Case 3. Standard headline.  Export it as a section.
      (t
       (let* ((extra-ids (list (org-element-property :custom-id headline)
@@ -3201,21 +2990,6 @@ contextual information."
 
 ;;;; Item
 
-(defun org-e-odt-format-list-item (contents type checkbox
-					    &optional term-counter-id
-					    headline)
-  (when checkbox
-    (setq checkbox
-	  (org-e-odt-format-fontify (case checkbox
-				      (on "[X]")
-				      (off "[&nbsp;]")
-				      (trans "[-]")) 'code)))
-  (concat
-   (org-e-odt-begin-list-item type term-counter-id headline)
-   ;; FIXME checkbox (and checkbox " ")
-   contents
-   (org-e-odt-end-list-item type)))
-
 (defun org-e-odt-item (item contents info)
   "Transcode an ITEM element from Org to ODT.
 CONTENTS holds the contents of the item.  INFO is a plist holding
@@ -3223,11 +2997,27 @@ contextual information."
   (let* ((plain-list (org-export-get-parent item info))
 	 (type (org-element-property :type plain-list))
 	 (counter (org-element-property :counter item))
-	 (checkbox (org-element-property :checkbox item))
 	 (tag (let ((tag (org-element-property :tag item)))
 		(and tag (org-export-data tag info)))))
-    (org-e-odt-format-list-item
-     contents type checkbox (or tag counter))))
+    (case type
+      (ordered
+       (format "\n<text:list-item>\n%s\n</text:list-item>" contents))
+      (unordered
+       (format "\n<text:list-item>\n%s\n</text:list-item>" contents))
+      (descriptive
+       (concat
+	(let ((term (or tag "(no term)")))
+	  (concat
+	   (format "\n<text:list-item>\n%s\n</text:list-item>"
+		   (org-e-odt-format-stylized-paragraph 'definition-term term))
+	   (format
+	    "\n<text:list-item>\n%s\n</text:list-item>"
+	    (format "\n<text:list text:style-name=\"%s\" %s>\n%s\n</text:list>"
+		    (org-e-odt-get-style-name-for-entity 'list 'descriptive)
+		    "text:continue-numbering=\"false\""
+		    (format "\n<text:list-item>\n%s\n</text:list-item>"
+			    contents)))))))
+      (t (error "Unknown list type")))))
 
 
 ;;;; Keyword
@@ -3573,11 +3363,11 @@ INFO is a plist holding contextual information.  See
       (let* ((fmt (org-export-get-coderef-format path desc))
 	     (res (org-export-resolve-coderef path info))
 	     (org-e-odt-suppress-xref nil)
-	     (href (org-xml-format-href (concat "#coderef-" path))))
+	     (href (concat "#coderef-" path)))
 	(format fmt (org-e-odt-format-link res href))))
      ;; Link type is handled by a special function.
      ((functionp (setq protocol (nth 2 (assoc type org-link-protocols))))
-      (funcall protocol (org-link-unescape path) desc 'html))
+      (funcall protocol (org-link-unescape path) desc 'odt))
      ;; External link with a description part.
      ((and path desc) (org-e-odt-format-link desc path))
      ;; External link without a description part.
@@ -3617,6 +3407,20 @@ the plist used as a communication channel."
 		  (center-block 'center)
 		  (footnote-definition 'footnote)
 		  (t nil))))
+    ;; If this paragraph is a leading paragraph in an item and the
+    ;; item has a checkbox, splice the checkbox and paragraph contents
+    ;; together.
+    (when (and (equal (org-element-type parent) 'item)
+	       (= (org-element-property :begin paragraph)
+		  (org-element-property :contents-begin parent)))
+      (let* ((item parent)
+	     (checkbox (org-element-property :checkbox item))
+	     (checkbox (and checkbox (org-e-odt-format-fontify
+				      (case checkbox
+					(on "[&#x2713;]") ; CHECK MARK
+					(off "[ ]")
+					(trans "[-]")) 'code))))
+	(setq contents 	(concat checkbox (and checkbox " ") contents))))
     (org-e-odt-format-stylized-paragraph style contents)))
 
 
@@ -3634,41 +3438,16 @@ contextual information."
     (org-e-odt--wrap-label
      plain-list (format "%s\n%s%s"
 			(org-e-odt-begin-plain-list type)
-			contents (org-e-odt-end-plain-list type)))))
+			contents "</text:list>"))))
 
 ;;;; Plain Text
-
-;; (defun org-e-odt-encode-plain-text (s)
-;;   "Convert plain text characters to HTML equivalent.
-;; Possible conversions are set in `org-export-html-protect-char-alist'."
-;;   (let ((cl org-e-odt-protect-char-alist) c)
-;;     (while (setq c (pop cl))
-;;       (let ((start 0))
-;; 	(while (string-match (car c) s start)
-;; 	  (setq s (replace-match (cdr c) t t s)
-;; 		start (1+ (match-beginning 0))))))
-;;     s))
 
 (defun org-e-odt-plain-text (text info)
   "Transcode a TEXT string from Org to ODT.
 TEXT is the string to transcode.  INFO is a plist holding
 contextual information."
+  ;; Protect &, < and >.
   (setq text (org-e-odt-encode-plain-text text t))
-  ;; Protect %, #, &, $, ~, ^, _,  { and }.
-  ;; (while (string-match "\\([^\\]\\|^\\)\\([%$#&{}~^_]\\)" text)
-  ;;   (setq text
-  ;; 	  (replace-match (format "\\%s" (match-string 2 text)) nil t text 2)))
-  ;; Protect \
-  ;; (setq text (replace-regexp-in-string
-  ;; 	      "\\(?:[^\\]\\|^\\)\\(\\\\\\)\\(?:[^%$#&{}~^_\\]\\|$\\)"
-  ;; 	      "$\\backslash$" text nil t 1))
-  ;; HTML into \HTML{} and TeX into \TeX{}.
-  ;; (let ((case-fold-search nil)
-  ;; 	(start 0))
-  ;;   (while (string-match "\\<\\(\\(?:La\\)?TeX\\)\\>" text start)
-  ;;     (setq text (replace-match
-  ;; 		  (format "\\%s{}" (match-string 1 text)) nil t text)
-  ;; 	    start (match-end 0))))
   ;; Handle quotation marks
   (setq text (org-e-odt--quotation-marks text info))
   ;; Convert special strings.
@@ -4008,13 +3787,22 @@ communication channel."
     (if (not special-column-p) (org-element-contents table-row)
       (cdr (org-element-contents table-row)))))
 
-(defun org-e-odt-table (table contents info)
+(defun org-e-odt--table (table contents info)
   "Transcode a TABLE element from Org to ODT.
 CONTENTS is the contents of the table.  INFO is a plist holding
 contextual information."
   (case (org-element-property :type table)
-    (table.el nil)
-    (t
+    ;; Case 1: table.el doesn't support export to OD format.  Strip
+    ;; such tables from export.
+    (table.el
+     (prog1 nil
+       (message
+	(concat
+	 "(org-e-odt): Found table.el-type table in the source Org file."
+	 "  table.el doesn't support export to ODT format."
+	 "  Stripping the table from export."))))
+    ;; Case 2: Native Org tables.
+    (otherwise
      (let* ((captions (org-e-odt-format-label table info 'definition))
 	    (caption (car captions)) (short-caption (cdr captions))
 	    (attributes (org-e-odt-element-attributes table info))
@@ -4045,11 +3833,60 @@ contextual information."
 	   (or short-caption (car automatic-name))
 	   (or custom-table-style (cdr automatic-name) "OrgTable")))
 	;; column specification.
-      	(funcall table-column-specs table info)
+	(funcall table-column-specs table info)
 	;; actual contents.
 	"\n" contents
 	;; end table.
 	"</table:table>")))))
+
+
+(defun org-e-odt-table (table contents info)
+  "Transcode a TABLE element from Org to ODT.
+CONTENTS is the contents of the table.  INFO is a plist holding
+contextual information."
+  (let* ((transcoded-table (org-e-odt--table table contents info))
+	 (genealogy (org-export-get-genealogy table info))
+	 (list-genealogy (and (equal (org-element-type (car genealogy)) 'item)
+			      (loop for element in genealogy
+				    when (member (org-element-type element)
+						 '(item plain-list))
+				    collect element))))
+    (when (and transcoded-table list-genealogy)
+      (let ((parent-list (nth 1 list-genealogy)))
+	(assert (equal (org-element-type parent-list) 'plain-list))
+	(assert
+	 (not (equal (org-element-property :type parent-list) 'descriptive))
+	 nil "ODT export doesn't support tables within description list."))
+
+      ;; Within the Org file, the table is appearing within a
+      ;; list item.  OpenDocument doesn't allow table to appear
+      ;; within list items.  Temporarily terminate the list, put
+      ;; the table in an indented section and then re-continue
+      ;; the list.
+
+      ;; Put the Table in an indented section.
+      (setq transcoded-table
+	    (let ((level (/ (length list-genealogy)  2)))
+	      (concat (org-e-odt-begin-section
+		       (format "OrgIndentedSection-Level-%d" level))
+		      transcoded-table (org-e-odt-end-section))))
+
+      (loop for element in list-genealogy
+	    when (equal (org-element-type element) 'plain-list)
+	    do (setq transcoded-table
+		     (concat
+		      ;; Discontinue this list.
+		      "\n</text:list-item>"
+		      "\n</text:list>"
+		      ;; Embed the table.
+		      transcoded-table
+		      ;; Continute the this list.
+		      (org-e-odt-begin-plain-list
+		       (org-element-property :type element)
+		       'continue-numbering)
+		      (if (cdr element) "\n<text:list-item>"
+			"\n<text:list-header>")))))
+    transcoded-table))
 
 
 ;;;; Target
@@ -4148,12 +3985,7 @@ directory.
 
 Return output file's name."
   (interactive)
-  (setq debug-on-error t)
-
-  ;; (let* ((outfile (org-export-output-file-name ".html" subtreep pub-dir))
-  ;; 	 (outfile "content.xml"))
-  ;;   (org-export-to-file
-  ;;    'e-odt outfile subtreep visible-only body-only ext-plist))
+  (setq debug-on-error t)		; FIXME
 
   (let* ((outbuf (org-e-odt-init-outfile))
 	 (target (org-export-output-file-name ".odt" subtreep pub-dir))
@@ -4178,7 +4010,6 @@ Return output file's name."
     (if (not org-e-odt-preferred-output-format) target
       (or (org-e-odt-convert target org-e-odt-preferred-output-format)
 	  target))))
-
 
 
 
@@ -4298,67 +4129,14 @@ using `org-open-file'."
 
 ;;; FIXMES, TODOS, FOR REVIEW etc
 
-;; coding system
-
-;; (defun org-e-odt-discontinue-list ()
-;;   (let ((stashed-stack org-lparse-list-stack))
-;;     (loop for list-type in stashed-stack
-;; 	  do (org-lparse-end-list-item-1 list-type)
-;; 	  (org-lparse-end-list list-type))
-;;     (setq org-e-odt-list-stack-stashed stashed-stack)))
-
-;; (defun org-e-odt-continue-list ()
-;;   (setq org-e-odt-list-stack-stashed (nreverse org-e-odt-list-stack-stashed))
-;;   (loop for list-type in org-e-odt-list-stack-stashed
-;; 	do (org-lparse-begin-list list-type)
-;; 	(org-lparse-begin-list-item list-type)))
-
-;; FIXME: Begin indented table
-;; (setq org-e-odt-table-indentedp (not (null org-lparse-list-stack)))
-;; (setq org-e-odt-table-indentedp nil) ; FIXME
-;; (when org-e-odt-table-indentedp
-;;   ;; Within the Org file, the table is appearing within a list item.
-;;   ;; OpenDocument doesn't allow table to appear within list items.
-;;   ;; Temporarily terminate the list, emit the table and then
-;;   ;; re-continue the list.
-;;   (org-e-odt-discontinue-list)
-;;   ;; Put the Table in an indented section.
-;;   (let ((level (length org-e-odt-list-stack-stashed)))
-;; 	(org-e-odt-begin-section (format "OrgIndentedSection-Level-%d" level))))
-
-;; FIXME: End indented table
-;; (when org-e-odt-table-indentedp
-;;   (org-e-odt-end-section)
-;;   (org-e-odt-continue-list))
-
-
-;;;; org-format-table-html
-;;;; org-format-org-table-html
-;;;; org-format-table-table-html
-;;;; org-table-number-fraction
-;;;; org-table-number-regexp
+;;;; org-solidify-link-text
+;;;; coding system
 ;;;; org-e-odt-table-caption-above
-
-;;;; org-whitespace
-;;;; "<span style=\"visibility:hidden;\">%s</span>"
-;;;; Remove display properties
 
 ;;;; org-e-odt-with-timestamp
 ;;;; org-e-odt-html-helper-timestamp
 
-;;;; org-export-as-html-and-open
-;;;; org-export-as-html-batch
-;;;; org-export-as-html-to-buffer
-;;;; org-replace-region-by-html
-;;;; org-export-region-as-html
-;;;; org-export-as-html
-
 ;;;; (org-export-directory :html opt-plist)
-;;;; (plist-get opt-plist :html-extension)
-;;;; org-e-odt-toplevel-hlevel
-;;;; org-e-odt-inline-image-extensions
-;;;; org-e-odt-protect-char-alist
-;;;; org-e-odt-table-use-header-tags-for-first-column
 ;;;; org-e-odt-todo-kwd-class-prefix
 ;;;; org-e-odt-tag-class-prefix
 ;;;; org-e-odt-footnote-separator
