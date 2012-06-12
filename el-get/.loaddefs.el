@@ -4,7 +4,7 @@
 
 
 ;;;### (autoloads (artbollocks-mode) "artbollocks-mode/artbollocks-mode"
-;;;;;;  "artbollocks-mode/artbollocks-mode.el" (20354 30525))
+;;;;;;  "artbollocks-mode/artbollocks-mode.el" (20438 36237))
 ;;; Generated autoloads from artbollocks-mode/artbollocks-mode.el
 
 (autoload 'artbollocks-mode "artbollocks-mode/artbollocks-mode" "\
@@ -178,20 +178,19 @@ Initialize the color theme package by loading color-theme-libraries.
 ;;;***
 
 ;;;### (autoloads (diredp-send-bug-report diredp-dired-plus-help
-;;;;;;  diredp-describe-mode diredp-mouse-do-chown diredp-mouse-do-chgrp
-;;;;;;  diredp-mouse-do-chmod diredp-mouse-do-load diredp-mouse-do-byte-compile
-;;;;;;  diredp-mouse-do-compress diredp-mouse-do-grep diredp-mouse-do-print
-;;;;;;  diredp-mouse-do-hardlink diredp-mouse-do-symlink diredp-mouse-do-shell-command
-;;;;;;  diredp-mouse-do-delete diredp-mouse-downcase diredp-mouse-upcase
-;;;;;;  diredp-mouse-do-rename diredp-mouse-do-copy diredp-mouse-flag-file-deletion
-;;;;;;  diredp-mouse-mark/unmark-mark-region-files diredp-mouse-mark-region-files
-;;;;;;  diredp-mouse-mark/unmark diredp-mouse-unmark diredp-mouse-mark
-;;;;;;  diredp-mouse-backup-diff diredp-mouse-diff diredp-mouse-ediff
-;;;;;;  diredp-mouse-view-file diredp-mouse-find-file dired-mouse-find-file-other-window
-;;;;;;  diredp-mouse-find-file-other-frame diredp-find-file-other-frame
-;;;;;;  diredp-mouse-3-menu diredp-toggle-marks-in-region diredp-flag-region-files-for-deletion
-;;;;;;  diredp-unmark-region-files diredp-mark-region-files dired-mark-sexp
-;;;;;;  diredp-chown-this-file diredp-chgrp-this-file diredp-chmod-this-file
+;;;;;;  diredp-describe-mode diredp-mouse-do-chmod diredp-mouse-do-load
+;;;;;;  diredp-mouse-do-byte-compile diredp-mouse-do-compress diredp-mouse-do-grep
+;;;;;;  diredp-mouse-do-print diredp-mouse-do-hardlink diredp-mouse-do-symlink
+;;;;;;  diredp-mouse-do-shell-command diredp-mouse-do-delete diredp-mouse-downcase
+;;;;;;  diredp-mouse-upcase diredp-mouse-do-rename diredp-mouse-do-copy
+;;;;;;  diredp-mouse-flag-file-deletion diredp-mouse-mark/unmark-mark-region-files
+;;;;;;  diredp-mouse-mark-region-files diredp-mouse-mark/unmark diredp-mouse-unmark
+;;;;;;  diredp-mouse-mark diredp-mouse-backup-diff diredp-mouse-diff
+;;;;;;  diredp-mouse-ediff diredp-mouse-view-file diredp-mouse-find-file
+;;;;;;  dired-mouse-find-file-other-window diredp-mouse-find-file-other-frame
+;;;;;;  diredp-find-file-other-frame diredp-mouse-3-menu diredp-toggle-marks-in-region
+;;;;;;  diredp-flag-region-files-for-deletion diredp-unmark-region-files
+;;;;;;  diredp-mark-region-files dired-mark-sexp diredp-chmod-this-file
 ;;;;;;  diredp-load-this-file diredp-byte-compile-this-file diredp-mouse-describe-file
 ;;;;;;  diredp-describe-file diredp-mouse-copy-tags diredp-copy-tags-this-file
 ;;;;;;  diredp-set-tag-value-this-file diredp-paste-replace-tags-this-file
@@ -203,8 +202,7 @@ Initialize the color theme package by loading color-theme-libraries.
 ;;;;;;  diredp-rename-this-file diredp-upcase-this-file diredp-downcase-this-file
 ;;;;;;  diredp-capitalize-this-file diredp-delete-this-file diredp-capitalize
 ;;;;;;  dired-do-delete dired-do-flagged-delete dired-goto-file dired-up-directory
-;;;;;;  dired-do-find-marked-files dired-maybe-insert-subdir diredp-w32-drives
-;;;;;;  diredp-w32-list-mapped-drives diredp-w32-drives-mode dired-do-load
+;;;;;;  dired-do-find-marked-files dired-maybe-insert-subdir dired-do-load
 ;;;;;;  dired-do-byte-compile dired-do-compress diredp-ediff diredp-omit-unmarked
 ;;;;;;  diredp-omit-marked diredp-toggle-find-file-reuse-dir diredp-mouse-find-file-reuse-dir-buffer
 ;;;;;;  diredp-find-file-reuse-dir-buffer diredp-do-bookmark-in-bookmark-file
@@ -219,11 +217,24 @@ Initialize the color theme package by loading color-theme-libraries.
 ;;;;;;  diredp-mark-files-tagged-regexp diredp-mark-files-tagged-not-all
 ;;;;;;  diredp-mark-files-tagged-some diredp-mark-files-tagged-none
 ;;;;;;  diredp-mark-files-tagged-all diredp-mark/unmark-extension
-;;;;;;  diredp-marked-other-window diredp-marked diredp-fileset diredp-dired-union-other-window
-;;;;;;  diredp-dired-union diredp-dired-for-files-other-window diredp-dired-for-files
+;;;;;;  diredp-marked-other-window diredp-marked diredp-do-redisplay-recursive
+;;;;;;  diredp-do-touch-recursive diredp-do-chmod-recursive diredp-do-copy-recursive
+;;;;;;  diredp-do-move-recursive diredp-downcase-recursive diredp-upcase-recursive
+;;;;;;  diredp-capitalize-recursive diredp-copy-filename-as-kill-recursive
+;;;;;;  diredp-list-marked-recursive diredp-marked-recursive-other-window
+;;;;;;  diredp-marked-recursive diredp-do-grep-recursive diredp-do-query-replace-regexp-recursive
+;;;;;;  diredp-do-find-marked-files-recursive diredp-set-bookmark-file-bookmark-for-marked-recursive
+;;;;;;  diredp-do-bookmark-in-bookmark-file-recursive diredp-do-bookmark-recursive
+;;;;;;  diredp-image-dired-comment-files-recursive diredp-image-dired-delete-tag-recursive
+;;;;;;  diredp-image-dired-tag-files-recursive diredp-image-dired-display-thumbs-recursive
+;;;;;;  diredp-do-print-recursive diredp-do-hardlink-recursive diredp-do-symlink-recursive
+;;;;;;  diredp-do-shell-command-recursive diredp-insert-subdirs-recursive
+;;;;;;  diredp-insert-subdirs diredp-dired-inserted-subdirs diredp-dired-this-subdir
+;;;;;;  diredp-fileset diredp-dired-union-other-window diredp-dired-union
+;;;;;;  diredp-dired-for-files-other-window diredp-dired-for-files
 ;;;;;;  diredp-dired-files-other-window diredp-dired-files diredp-w32-local-drives
 ;;;;;;  diredp-prompt-for-bookmark-prefix-flag diff-switches) "dired+/dired+"
-;;;;;;  "dired+/dired+.el" (20354 30528))
+;;;;;;  "dired+/dired+.el" (20438 37127))
 ;;; Generated autoloads from dired+/dired+.el
 
 (defvar diff-switches "-c" "\
@@ -325,6 +336,384 @@ Same as `diredp-dired-union' but uses another window.
 Open Dired on the files in fileset FLSET-NAME.
 
 \(fn FLSET-NAME)" t nil)
+
+(autoload 'diredp-dired-this-subdir "dired+/dired+" "\
+Open Dired for the subdir at or above point.
+If point is not on a subdir line, but is in an inserted subdir
+listing, then use that subdir.
+
+With a prefix arg:
+ If the subdir is inserted and point is in the inserted listing then
+ remove that listing and move to the ordinary subdir line.  In other
+ words, when in an inserted listing, a prefix arg tears off the
+ inserted subdir to its own Dired buffer.
+
+\(fn &optional TEAR-OFF-P MSGP)" t nil)
+
+(autoload 'diredp-dired-inserted-subdirs "dired+/dired+" "\
+Open Dired for each of the subdirs inserted in this Dired buffer.
+With a prefix arg, create the Dired buffers but do not display them.
+Markings and current Dired switches are preserved.
+
+\(fn &optional NO-SHOW-P MSGP)" t nil)
+
+(autoload 'diredp-insert-subdirs "dired+/dired+" "\
+Insert the marked subdirectories.
+Like using \\<dired-mode-map>`\\[dired-maybe-insert-subdir]' at each marked directory line.
+
+\(fn &optional SWITCHES)" t nil)
+
+(autoload 'diredp-insert-subdirs-recursive "dired+/dired+" "\
+Insert the marked subdirs, including those in marked subdirs.
+Like `diredp-insert-subdirs', but act recursively on subdirs.
+The subdirs inserted are those that are marked in the current Dired
+buffer, or all subdirs in the directory if none are marked.  Marked
+subdirectories are handled recursively in the same way (their marked
+subdirs are inserted...).
+
+With a prefix argument, ignore all marks - include all files in this
+Dired buffer and all subdirs, recursively.
+
+\(fn &optional IGNORE-MARKS-P)" t nil)
+
+(autoload 'diredp-do-shell-command-recursive "dired+/dired+" "\
+Run shell COMMAND on the marked files, including those in marked subdirs.
+Like `dired-do-shell-command', but act recursively on subdirs.
+The files included are those that are marked in the current Dired
+buffer, or all files in the directory if none are marked.  Marked
+subdirectories are handled recursively in the same way.
+
+With a prefix argument, ignore all marks - include all files in this
+Dired buffer and all subdirs, recursively.
+
+\(fn COMMAND &optional IGNORE-MARKS-P)" t nil)
+
+(autoload 'diredp-do-symlink-recursive "dired+/dired+" "\
+Make symbolic links to marked files, including those in marked subdirs.
+Like `dired-do-symlink', but act recursively on subdirs to pick up the
+files to link.
+
+The files included are those that are marked in the current Dired
+buffer, or all files in the directory if none are marked.  Marked
+subdirectories are handled recursively in the same way.
+
+With a prefix argument, ignore all marks - include all files in this
+Dired buffer and all subdirs, recursively.
+
+\(fn &optional IGNORE-MARKS-P)" t nil)
+
+(autoload 'diredp-do-hardlink-recursive "dired+/dired+" "\
+Add hard links for marked files, including those in marked subdirs.
+Like `dired-do-hardlink', but act recursively on subdirs to pick up the
+files to link.
+
+The files included are those that are marked in the current Dired
+buffer, or all files in the directory if none are marked.  Marked
+subdirectories are handled recursively in the same way.
+
+With a prefix argument, ignore all marks - include all files in this
+Dired buffer and all subdirs, recursively.
+
+\(fn &optional IGNORE-MARKS-P)" t nil)
+
+(autoload 'diredp-do-print-recursive "dired+/dired+" "\
+Print the marked files, including those in marked subdirs.
+Like `dired-do-print', but act recursively on subdirs to pick up the
+files to print.
+
+The files included are those that are marked in the current Dired
+buffer, or all files in the directory if none are marked.  Marked
+subdirectories are handled recursively in the same way.
+
+With a prefix argument, ignore all marks - include all files in this
+Dired buffer and all subdirs, recursively.
+
+\(fn &optional IGNORE-MARKS-P)" t nil)
+
+(autoload 'diredp-image-dired-display-thumbs-recursive "dired+/dired+" "\
+Display thumbnails of marked files, including those in marked subdirs.
+Like `image-dired-display-thumbs', but act recursively on subdirs.
+Optional arguments APPEND and DO-NOT-POP are as for
+`image-dired-display-thumbs'.
+
+The files included are those that are marked in the current Dired
+buffer, or all files in the directory if none are marked.  Marked
+subdirectories are handled recursively in the same way.
+
+With a prefix argument, ignore all marks - include all files in this
+Dired buffer and all subdirs, recursively.
+
+\(fn &optional IGNORE-MARKS-P APPEND DO-NOT-POP)" t nil)
+
+(autoload 'diredp-image-dired-tag-files-recursive "dired+/dired+" "\
+Tag marked file(s) in dired, including those in marked subdirs
+Like `image-dired-tag-files', but act recursively on subdirs.
+The files included are those that are marked in the current Dired
+buffer, or all files in the directory if none are marked.  Marked
+subdirectories are handled recursively in the same way.
+
+With a prefix argument, ignore all marks - include all files in this
+Dired buffer and all subdirs, recursively.
+
+\(fn &optional IGNORE-MARKS-P)" t nil)
+
+(autoload 'diredp-image-dired-delete-tag-recursive "dired+/dired+" "\
+Remove tag for selected file(s), including those in marked subdirs.
+Like `image-dired-delete-tag', but act recursively on subdirs.
+The files included are those that are marked in the current Dired
+buffer, or all files in the directory if none are marked.  Marked
+subdirectories are handled recursively in the same way.
+
+With a prefix argument, ignore all marks - include all files in this
+Dired buffer and all subdirs, recursively.
+
+\(fn &optional IGNORE-MARKS-P)" t nil)
+
+(autoload 'diredp-image-dired-comment-files-recursive "dired+/dired+" "\
+Add comment to marked files in dired, including those in marked subdirs.
+Like `image-dired-dired-comment-files' but act recursively on subdirs.
+The files included are those that are marked in the current Dired
+buffer, or all files in the directory if none are marked.  Marked
+subdirectories are handled recursively in the same way.
+
+With a prefix argument, ignore all marks - include all files in this
+Dired buffer and all subdirs, recursively.
+
+\(fn &optional IGNORE-MARKS-P)" t nil)
+
+(autoload 'diredp-do-bookmark-recursive "dired+/dired+" "\
+Bookmark the marked files, including those in marked subdirs.
+Like `diredp-do-bookmark', but act recursively on subdirs.
+The files included are those that are marked in the current Dired
+buffer, or all files in the directory if none are marked.  Marked
+subdirectories are handled recursively in the same way.
+
+With a prefix argument, ignore all marks - include all files in this
+Dired buffer and all subdirs, recursively.
+
+\(fn &optional IGNORE-MARKS-P PREFIX)" t nil)
+
+(autoload 'diredp-do-bookmark-in-bookmark-file-recursive "dired+/dired+" "\
+Bookmark files here and below in BOOKMARK-FILE and save BOOKMARK-FILE.
+Like `diredp-do-bookmark-in-bookmark-file', but act recursively on
+subdirs.  The files included are those that are marked in the current
+Dired buffer, or all files in the directory if none are marked.
+Marked subdirectories are handled recursively in the same way.
+
+With a prefix argument, ignore all marks - include all files in this
+Dired buffer and all subdirs, recursively.
+
+\(fn BOOKMARK-FILE &optional PREFIX IGNORE-MARKS-P BFILE-BOOKMARKP)" t nil)
+
+(autoload 'diredp-set-bookmark-file-bookmark-for-marked-recursive "dired+/dired+" "\
+Bookmark the marked files and create a bookmark-file bookmark for them.
+Like `diredp-set-bookmark-file-bookmark-for-marked', but act
+recursively on subdirs.
+
+The files included are those that are marked in the current Dired
+buffer, or all files in the directory if none are marked.  Marked
+subdirectories are handled recursively in the same way.
+
+With a prefix argument, ignore all marks - include all files in this
+Dired buffer and all subdirs, recursively.
+
+\(fn BOOKMARK-FILE &optional PREFIX ARG)" t nil)
+
+(autoload 'diredp-do-find-marked-files-recursive "dired+/dired+" "\
+Find marked files simultaneously, including those in marked subdirs.
+Like `dired-do-find-marked-files', but act recursively on subdirs.
+The files included are those that are marked in the current Dired
+buffer, or all files in the directory if none are marked.  Marked
+subdirectories are handled recursively in the same way.
+
+With a prefix argument, ignore all marks - include all files in this
+Dired buffer and all subdirs, recursively.
+
+\(fn &optional IGNORE-MARKS-P)" t nil)
+
+(autoload 'diredp-do-query-replace-regexp-recursive "dired+/dired+" "\
+Do `query-replace-regexp' of FROM with TO, on all marked files.
+If you exit (\\[keyboard-quit], RET or q), you can resume the query replace
+with the command \\[tags-loop-continue].
+
+\(fn FROM TO &optional IGNORE-MARKS-P)" t nil)
+
+(autoload 'diredp-do-grep-recursive "dired+/dired+" "\
+Run `grep' on marked files, including those in marked subdirs.
+Like `diredp-do-grep', but act recursively on subdirs.
+The files included are those that are marked in the current Dired
+buffer, or all files in the directory if none are marked.  Marked
+subdirectories are handled recursively in the same way.
+
+With a prefix argument, ignore all marks - include all files in this
+Dired buffer and all subdirs, recursively.
+
+\(fn COMMAND-ARGS &optional IGNORE-MARKS-P)" t nil)
+
+(autoload 'diredp-marked-recursive "dired+/dired+" "\
+Open Dired on marked files, including those in marked subdirs.
+Like `diredp-marked', but act recursively on subdirs.
+
+See `diredp-do-find-marked-files-recursive' for a description of the
+files included.  In particular, if no files are marked here or in a
+marked subdir, then all files in the directory are included.
+
+\(fn DIRNAME &optional IGNORE-MARKED-P)" t nil)
+
+(autoload 'diredp-marked-recursive-other-window "dired+/dired+" "\
+Same as `diredp-marked-recursive', but uses a different window.
+
+\(fn DIRNAME &optional IGNORE-MARKED-P)" t nil)
+
+(autoload 'diredp-list-marked-recursive "dired+/dired+" "\
+List the files marked here and in marked subdirs, recursively.
+See `diredp-do-find-marked-files-recursive' for a description of the
+files included.  In particular, if no files are marked here or in a
+marked subdir, then all files in the directory are included.
+
+Non-interactively, non-nil PREDICATE is a file-name predicate.  List
+only the files for which it returns non-nil.
+
+\(fn &optional IGNORE-MARKS-P PREDICATE)" t nil)
+
+(autoload 'diredp-copy-filename-as-kill-recursive "dired+/dired+" "\
+Copy names of marked files here and in marked subdirs, to `kill-ring'.
+The names are separated by a space.
+
+Like `dired-copy-filename-as-kill', but act recursively on subdirs.
+\(Do not copy subdir names themselves.)
+
+With no prefix arg, use relative file names.
+With a zero prefix arg, use absolute file names.
+With a plain prefix arg (`C-u'), use names relative to the current
+Dired directory.  (This might contain slashes if in a subdirectory.)
+
+If on a subdir headerline, use absolute subdir name instead - prefix
+arg and marked files are ignored in this case.
+
+The files included are those that are marked in the current Dired
+buffer, or all files in the directory if none are marked.  Marked
+subdirectories are handled recursively in the same way.
+
+\(fn &optional ARG)" t nil)
+
+(autoload 'diredp-capitalize-recursive "dired+/dired+" "\
+Rename marked files, including in marked subdirs, by capitalizing them.
+Like `diredp-capitalize', but act recursively on subdirs.
+
+The files included are those that are marked in the current Dired
+buffer, or all files in the directory if none are marked.  Marked
+subdirectories are handled recursively in the same way.
+
+With a prefix argument, ignore all marks - include all files in this
+Dired buffer and all subdirs, recursively.
+
+\(fn &optional IGNORE-MARKS-P)" t nil)
+
+(autoload 'diredp-upcase-recursive "dired+/dired+" "\
+Rename marked files, including in marked subdirs, making them uppercase.
+Like `dired-upcase', but act recursively on subdirs.
+
+The files included are those that are marked in the current Dired
+buffer, or all files in the directory if none are marked.  Marked
+subdirectories are handled recursively in the same way.
+
+With a prefix argument, ignore all marks - include all files in this
+Dired buffer and all subdirs, recursively.
+
+\(fn &optional IGNORE-MARKS-P)" t nil)
+
+(autoload 'diredp-downcase-recursive "dired+/dired+" "\
+Rename marked files, including in marked subdirs, making them lowercase.
+Like `dired-downcase', but act recursively on subdirs.
+
+The files included are those that are marked in the current Dired
+buffer, or all files in the directory if none are marked.  Marked
+subdirectories are handled recursively in the same way.
+
+With a prefix argument, ignore all marks - include all files in this
+Dired buffer and all subdirs, recursively.
+
+\(fn &optional IGNORE-MARKS-P)" t nil)
+
+(autoload 'diredp-do-move-recursive "dired+/dired+" "\
+Move marked files, including in marked subdirs, to a given directory.
+Like `dired-do-rename', but act recursively on subdirs to pick up the
+files to move.
+
+The files included are those that are marked in the current Dired
+buffer, or all files in the directory if none are marked.  Marked
+subdirectories are handled recursively in the same way.
+
+This means move the marked files of marked subdirs and their marked
+subdirs, etc.  It does not mean move or rename the subdirs themselves
+recursively.
+
+With a prefix argument, ignore all marks - include all files in this
+Dired buffer and all subdirs, recursively.
+
+Renames any buffers that are visiting the files.
+
+The default suggested for the target directory depends on the value of
+`dired-dwim-target', which see.
+
+\(fn &optional IGNORE-MARKS-P)" t nil)
+
+(autoload 'diredp-do-copy-recursive "dired+/dired+" "\
+Copy marked files, including in marked subdirs, to a given directory.
+Like `dired-do-copy', but act recursively on subdirs to pick up the
+files to copy.
+
+The files included are those that are marked in the current Dired
+buffer, or all files in the directory if none are marked.  Marked
+subdirectories are handled recursively in the same way.
+
+This means copy the marked files of marked subdirs and their marked
+subdirs, etc.  It does not mean copy the subdirs themselves
+recursively.
+
+With a prefix argument, ignore all marks - include all files in this
+Dired buffer and all subdirs, recursively.
+
+Preserves the last-modified date when copying, unless
+`dired-copy-preserve-time' is nil.
+
+The default suggested for the target directory depends on the value of
+`dired-dwim-target', which see.
+
+This command copies symbolic links by creating new ones, like UNIX
+command `cp -d'.
+
+\(fn &optional IGNORE-MARKS-P)" t nil)
+
+(autoload 'diredp-do-chmod-recursive "dired+/dired+" "\
+Change the mode of the marked files, including those in marked subdirs.
+Symbolic modes like `g+w' are allowed.
+
+Note that marked subdirs are not changed.  Their markings are used only
+to indicate that some of their files are to be changed.
+
+\(fn &optional IGNORE-MARKS-P)" t nil)
+
+(autoload 'diredp-do-touch-recursive "dired+/dired+" "\
+Change the timestamp of marked files, including those in marked subdirs.
+This calls `touch'.  Like `dired-do-touch', but act recursively on
+subdirs.  The subdirs inserted are those that are marked in the
+current Dired buffer, or all subdirs in the directory if none are
+marked.  Marked subdirectories are handled recursively in the same
+way.
+
+With a prefix argument, ignore all marks - include all files in this
+Dired buffer and all subdirs, recursively.
+
+\(fn &optional IGNORE-MARKS-P)" t nil)
+
+(autoload 'diredp-do-redisplay-recursive "dired+/dired+" "\
+Redisplay marked file lines, including those in marked subdirs.
+Like `dired-do-redisplay' with no args, but act recursively on
+subdirs.
+
+\(fn &optional MSGP)" t nil)
 
 (autoload 'diredp-marked "dired+/dired+" "\
 Open Dired on only the marked files or the next N files.
@@ -643,7 +1032,8 @@ See also command `diredp-do-bookmark-in-bookmark-file'.
 \(fn BOOKMARK-FILE &optional PREFIX ARG)" t nil)
 
 (autoload 'diredp-do-bookmark-in-bookmark-file "dired+/dired+" "\
-Bookmark the marked files in BOOKMARK-FILE and save BOOKMARK-FILE.
+Bookmark files in BOOKMARK-FILE and save BOOKMARK-FILE.
+The files bookmarked are the marked files, by default.
 The bookmarked position is the beginning of the file.
 You are prompted for BOOKMARK-FILE.  The default is `.emacs.bmk' in
 the current directory, but you can enter any file name, anywhere.
@@ -658,7 +1048,9 @@ Each bookmark name is the non-directory portion of the file name,
 Interactively, you are prompted for PREFIX if
  `diredp-prompt-for-bookmark-prefix-flag' is non-nil.
 
-A prefix argument ARG specifies files to use instead of those marked.
+Interactively, a prefix argument ARG specifies the files to use
+instead of those marked.
+
  An integer means use the next ARG files (previous -ARG, if < 0).
  `C-u': Use the current file (whether or not any are marked).
  `C-u C-u': Use all files in Dired, except directories.
@@ -667,10 +1059,13 @@ A prefix argument ARG specifies files to use instead of those marked.
 
 See also command `diredp-set-bookmark-file-bookmark-for-marked'.
 
-Non-interactively, non-nil BFILE-BOOKMARKP means create a
-bookmark-file bookmark for BOOKMARK-FILE.
+Non-interactively:
 
-\(fn BOOKMARK-FILE &optional PREFIX ARG BFILE-BOOKMARKP)" t nil)
+ * Non-nil BFILE-BOOKMARKP means create a bookmark-file bookmark for
+   BOOKMARK-FILE.
+ * Non-nil FILES is the list of files to bookmark.
+
+\(fn BOOKMARK-FILE &optional PREFIX ARG BFILE-BOOKMARKP FILES)" t nil)
 
 (autoload 'diredp-find-file-reuse-dir-buffer "dired+/dired+" "\
 Like `dired-find-file', but reuse Dired buffers.
@@ -751,33 +1146,6 @@ A prefix argument ARG specifies files to use instead of marked.
  `C-u C-u C-u C-u': Use all files and all directories.
 
 \(fn &optional ARG)" t nil)
-
-(autoload 'diredp-w32-drives-mode "dired+/dired+" "\
-Open Dired for an MS Windows drive (local or remote).
-
-\(fn)" t nil)
-
-(autoload 'diredp-w32-list-mapped-drives "dired+/dired+" "\
-List network connection information for shared MS Windows resources.
-This just invokes the Windows `NET USE' command.
-
-\(fn)" t nil)
-
-(autoload 'diredp-w32-drives "dired+/dired+" "\
-Visit a list of MS Windows drives for use by Dired.
-With a prefix argument use another window for the list.
-In the list, use `mouse-2' or `RET' to open Dired for a given drive.
-
-The drives listed are the remote drives currently available, as
-determined by the Windows command `NET USE', plus the local drives
-specified by option `diredp-w32-local-drives', which you can
-customize.
-
-Note: When you are in Dired at the root of a drive (e.g. directory
-      `c:/'), command `dired-up-directory' invokes this command.
-      So you can use `\\[dired-up-directory]' to go up to the list of drives.
-
-\(fn &optional OTHER-WINDOW-P)" t nil)
 
 (autoload 'dired-maybe-insert-subdir "dired+/dired+" "\
 Move to Dired subdirectory line or subdirectory listing.
@@ -867,9 +1235,8 @@ non-empty directories is allowed.
 \(fn &optional ARG)" t nil)
 
 (autoload 'diredp-capitalize "dired+/dired+" "\
-Rename all marked (or next ARG) files by capitilizing them.
-This gives the file name(s) a first character in upper case and the
-rest lower case.
+Rename all marked (or next ARG) files by capitalizing them.
+Makes the first char of the name uppercase and the others lowercase.
 
 \(fn &optional ARG)" t nil)
 
@@ -879,9 +1246,8 @@ In Dired, delete the file on the cursor line, upon confirmation.
 \(fn)" t nil)
 
 (autoload 'diredp-capitalize-this-file "dired+/dired+" "\
-In Dired, rename the file on the cursor line by capitilizing it.
-This gives the file name a first character in upper case and the rest
-lower case.
+In Dired, rename the file on the cursor line by capitalizing it.
+Makes the first char of the name uppercase and the others lowercase.
 
 \(fn)" t nil)
 
@@ -1029,16 +1395,6 @@ In Dired, load the file on the cursor line.
 
 (autoload 'diredp-chmod-this-file "dired+/dired+" "\
 In Dired, change the mode of the file on the cursor line.
-
-\(fn)" t nil)
-
-(autoload 'diredp-chgrp-this-file "dired+/dired+" "\
-In Dired, change the group of the file on the cursor line.
-
-\(fn)" t nil)
-
-(autoload 'diredp-chown-this-file "dired+/dired+" "\
-In Dired, change the owner of the file on the cursor line.
 
 \(fn)" t nil)
 
@@ -1274,16 +1630,6 @@ This calls chmod, so symbolic modes like `g+w' are allowed.
 
 \(fn EVENT)" t nil)
 
-(autoload 'diredp-mouse-do-chgrp "dired+/dired+" "\
-Change the group of this file.
-
-\(fn EVENT)" t nil)
-
-(autoload 'diredp-mouse-do-chown "dired+/dired+" "\
-Change the owner of this file.
-
-\(fn EVENT)" t nil)
-
 (autoload 'diredp-describe-mode "dired+/dired+" "\
 Describe Dired mode, including Dired+ features.
 This is `describe-mode' plus a description of Dired+ features.
@@ -1320,7 +1666,7 @@ View feed using auth credentials in auth-handle.
 ;;;***
 
 ;;;### (autoloads (g-auth-lifetime) "g-client/g-auth" "g-client/g-auth.el"
-;;;;;;  (20311 29240))
+;;;;;;  (20379 32099))
 ;;; Generated autoloads from g-client/g-auth.el
 
 (defvar g-auth-lifetime "4 hours" "\
@@ -1902,7 +2248,7 @@ Retrieved featured video list.
 
 ;;;### (autoloads (gweb-my-address gweb-maps-reverse-geocode gweb-maps-geocode
 ;;;;;;  gweb-google-at-point) "g-client/gweb" "g-client/gweb.el"
-;;;;;;  (20320 41290))
+;;;;;;  (20407 15943))
 ;;; Generated autoloads from g-client/gweb.el
 
 (defsubst gweb-google-autocomplete-with-corpus (corpus) "\
@@ -1950,8 +2296,8 @@ Major mode for editing JavaScript code.
 
 ;;;***
 
-;;;### (autoloads (magit-status) "magit/magit" "magit/magit.el" (20347
-;;;;;;  5005))
+;;;### (autoloads (magit-status) "magit/magit" "magit/magit.el" (20425
+;;;;;;  35020))
 ;;; Generated autoloads from magit/magit.el
 
 (autoload 'magit-status "magit/magit" "\
@@ -2037,7 +2383,7 @@ running 'man git-rebase' at the command line) for details.
 ;;;### (autoloads (list-packages describe-package package-initialize
 ;;;;;;  package-refresh-contents package-install-file package-install-from-buffer
 ;;;;;;  package-install package-enable-at-startup) "package24/package"
-;;;;;;  "package24/package.el" (20354 30526))
+;;;;;;  "package24/package.el" (20438 36274))
 ;;; Generated autoloads from package24/package.el
 
 (defvar package-enable-at-startup t "\
@@ -2108,7 +2454,7 @@ The list is displayed in a buffer named `*Packages*'.
 ;;;***
 
 ;;;### (autoloads (paredit-mode) "paredit/paredit" "paredit/paredit.el"
-;;;;;;  (20354 30526))
+;;;;;;  (20438 36301))
 ;;; Generated autoloads from paredit/paredit.el
 
 (autoload 'paredit-mode "paredit/paredit" "\
@@ -2125,7 +2471,7 @@ Paredit behaves badly if parentheses are imbalanced, so exercise
 ;;;***
 
 ;;;### (autoloads (twit) "twittering-mode/twittering-mode" "twittering-mode/twittering-mode.el"
-;;;;;;  (20345 50996))
+;;;;;;  (20392 37167))
 ;;; Generated autoloads from twittering-mode/twittering-mode.el
 
 (autoload 'twit "twittering-mode/twittering-mode" "\
@@ -2135,15 +2481,61 @@ Start twittering-mode.
 
 ;;;***
 
+;;;### (autoloads (global-undo-tree-mode undo-tree-mode) "undo-tree/undo-tree"
+;;;;;;  "undo-tree/undo-tree.el" (20438 39412))
+;;; Generated autoloads from undo-tree/undo-tree.el
+
+(autoload 'undo-tree-mode "undo-tree/undo-tree" "\
+Toggle undo-tree mode.
+With no argument, this command toggles the mode.
+A positive prefix argument turns the mode on.
+A negative prefix argument turns it off.
+
+Undo-tree-mode replaces Emacs' standard undo feature with a more
+powerful yet easier to use version, that treats the undo history
+as what it is: a tree.
+
+The following keys are available in `undo-tree-mode':
+
+  \\{undo-tree-map}
+
+Within the undo-tree visualizer, the following keys are available:
+
+  \\{undo-tree-visualizer-map}
+
+\(fn &optional ARG)" t nil)
+
+(defvar global-undo-tree-mode nil "\
+Non-nil if Global-Undo-Tree mode is enabled.
+See the command `global-undo-tree-mode' for a description of this minor mode.
+Setting this variable directly does not take effect;
+either customize it (see the info node `Easy Customization')
+or call the function `global-undo-tree-mode'.")
+
+(custom-autoload 'global-undo-tree-mode "undo-tree/undo-tree" nil)
+
+(autoload 'global-undo-tree-mode "undo-tree/undo-tree" "\
+Toggle Undo-Tree mode in all buffers.
+With prefix ARG, enable Global-Undo-Tree mode if ARG is positive;
+otherwise, disable it.  If called from Lisp, enable the mode if
+ARG is omitted or nil.
+
+Undo-Tree mode is enabled in all buffers where
+`turn-on-undo-tree-mode' would do it.
+See `undo-tree-mode' for more information on Undo-Tree mode.
+
+\(fn &optional ARG)" t nil)
+
+;;;***
+
 ;;;### (autoloads nil nil ("calfw/calfw-cal.el" "calfw/calfw-howm.el"
 ;;;;;;  "calfw/calfw-ical.el" "calfw/calfw-org.el" "calfw/calfw.el"
 ;;;;;;  "color-theme-solarized/color-theme-solarized-pkg.el" "color-theme/color-theme-autoloads.el"
 ;;;;;;  "el-get/el-get-install.el" "el-get/el-get.el" "g-client/g-autogen.el"
 ;;;;;;  "g-client/g-load-path.el" "g-client/g.el" "g-client/gnotebook.el"
 ;;;;;;  "g-client/gwis.el" "g-client/indent-files.el" "g-client/org2blogger.el"
-;;;;;;  "magit/magit-bisect.el" "magit/magit-key-mode.el" "magit/magit-pkg.el"
-;;;;;;  "magit/magit-wip.el" "org-fstree/org-fstree.el" "twittering-mode/test.el")
-;;;;;;  (20354 40416 53002))
+;;;;;;  "magit/magit-pkg.el" "magit/magit-wip.el" "org-fstree/org-fstree.el"
+;;;;;;  "twittering-mode/test.el") (20438 39414 11990))
 
 ;;;***
 
