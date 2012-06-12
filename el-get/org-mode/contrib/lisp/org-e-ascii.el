@@ -53,7 +53,7 @@
 (declare-function org-export-get-headline-number "org-export" (headline info))
 (declare-function org-export-get-ordinal "org-export"
 		  (element info &optional types predicate))
-(declare-function org-export-get-parent-headline "org-export" (blob info))
+(declare-function org-export-get-parent-headline "org-export" (blob))
 (declare-function org-export-get-relative-level "org-export" (headline info))
 (declare-function org-export-low-level-p "org-export" (headline info))
 (declare-function org-export-output-file-name "org-export"
@@ -564,7 +564,7 @@ INFO is a plist used as a communication channel."
     ;; Elements with a relative width: store maximum text width in
     ;; TOTAL-WIDTH.
     (otherwise
-     (let* ((genealogy (cons element (org-export-get-genealogy element info)))
+     (let* ((genealogy (cons element (org-export-get-genealogy element)))
 	    ;; Total width is determined by the presence, or not, of an
 	    ;; inline task among ELEMENT parents.
 	    (total-width
@@ -574,7 +574,7 @@ INFO is a plist used as a communication channel."
 	       ;; No inlinetask: Remove global margin from text width.
 	       (- org-e-ascii-text-width
 		  org-e-ascii-global-margin
-		  (let ((parent (org-export-get-parent-headline element info)))
+		  (let ((parent (org-export-get-parent-headline element)))
 		    ;; Inner margin doesn't apply to text before first
 		    ;; headline.
 		    (if (not parent) 0
@@ -607,13 +607,14 @@ INFO is a plist used as a communication channel."
 		 ;; that is the sum of the difference between its
 		 ;; indentation and the indentation of the top item in
 		 ;; the list and current item bullet's length.  Also
-		 ;; remove tag length (for description lists) or bullet
-		 ;; length.
+		 ;; remove checkbox length, and tag length (for
+		 ;; description lists) or bullet length.
 		 (let ((struct (org-element-property :structure parent-item))
 		       (beg-item (org-element-property :begin parent-item)))
 		   (+ (- (org-list-get-ind beg-item struct)
 			 (org-list-get-ind
 			  (org-list-get-top-point struct) struct))
+		      (length (org-e-ascii--checkbox parent-item info))
 		      (length
 		       (or (org-list-get-tag beg-item struct)
 			   (org-list-get-bullet beg-item struct)))))))))))))
@@ -830,7 +831,7 @@ is a plist used as a communication channel."
 	 ;; count links that might be in the title.
 	 (headline
 	  (if (eq (org-element-type element) 'headline) element
-	    (or (org-export-get-parent-headline element info) element))))
+	    (or (org-export-get-parent-headline element) element))))
     ;; Get all links in HEADLINE.
     (org-element-map
      headline 'link (lambda (link) (funcall unique-link-p link)) info)))
@@ -876,6 +877,15 @@ channel."
 	   width info)
 	  "\n\n")))))
    links ""))
+
+(defun org-e-ascii--checkbox (item info)
+  "Return checkbox string for ITEM or nil.
+INFO is a plist used as a communication channel."
+  (let ((utf8p (eq (plist-get info :ascii-charset) 'utf-8)))
+    (case (org-element-property :checkbox item)
+      (on (if utf8p "☑ " "[X] "))
+      (off (if utf8p "☐ " "[ ] "))
+      (trans (if utf8p "☒ " "[-] ")))))
 
 
 
@@ -1306,7 +1316,7 @@ holding contextual information."
 	  (make-string width (if utf8p ?━ ?_)))
 	 ;; Flush the inlinetask to the right.
 	 (- org-e-ascii-text-width org-e-ascii-global-margin
-	    (if (not (org-export-get-parent-headline inlinetask info)) 0
+	    (if (not (org-export-get-parent-headline inlinetask)) 0
 	      org-e-ascii-inner-margin)
 	    (org-e-ascii--current-text-width inlinetask info)))))))
 
@@ -1325,42 +1335,46 @@ contextual information."
   "Transcode an ITEM element from Org to ASCII.
 CONTENTS holds the contents of the item.  INFO is a plist holding
 contextual information."
-  (let ((bullet
-	 ;; First parent of ITEM is always the plain-list.  Get
-	 ;; `:type' property from it.
-	 (org-list-bullet-string
-	  (case (org-element-property :type (org-export-get-parent item info))
-	    (descriptive
-	     (concat (org-export-data (org-element-property :tag item) info)
-		     ": "))
-	    (ordered
-	     ;; Return correct number for ITEM, paying attention to
-	     ;; counters.
-	     (let* ((struct (org-element-property :structure item))
-		    (bul (org-element-property :bullet item))
-		    (num
-		     (number-to-string
-		      (car (last (org-list-get-item-number
-				  (org-element-property :begin item)
-				  struct
-				  (org-list-prevs-alist struct)
-				  (org-list-parents-alist struct)))))))
-	       (replace-regexp-in-string "[0-9]+" num bul)))
-	    (t (let ((bul (org-element-property :bullet item)))
-		 ;; Change bullets into more visible form if UTF-8 is active.
-		 (if (not (eq (plist-get info :ascii-charset) 'utf-8)) bul
-		   (replace-regexp-in-string
-		    "-" "•"
+  (let* ((utf8p (eq (plist-get info :ascii-charset) 'utf-8))
+	 (checkbox (org-e-ascii--checkbox item info))
+	 (list-type (org-element-property :type (org-export-get-parent item)))
+	 (bullet
+	  ;; First parent of ITEM is always the plain-list.  Get
+	  ;; `:type' property from it.
+	  (org-list-bullet-string
+	   (case list-type
+	     (descriptive
+	      (concat checkbox
+		      (org-export-data (org-element-property :tag item) info)
+		      ": "))
+	     (ordered
+	      ;; Return correct number for ITEM, paying attention to
+	      ;; counters.
+	      (let* ((struct (org-element-property :structure item))
+		     (bul (org-element-property :bullet item))
+		     (num (number-to-string
+			   (car (last (org-list-get-item-number
+				       (org-element-property :begin item)
+				       struct
+				       (org-list-prevs-alist struct)
+				       (org-list-parents-alist struct)))))))
+		(replace-regexp-in-string "[0-9]+" num bul)))
+	     (t (let ((bul (org-element-property :bullet item)))
+		  ;; Change bullets into more visible form if UTF-8 is active.
+		  (if (not utf8p) bul
 		    (replace-regexp-in-string
-		     "+" "⁃"
-		     (replace-regexp-in-string "*" "‣" bul))))))))))
+		     "-" "•"
+		     (replace-regexp-in-string
+		      "+" "⁃"
+		      (replace-regexp-in-string "*" "‣" bul))))))))))
     (concat
      bullet
+     (unless (eq list-type 'descriptive) checkbox)
      ;; Contents: Pay attention to indentation.  Note: check-boxes are
      ;; already taken care of at the paragraph level so they don't
      ;; interfere with indentation.
      (let ((contents (org-e-ascii--indent-string contents (length bullet))))
-       (if (eq (caar (org-element-contents item)) 'paragraph)
+       (if (eq (org-element-type (car (org-element-contents item))) 'paragraph)
 	   (org-trim contents)
 	 (concat "\n" contents))))))
 
@@ -1473,19 +1487,7 @@ information."
 CONTENTS is the contents of the paragraph, as a string.  INFO is
 the plist used as a communication channel."
   (org-e-ascii--fill-string
-   (let ((parent (org-export-get-parent paragraph info)))
-     ;; If PARAGRAPH is the first one in a list element, be sure to
-     ;; add the check-box in front of it, before any filling.  Later,
-     ;; it would interfere with line width.
-     (if (and (eq (org-element-type parent) 'item)
-	      (equal (car (org-element-contents parent)) paragraph))
-	 (let ((utf8p (eq (plist-get info :ascii-charset) 'utf-8)))
-	   (concat (case (org-element-property :checkbox parent)
-		     (on (if utf8p "☑ " "[X] "))
-		     (off (if utf8p "☐ " "[ ] "))
-		     (trans (if utf8p "☒ " "[-] ")))
-		   contents))
-       contents))
+   contents
    (org-e-ascii--current-text-width paragraph info) info))
 
 
@@ -1567,7 +1569,7 @@ CONTENTS is nil.  INFO is a plist holding contextual information."
      value
      (+ org-e-ascii-quote-margin
 	;; Don't apply inner margin if parent headline is low level.
-	(let ((headline (org-export-get-parent-headline quote-section info)))
+	(let ((headline (org-export-get-parent-headline quote-section)))
 	  (if (org-export-low-level-p headline info) 0
 	    org-e-ascii-inner-margin))))))
 
@@ -1597,7 +1599,7 @@ contextual information."
 	;; Separate list of links and section contents.
 	(when (org-string-nw-p links) (concat "\n\n" links)))))
    ;; Do not apply inner margin if parent headline is low level.
-   (let ((headline (org-export-get-parent-headline section info)))
+   (let ((headline (org-export-get-parent-headline section)))
      (if (or (not headline) (org-export-low-level-p headline info)) 0
        org-e-ascii-inner-margin))))
 
@@ -1698,7 +1700,7 @@ are ignored."
   (or (and (not org-e-ascii-table-widen-columns)
 	   (org-export-table-cell-width table-cell info))
       (let* ((max-width 0)
-	     (table (org-export-get-parent-table table-cell info))
+	     (table (org-export-get-parent-table table-cell))
 	     (specialp (org-export-table-has-special-column-p table))
 	     (col (cdr (org-export-table-cell-address table-cell info))))
 	(org-element-map

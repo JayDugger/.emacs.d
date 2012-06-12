@@ -171,13 +171,12 @@ structure of the values.")
 	;; separator
 	"<text:p text:style-name=\"OrgSubtitle\"/>")))))
 
-(defun org-e-odt-begin-section (style &optional name)
+(defun org-e-odt-format-section (text style &optional name)
   (let ((default-name (car (org-e-odt-add-automatic-style "Section"))))
-    (format "<text:section text:style-name=\"%s\" text:name=\"%s\">"
-	    style (or name default-name))))
-
-(defun org-e-odt-end-section ()
-  "</text:section>")
+    (format "\n<text:section text:style-name=\"%s\" %s>\n%s</text:section>"
+	    style
+	    (format "text:name=\"%s\"" (or name default-name))
+	    text)))
 
 (defun org-e-odt-begin-paragraph (&optional style)
   (format "<text:p%s>" (org-e-odt-get-extra-attrs-for-paragraph-style style)))
@@ -535,7 +534,7 @@ Update styles.xml with styles that were collected as part of
 	       (t (error "what is this?"))))
 	 (caption-from
 	  (case (org-element-type element)
-	    (link (org-export-get-parent-paragraph element info))
+	    (link (org-export-get-parent-element element))
 	    (t element)))
 	 (captions (org-e-odt-format-label caption-from info 'definition))
 	 (caption (car captions))
@@ -859,7 +858,7 @@ ATTR is a string of other attributes of the a element."
 (defun org-e-odt-format-label (element info op)
   (let* ((caption-from
 	  (case (org-element-type element)
-	    (link (org-export-get-parent-paragraph element info))
+	    (link (org-export-get-parent-element element))
 	    (t element)))
 	 ;; get label and caption.
 	 (label (org-element-property :name caption-from))
@@ -2510,6 +2509,14 @@ This function shouldn't be used for floats.  See
   ;;     (concat (format "\\label{%s}\n" label) output)))
   output)
 
+(defun org-e-odt--checkbox (item)
+  "Return check-box string associated to ITEM."
+  (org-e-odt-format-fontify
+   (case (org-element-property :checkbox item)
+     (on "[&#x2713;] ")			; CHECK MARK
+     (off "[ ] ")
+     (trans "[-] "))
+   'code))
 
 
 ;;; Transcode Helpers
@@ -2803,7 +2810,7 @@ CONTENTS is nil.  INFO is a plist holding contextual information."
 CONTENTS is nil.  INFO is a plist holding contextual information."
   (concat
    ;; Insert separator between two footnotes in a row.
-   (let ((prev (org-export-get-previous-element footnote-reference info)))
+   (let ((prev (org-export-get-previous-element footnote-reference)))
      (when (eq (org-element-type prev) 'footnote-reference)
        org-e-odt-footnote-separator))
    (cond
@@ -2894,10 +2901,10 @@ holding contextual information."
      ;; 	     (itemized-body (org-e-odt-format-list-item
      ;; 			     contents type nil nil full-text)))
      ;; 	(concat
-     ;; 	 (and (org-export-first-sibling-p headline info)
+     ;; 	 (and (org-export-first-sibling-p headline)
      ;; 	      (org-e-odt-begin-plain-list type))
      ;; 	 itemized-body
-     ;; 	 (and (org-export-last-sibling-p headline info)
+     ;; 	 (and (org-export-last-sibling-p headline)
      ;; 	      "</text:list>"))))
      ;; Case 3. Standard headline.  Export it as a section.
      (t
@@ -2948,10 +2955,6 @@ contextual information."
 
 ;;;; Inlinetask
 
-(defun org-e-odt-format-section (text class &optional id)
-  (let ((extra (concat (when id (format " id=\"%s\"" id)))))
-    (concat (format "<div class=\"%s\"%s>\n" class extra) text "</div>\n")))
-
 (defun org-e-odt-inlinetask (inlinetask contents info)
   "Transcode an INLINETASK element from Org to ODT.
 CONTENTS holds the contents of the block.  INFO is a plist
@@ -2994,16 +2997,26 @@ contextual information."
   "Transcode an ITEM element from Org to ODT.
 CONTENTS holds the contents of the item.  INFO is a plist holding
 contextual information."
-  (let* ((plain-list (org-export-get-parent item info))
+  (let* ((plain-list (org-export-get-parent item))
 	 (type (org-element-property :type plain-list))
 	 (counter (org-element-property :counter item))
 	 (tag (let ((tag (org-element-property :tag item)))
-		(and tag (org-export-data tag info)))))
+		(and tag
+		     (concat (org-e-odt--checkbox item)
+			     (org-export-data tag info))))))
     (case type
-      (ordered
-       (format "\n<text:list-item>\n%s\n</text:list-item>" contents))
-      (unordered
-       (format "\n<text:list-item>\n%s\n</text:list-item>" contents))
+      ((ordered unordered)
+       (format "\n<text:list-item>\n%s\n%s"
+	       contents
+	       (let* ((--element-has-a-table-p
+		       (function
+			(lambda (element info)
+			  (loop for el in (org-element-contents element)
+				thereis (equal (org-element-type el) 'table))))))
+		 (cond
+		  ((funcall --element-has-a-table-p item info)
+		   "</text:list-header>")
+		  (t "</text:list-item>")))))
       (descriptive
        (concat
 	(let ((term (or tag "(no term)")))
@@ -3017,7 +3030,7 @@ contextual information."
 		    "text:continue-numbering=\"false\""
 		    (format "\n<text:list-item>\n%s\n</text:list-item>"
 			    contents)))))))
-      (t (error "Unknown list type")))))
+      (t (error "Unknown list type: %S" type)))))
 
 
 ;;;; Keyword
@@ -3155,7 +3168,7 @@ used as a communication channel."
 		(org-e-odt-copy-image-file src)))
 	 ;; extract attributes from #+ATTR_ODT line.
 	 (attr-from (case (org-element-type element)
-		      (link (org-export-get-parent-paragraph element info))
+		      (link (org-export-get-parent-element element))
 		      (t element)))
 	 ;; convert attributes to a plist.
 	 (attr-plist (org-e-odt-element-attributes attr-from info))
@@ -3254,7 +3267,7 @@ standalone images, do the following.
 		     (paragraph element)
 		     (link (and (org-export-inline-image-p
 				 element org-e-odt-inline-image-rules)
-				(org-export-get-parent element info)))
+				(org-export-get-parent element)))
 		     (t nil))))
     (when paragraph
       (assert (eq (org-element-type paragraph) 'paragraph))
@@ -3400,27 +3413,23 @@ the plist used as a communication channel."
 	 (class (cdr (assoc style '((footnote . "footnote")
 				    (verse . nil)))))
 	 (extra (if class (format " class=\"%s\"" class) ""))
-	 (parent (org-export-get-parent paragraph info))
+	 (parent (org-export-get-parent paragraph))
 	 (parent-type (org-element-type parent))
 	 (style (case parent-type
 		  (quote-block 'quote)
 		  (center-block 'center)
 		  (footnote-definition 'footnote)
 		  (t nil))))
-    ;; If this paragraph is a leading paragraph in an item and the
-    ;; item has a checkbox, splice the checkbox and paragraph contents
-    ;; together.
-    (when (and (equal (org-element-type parent) 'item)
+    ;; If this paragraph is a leading paragraph in a non-descriptive
+    ;; item and the item has a checkbox, splice the checkbox and
+    ;; paragraph contents together.
+    (when (and (eq (org-element-type parent) 'item)
+	       (not (eq (org-element-property :type
+					      (org-export-get-parent parent))
+			'descriptive))
 	       (= (org-element-property :begin paragraph)
 		  (org-element-property :contents-begin parent)))
-      (let* ((item parent)
-	     (checkbox (org-element-property :checkbox item))
-	     (checkbox (and checkbox (org-e-odt-format-fontify
-				      (case checkbox
-					(on "[&#x2713;]") ; CHECK MARK
-					(off "[ ]")
-					(trans "[-]")) 'code))))
-	(setq contents 	(concat checkbox (and checkbox " ") contents))))
+      (setq contents (concat (org-e-odt--checkbox parent) contents)))
     (org-e-odt-format-stylized-paragraph style contents)))
 
 
@@ -3430,15 +3439,20 @@ the plist used as a communication channel."
   "Transcode a PLAIN-LIST element from Org to ODT.
 CONTENTS is the contents of the list.  INFO is a plist holding
 contextual information."
-  (let* (arg1 ;; FIXME
-	 (type (org-element-property :type plain-list))
-	 (attr (mapconcat #'identity
-			  (org-element-property :attr_odt plain-list)
-			  " ")))
+  (let* ((type (org-element-property :type plain-list))
+	 (continue-numbering nil))
+    (assert (member type '(ordered unordered descriptive)))
     (org-e-odt--wrap-label
-     plain-list (format "%s\n%s%s"
-			(org-e-odt-begin-plain-list type)
-			contents "</text:list>"))))
+     plain-list
+     (format "\n<text:list text:style-name=\"%s\" %s>\n%s</text:list>"
+	     (org-e-odt-get-style-name-for-entity 'list type)
+	     ;; If top-level list, re-start numbering.  Otherwise,
+	     ;; continue numbering.
+	     (format "text:continue-numbering=\"%s\""
+		     (let* ((parent (org-export-get-parent plain-list)))
+		       (if (and parent (equal (org-element-type parent) 'item))
+			   "true" "false")))
+	     contents))))
 
 ;;;; Plain Text
 
@@ -3616,7 +3630,7 @@ contextual information."
 ;;;; Table Cell
 
 (defun org-e-odt-table-style-spec (element info)
-  (let* ((table (org-export-get-parent-table element info))
+  (let* ((table (org-export-get-parent-table element))
 	 (table-attributes (org-e-odt-element-attributes table info))
 	 (table-style (plist-get table-attributes :style)))
     (assoc table-style org-e-odt-table-styles)))
@@ -3642,7 +3656,7 @@ styles congruent with the ODF-1.2 specification."
 	 (r (car table-cell-address)) (c (cdr table-cell-address))
 	 (style-spec (org-e-odt-table-style-spec table-cell info))
 	 (table-dimensions (org-export-table-dimensions
-			    (org-export-get-parent-table table-cell info)
+			    (org-export-get-parent-table table-cell)
 			    info)))
     (when style-spec
       ;; LibreOffice - particularly the Writer - honors neither table
@@ -3689,7 +3703,7 @@ channel."
 	 (r (car table-cell-address))
 	 (c (cdr table-cell-address))
 	 (horiz-span (or (org-export-table-cell-width table-cell info) 0))
-	 (table-row (org-export-get-parent table-cell info))
+	 (table-row (org-export-get-parent table-cell))
 	 (custom-style-prefix (org-e-odt-get-table-cell-styles
 			       table-cell info))
 	 (paragraph-style
@@ -3700,9 +3714,9 @@ channel."
 	    (cond
 	     ((and (= 1 (org-export-table-row-group table-row info))
 		   (org-export-table-has-header-p
-		    (org-export-get-parent-table table-row info) info))
+		    (org-export-get-parent-table table-row) info))
 	      "OrgTableHeading")
-	     ((let* ((table (org-export-get-parent-table table-cell info))
+	     ((let* ((table (org-export-get-parent-table table-cell))
 		     (table-attrs (org-e-odt-element-attributes table info))
 		     (table-header-columns (plist-get table-attrs
 						      :header-columns)))
@@ -3755,7 +3769,7 @@ communication channel."
     (let* ((rowgroup-tags
 	    (if (and (= 1 (org-export-table-row-group table-row info))
 		     (org-export-table-has-header-p
-		      (org-export-get-parent-table table-row info) info))
+		      (org-export-get-parent-table table-row) info))
 		;; If the row belongs to the first rowgroup and the
 		;; table has more than one row groups, then this row
 		;; belongs to the header row group.
@@ -3818,9 +3832,9 @@ contextual information."
 					   table-cell info) 0))))
 		       (org-e-odt-make-string
 			width
-			(org-e-odt-format-tags
-			 "<table:table-column table:style-name=\"%s\"/>"
-			 "" column-style))))
+			(format
+			 "\n<table:table-column table:style-name=\"%s\"/>"
+			 column-style))))
 		   (org-e-odt-table-first-row-data-cells table info) "\n"))))))
        (concat
 	;; caption.
@@ -3829,7 +3843,7 @@ contextual information."
 	(let* ((automatic-name
 		(org-e-odt-add-automatic-style "Table" attributes)))
 	  (format
-	   "\n<table:table table:name=\"%s\" table:style-name=\"%s\">\n"
+	   "\n<table:table table:name=\"%s\" table:style-name=\"%s\">"
 	   (or short-caption (car automatic-name))
 	   (or custom-table-style (cdr automatic-name) "OrgTable")))
 	;; column specification.
@@ -3839,54 +3853,66 @@ contextual information."
 	;; end table.
 	"</table:table>")))))
 
-
 (defun org-e-odt-table (table contents info)
   "Transcode a TABLE element from Org to ODT.
 CONTENTS is the contents of the table.  INFO is a plist holding
 contextual information."
-  (let* ((transcoded-table (org-e-odt--table table contents info))
-	 (genealogy (org-export-get-genealogy table info))
-	 (list-genealogy (and (equal (org-element-type (car genealogy)) 'item)
-			      (loop for element in genealogy
-				    when (member (org-element-type element)
-						 '(item plain-list))
-				    collect element))))
-    (when (and transcoded-table list-genealogy)
-      (let ((parent-list (nth 1 list-genealogy)))
-	(assert (equal (org-element-type parent-list) 'plain-list))
-	(assert
-	 (not (equal (org-element-property :type parent-list) 'descriptive))
-	 nil "ODT export doesn't support tables within description list."))
-
-      ;; Within the Org file, the table is appearing within a
-      ;; list item.  OpenDocument doesn't allow table to appear
-      ;; within list items.  Temporarily terminate the list, put
-      ;; the table in an indented section and then re-continue
-      ;; the list.
-
-      ;; Put the Table in an indented section.
-      (setq transcoded-table
-	    (let ((level (/ (length list-genealogy)  2)))
-	      (concat (org-e-odt-begin-section
-		       (format "OrgIndentedSection-Level-%d" level))
-		      transcoded-table (org-e-odt-end-section))))
-
-      (loop for element in list-genealogy
-	    when (equal (org-element-type element) 'plain-list)
-	    do (setq transcoded-table
-		     (concat
-		      ;; Discontinue this list.
-		      "\n</text:list-item>"
-		      "\n</text:list>"
-		      ;; Embed the table.
-		      transcoded-table
-		      ;; Continute the this list.
-		      (org-e-odt-begin-plain-list
-		       (org-element-property :type element)
-		       'continue-numbering)
-		      (if (cdr element) "\n<text:list-item>"
-			"\n<text:list-header>")))))
-    transcoded-table))
+  (let* ((--get-previous-elements
+	  (function
+	   (lambda (blob info)
+	     (let ((parent (org-export-get-parent blob)))
+	       (cdr (member blob (reverse (org-element-contents parent))))))))
+	 (--element-preceded-by-table-p
+	  (function
+	   (lambda (element info)
+	     (loop for el in (funcall --get-previous-elements element info)
+		   thereis (equal (org-element-type el) 'table)))))
+	 (--walk-list-genealogy-and-collect-tags
+	  (function
+	   (lambda (table info)
+	     (let* ((genealogy (org-export-get-genealogy table))
+		    (list-genealogy
+		     (when (equal (org-element-type (car genealogy)) 'item)
+		       (loop for el in genealogy
+			     when (member (org-element-type el)
+					  '(item plain-list))
+			     collect el))))
+	       (loop for el in list-genealogy
+		     with parent-list collect
+		     (case (org-element-type el)
+		       (plain-list
+			(setq parent-list el)
+			`("</text:list>"
+			  . ,(let ((type (org-element-property :type el)))
+			       (format
+				"<text:list text:style-name=\"%s\" %s>"
+				(org-e-odt-get-style-name-for-entity 'list type)
+				"text:continue-numbering=\"true\""))))
+		       (item
+			(cond
+			 ((not parent-list)
+			  (if (funcall --element-preceded-by-table-p table info)
+			      '("</text:list-header>" . "<text:list-header>")
+			    '("</text:list-item>" . "<text:list-header>")))
+			 ((funcall --element-preceded-by-table-p
+				   parent-list info)
+			  '("</text:list-header>" . "<text:list-header>"))
+			 (t '("</text:list-item>" . "<text:list-item>"))))))))))
+	 (close-open-tags (funcall --walk-list-genealogy-and-collect-tags
+				   table info)))
+    ;; OpenDocument schema does not permit table to occur within a
+    ;; list item.  So, to typeset an indented table, we make use of
+    ;; list continuations.
+    (concat "\n"
+	    ;; Discontinue the list.
+	    (mapconcat 'car close-open-tags "\n")
+	    ;; Put the table in an indented section.
+	    (let* ((table (org-e-odt--table table contents info))
+		   (level (/ (length (mapcar 'car close-open-tags)) 2))
+		   (style (format "OrgIndentedSection-Level-%d" level)))
+	      (when table (org-e-odt-format-section table style)))
+	    ;; Continue the list.
+	    (mapconcat 'cdr (nreverse close-open-tags) "\n"))))
 
 
 ;;;; Target
@@ -3997,9 +4023,7 @@ Return output file's name."
 	  (file-name-directory
 	   (org-export-output-file-name ".odt" subtreep nil)))
 
-    (org-export-to-buffer
-     'e-odt outbuf
-     (memq 'subtree optns) (memq 'visible optns) (memq 'body optns))
+    (org-export-to-buffer 'e-odt outbuf subtreep visible-only body-only)
 
     (setq org-lparse-opt-plist nil) 	; FIXME
     (org-e-odt-save-as-outfile target	;; info
@@ -4129,6 +4153,10 @@ using `org-open-file'."
 
 ;;; FIXMES, TODOS, FOR REVIEW etc
 
+;;;; Support listified headline
+;;;; Handle tables within a description list
+;;;  Handle tables within a listified headline
+
 ;;;; org-solidify-link-text
 ;;;; coding system
 ;;;; org-e-odt-table-caption-above
@@ -4159,7 +4187,7 @@ using `org-open-file'."
   (let* ((numbered-parent-headline-at-<=-n
 	  (function
 	   (lambda (element n info)
-	     (loop for x in (org-export-get-genealogy element info)
+	     (loop for x in (org-export-get-genealogy element)
 		   thereis (and (eq (org-element-type x) 'headline)
 		   		(<= (org-export-get-relative-level x info) n)
 		   		(org-export-numbered-headline-p x info)

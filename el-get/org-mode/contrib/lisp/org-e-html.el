@@ -1974,9 +1974,9 @@ CONTENTS is nil.  INFO is a plist holding contextual information."
 		      (string-to-number (match-string 1 switches))
 		    (org-count-lines code))))
 	(format
-	 "\n<p>\n<textarea cols=\"%d\" rows=\"%d\">\n%s\n</textarea>\n</p>"
+	 "<p>\n<textarea cols=\"%d\" rows=\"%d\">\n%s</textarea>\n</p>"
 	 cols rows code)))
-     (t (format "\n<pre class=\"example\">\n%s\n</pre>" code)))))
+     (t (format "<pre class=\"example\">\n%s</pre>" code)))))
 
 
 ;;;; Export Snippet
@@ -2004,7 +2004,7 @@ CONTENTS is nil.  INFO is a plist holding contextual information."
 CONTENTS is nil.  INFO is a plist holding contextual information."
   (org-e-html--wrap-label
    fixed-width
-   (format "\n<pre class=\"example\">\n%s</pre>"
+   (format "<pre class=\"example\">\n%s</pre>"
 	   (org-e-html-do-format-code
 	    (org-remove-indentation
 	     (org-element-property :value fixed-width))))))
@@ -2022,7 +2022,7 @@ CONTENTS is nil.  INFO is a plist holding contextual information."
 CONTENTS is nil.  INFO is a plist holding contextual information."
   (concat
    ;; Insert separator between two footnotes in a row.
-   (let ((prev (org-export-get-previous-element footnote-reference info)))
+   (let ((prev (org-export-get-previous-element footnote-reference)))
      (when (eq (org-element-type prev) 'footnote-reference)
        org-e-html-footnote-separator))
    (cond
@@ -2116,10 +2116,10 @@ holding contextual information."
 	     (itemized-body (org-e-html-format-list-item
 			     contents type nil nil full-text)))
 	(concat
-	 (and (org-export-first-sibling-p headline info)
+	 (and (org-export-first-sibling-p headline)
 	      (org-e-html-begin-plain-list type))
 	 itemized-body
-	 (and (org-export-last-sibling-p headline info)
+	 (and (org-export-last-sibling-p headline)
 	      (org-e-html-end-plain-list type)))))
      ;; Case 3. Standard headline.  Export it as a section.
      (t
@@ -2163,7 +2163,7 @@ CONTENTS is nil.  INFO is a plist holding contextual information."
   (let ((attr (mapconcat #'identity
 			 (org-element-property :attr_html horizontal-rule)
 			 " ")))
-    (org-e-html--wrap-label horizontal-rule "<hr/>\n")))
+    (org-e-html--wrap-label horizontal-rule "<hr/>")))
 
 
 ;;;; Inline Babel Call
@@ -2209,7 +2209,7 @@ holding contextual information."
    (t (org-e-html--wrap-label
        inlinetask
        (format
-	"\n<div class=\"inlinetask\">\n<b>%s</b><br/>\n%s\n</div>"
+	"<div class=\"inlinetask\">\n<b>%s</b><br/>\n%s</div>"
 	(org-e-html-format-headline--wrap inlinetask info)
 	contents)))))
 
@@ -2234,34 +2234,38 @@ contextual information."
 (defun org-e-html-format-list-item (contents type checkbox
 					     &optional term-counter-id
 					     headline)
-  (concat
-   (case type
-     (ordered
-      (let* ((counter term-counter-id)
-	     (extra (if counter (format " value=\"%s\"" counter) "")))
-	(format "<li%s>" extra)))
-     (unordered
-      (let* ((id term-counter-id)
-	     (extra (if id (format " id=\"%s\"" id) "")))
-	(concat
-	 (format "<li%s>" extra)
-	 (when headline (concat headline "<br/>")))))
-     (descriptive
-      (let* ((term term-counter-id))
-	(setq term (or term "(no term)"))
-	(concat (format "<dt> %s </dt>" term) "<dd>"))))
-   (org-e-html-checkbox checkbox) (and checkbox " ")
-   contents
-   (case type
-     (ordered "</li>")
-     (unordered "</li>")
-     (descriptive "</dd>"))))
+  (let ((checkbox (concat (org-e-html-checkbox checkbox) (and checkbox " "))))
+    (concat
+     (case type
+       (ordered
+	(let* ((counter term-counter-id)
+	       (extra (if counter (format " value=\"%s\"" counter) "")))
+	  (format "<li%s>" extra)))
+       (unordered
+	(let* ((id term-counter-id)
+	       (extra (if id (format " id=\"%s\"" id) "")))
+	  (concat
+	   (format "<li%s>" extra)
+	   (when headline (concat headline "<br/>")))))
+       (descriptive
+	(let* ((term term-counter-id))
+	  (setq term (or term "(no term)"))
+	  ;; Check-boxes in descriptive lists are associated to tag.
+	  (concat (format "<dt> %s </dt>"
+			  (concat checkbox term))
+		  "<dd>"))))
+     (unless (eq type 'descriptive) checkbox)
+     contents
+     (case type
+       (ordered "</li>")
+       (unordered "</li>")
+       (descriptive "</dd>")))))
 
 (defun org-e-html-item (item contents info)
   "Transcode an ITEM element from Org to HTML.
 CONTENTS holds the contents of the item.  INFO is a plist holding
 contextual information."
-  (let* ((plain-list (org-export-get-parent item info))
+  (let* ((plain-list (org-export-get-parent item))
 	 (type (org-element-property :type plain-list))
 	 (counter (org-element-property :counter item))
 	 (checkbox (org-element-property :checkbox item))
@@ -2382,7 +2386,7 @@ used as a communication channel."
 		     ((file-name-absolute-p raw-path)
 		      (expand-file-name raw-path))
 		     (t raw-path)))
-	 (parent (org-export-get-parent-paragraph link info))
+	 (parent (org-export-get-parent-element link))
 	 (caption (org-e-html--caption/label-string
 		   (org-element-property :caption parent)
 		   (org-element-property :name parent)
@@ -2428,7 +2432,7 @@ standalone images, do the following.
 		     (paragraph element)
 		     (link (and (org-export-inline-image-p
 				 element org-e-html-inline-image-rules)
-				(org-export-get-parent element info)))
+				(org-export-get-parent element)))
 		     (t nil))))
     (when paragraph
       (assert (eq (org-element-type paragraph) 'paragraph))
@@ -2479,6 +2483,14 @@ INFO is a plist holding contextual information.  See
 		 (if (not (file-name-absolute-p raw-path)) raw-path
 		   (concat "file://" (expand-file-name raw-path))))
 		(t raw-path)))
+	 ;; Extract attributes from parent's paragraph.
+	 (attributes
+	  (let ((attr (mapconcat
+		       'identity
+		       (org-element-property
+			:attr_html (org-export-get-parent-element link))
+		       " ")))
+	    (if attr (concat " " attr) "")))
 	 protocol)
     (cond
      ;; Image file.
@@ -2491,8 +2503,9 @@ INFO is a plist holding contextual information.  See
      ((string= type "radio")
       (let ((destination (org-export-resolve-radio-link link info)))
 	(when destination
-	  (format "<a href=\"#%s\">%s</a>"
+	  (format "<a href=\"#%s\"%s>%s</a>"
 		  (org-export-solidify-link-text path)
+		  attributes
 		  (org-export-data (org-element-contents destination) info)))))
      ;; Links pointing to an headline: Find destination and build
      ;; appropriate referencing command.
@@ -2541,8 +2554,8 @@ INFO is a plist holding contextual information.  See
 		   ;; un-numbered.  Use the headline title.
 		   (t (org-export-data
 		       (org-element-property :title destination) info)))))
-	     (format "<a href=\"#%s\">%s</a>"
-		     (org-solidify-link-text href) desc)))
+	     (format "<a href=\"#%s\"%s>%s</a>"
+		     (org-solidify-link-text href) attributes desc)))
           ;; Fuzzy link points to a target.  Do as above.
 	  (t
 	   (let ((path (org-export-solidify-link-text path)) number)
@@ -2556,25 +2569,28 @@ INFO is a plist holding contextual information.  See
 	       (setq desc (when number
 			    (if (atom number) (number-to-string number)
 			      (mapconcat 'number-to-string number ".")))))
-	     (format "<a href=\"#%s\">%s</a>" path (or desc "FIXME")))))))
+	     (format "<a href=\"#%s\"%s>%s</a>"
+		     path attributes (or desc "FIXME")))))))
      ;; Coderef: replace link with the reference name or the
      ;; equivalent line number.
      ((string= type "coderef")
       (let ((fragment (concat "coderef-" path)))
-	(format "<a href=\"#%s\" %s>%s</a>" fragment
+	(format "<a href=\"#%s\" %s%s>%s</a>"
+		fragment
 		(format (concat "class=\"coderef\""
 				" onmouseover=\"CodeHighlightOn(this, '%s');\""
 				" onmouseout=\"CodeHighlightOff(this, '%s');\"")
 			fragment fragment)
+		attributes
 		(format (org-export-get-coderef-format path desc)
 			(org-export-resolve-coderef path info)))))
      ;; Link type is handled by a special function.
      ((functionp (setq protocol (nth 2 (assoc type org-link-protocols))))
       (funcall protocol (org-link-unescape path) desc 'html))
      ;; External link with a description part.
-     ((and path desc) (format "<a href=\"%s\">%s</a>" path desc))
+     ((and path desc) (format "<a href=\"%s\"%s>%s</a>" path attributes desc))
      ;; External link without a description part.
-     (path (format "<a href=\"%s\">%s</a>" path path))
+     (path (format "<a href=\"%s\"%s>%s</a>" path attributes path))
      ;; No path, only description.  Try to do something useful.
      (t (format "<i>%s</i>" desc)))))
 
@@ -2603,7 +2619,7 @@ the plist used as a communication channel."
 	 (class (cdr (assoc style '((footnote . "footnote")
 				    (verse . nil)))))
 	 (extra (if class (format " class=\"%s\"" class) ""))
-	 (parent (org-export-get-parent paragraph info)))
+	 (parent (org-export-get-parent paragraph)))
     (cond
      ((and (equal (org-element-type parent) 'item)
 	   (= (org-element-property :begin paragraph)
@@ -2613,7 +2629,7 @@ the plist used as a communication channel."
      ((org-e-html-standalone-image-p paragraph info)
       ;; standalone image
       contents)
-     (t (format "<p%s>\n%s\n</p>" extra contents)))))
+     (t (format "<p%s>\n%s</p>" extra contents)))))
 
 
 ;;;; Plain List
@@ -2771,7 +2787,7 @@ CONTENTS is nil.  INFO is a plist holding contextual information."
   "Transcode a SECTION element from Org to HTML.
 CONTENTS holds the contents of the section.  INFO is a plist
 holding contextual information."
-  (let ((parent (org-export-get-parent-headline section info)))
+  (let ((parent (org-export-get-parent-headline section)))
     ;; Before first headline: no container, just return CONTENTS.
     (if (not parent) contents
       ;; Get div's class and id references.
@@ -2835,10 +2851,10 @@ contextual information."
 	 (code (org-e-html-format-code src-block info)))
     (cond
      (lang (format
-	    "\n<div class=\"org-src-container\">\n%s%s\n</div>"
+	    "<div class=\"org-src-container\">\n%s%s\n</div>"
 	    (if (not caption) ""
 	      (format "<label class=\"org-src-name\">%s</label>" caption-str))
-	    (format "\n<pre class=\"src src-%s\">%s\n</pre>" lang code)))
+	    (format "\n<pre class=\"src src-%s\">%s</pre>" lang code)))
      (textarea-p
       (let ((cols (if (not (string-match "-w[ \t]+\\([0-9]+\\)" switches))
 		      80 (string-to-number (match-string 1 switches))))
@@ -2846,9 +2862,9 @@ contextual information."
 		      (string-to-number (match-string 1 switches))
 		    (org-count-lines code))))
 	(format
-	 "\n<p>\n<textarea cols=\"%d\" rows=\"%d\">\n%s\n</textarea>\n</p>"
+	 "<p>\n<textarea cols=\"%d\" rows=\"%d\">\n%s</textarea>\n</p>"
 	 cols rows code)))
-     (t (format "\n<pre class=\"example\">\n%s\n</pre>" code)))))
+     (t (format "<pre class=\"example\">\n%s</pre>" code)))))
 
 ;;;; Statistics Cookie
 
@@ -2893,8 +2909,8 @@ contextual information."
   "Transcode a TABLE-CELL element from Org to HTML.
 CONTENTS is nil.  INFO is a plist used as a communication
 channel."
-  (let* ((table-row (org-export-get-parent table-cell info))
-	 (table (org-export-get-parent-table table-cell info))
+  (let* ((table-row (org-export-get-parent table-cell))
+	 (table (org-export-get-parent-table table-cell))
 	 (cell-attrs
 	  (if (not org-e-html-table-align-individual-fields) ""
 	    (format (if (and (boundp 'org-e-html-format-table-no-css)
@@ -2930,20 +2946,22 @@ communication channel."
 	    (cond
 	     ;; Case 1: Row belongs to second or subsequent rowgroups.
 	     ((not (= 1 (org-export-table-row-group table-row info)))
-	      '("\n<tbody>" . "\n</tbody>"))
+	      '("<tbody>" . "\n</tbody>"))
 	     ;; Case 2: Row is from first rowgroup.  Table has >=1 rowgroups.
 	     ((org-export-table-has-header-p
-	       (org-export-get-parent-table table-row info) info)
-	      '("\n<thead>" . "\n</thead>"))
+	       (org-export-get-parent-table table-row) info)
+	      '("<thead>" . "\n</thead>"))
 	     ;; Case 2: Row is from first and only row group.
-	     (t '("\n<tbody>" . "\n</tbody>")))))
+	     (t '("<tbody>" . "\n</tbody>")))))
       (concat
        ;; Begin a rowgroup?
        (when (org-export-table-row-starts-rowgroup-p table-row info)
   	 (car rowgroup-tags))
        ;; Actual table row
        (concat "\n" (eval (car org-e-html-table-row-tags))
-	       contents (eval (cdr org-e-html-table-row-tags)))
+	       contents
+	       "\n"
+	       (eval (cdr org-e-html-table-row-tags)))
        ;; End a rowgroup?
        (when (org-export-table-row-ends-rowgroup-p table-row info)
   	 (cdr rowgroup-tags))))))
@@ -3025,7 +3043,7 @@ contextual information."
        ;; Remove last blank line.
        (setq contents (substring contents 0 -1))
        ;; FIXME: splice
-       (format "\n<table%s>\n<caption>%s</caption>\n%s\n%s\n</table>"
+       (format "<table%s>\n<caption>%s</caption>\n%s\n%s\n</table>"
   	       table-attributes
   	       (or caption "")
   	       (funcall table-column-specs table info)
