@@ -2346,7 +2346,8 @@ Return code as a string."
 	;;    into a template, if required.  Eventually call
 	;;    final-output filter.
 	(let* ((body (org-element-normalize-string (org-export-data tree info)))
-	       (template (intern (format "org-%s-template" backend)))
+	       (template (cdr (assq 'template
+				    (plist-get info :translate-alist))))
 	       (output (org-export-filter-apply-functions
 			(plist-get info :filter-final-output)
 			(if (or (not (fboundp template)) body-only) body
@@ -2648,6 +2649,22 @@ file should have."
 ;; As of now, functions operating on footnotes, headlines, links,
 ;; macros, references, src-blocks, tables and tables of contents are
 ;; implemented.
+
+;;;; For Affiliated Keywords
+;;
+;; `org-export-read-attribute' reads a property from a given element
+;;  as a plist.  It can be used to normalize affiliated keywords'
+;;  syntax.
+
+(defun org-export-read-attribute (attribute element)
+  "Turn ATTRIBUTE property from ELEMENT into a plist.
+This function assumes attributes are defined as \":keyword
+value\" pairs.  It is appropriate for `:attr_html' like
+properties."
+  (let ((value (org-element-property attribute element)))
+    (and value
+	 (read (format "(%s)" (mapconcat 'identity value " "))))))
+
 
 ;;;; For Export Snippets
 ;;
