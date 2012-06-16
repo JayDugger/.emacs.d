@@ -4,13 +4,92 @@
 
 
 ;;;### (autoloads (artbollocks-mode) "artbollocks-mode/artbollocks-mode"
-;;;;;;  "artbollocks-mode/artbollocks-mode.el" (20438 36237))
+;;;;;;  "artbollocks-mode/artbollocks-mode.el" (20444 16222))
 ;;; Generated autoloads from artbollocks-mode/artbollocks-mode.el
 
 (autoload 'artbollocks-mode "artbollocks-mode/artbollocks-mode" "\
 highlight passive voice, weasel words and artbollocks in text, provide useful text metrics
 
 \(fn &optional ARG)" t nil)
+
+;;;***
+
+;;;### (autoloads (clojure-enable-slime-on-existing-buffers clojure-jack-in
+;;;;;;  clojure-mode) "clojure-mode/clojure-mode" "clojure-mode/clojure-mode.el"
+;;;;;;  (20444 37112))
+;;; Generated autoloads from clojure-mode/clojure-mode.el
+
+(autoload 'clojure-mode "clojure-mode/clojure-mode" "\
+Major mode for editing Clojure code - similar to Lisp mode.
+Commands:
+Delete converts tabs to spaces as it moves back.
+Blank lines separate paragraphs.  Semicolons start comments.
+\\{clojure-mode-map}
+Note that `run-lisp' may be used either to start an inferior Lisp job
+or to switch back to an existing one.
+
+Entry to this mode calls the value of `clojure-mode-hook'
+if that value is non-nil.
+
+\(fn)" t nil)
+
+(autoload 'clojure-jack-in "clojure-mode/clojure-mode" "\
+
+
+\(fn)" t nil)
+
+(autoload 'clojure-enable-slime-on-existing-buffers "clojure-mode/clojure-mode" "\
+
+
+\(fn)" t nil)
+
+(add-hook 'slime-connected-hook 'clojure-enable-slime-on-existing-buffers)
+
+(put 'clojure-test-ns-segment-position 'safe-local-variable 'integerp)
+
+(put 'clojure-mode-load-command 'safe-local-variable 'stringp)
+
+(put 'clojure-swank-command 'safe-local-variable 'stringp)
+
+(add-hook 'slime-connected-hook 'clojure-enable-slime-on-existing-buffers)
+
+(add-hook 'slime-indentation-update-hooks 'put-clojure-indent)
+
+(add-to-list 'auto-mode-alist '("\\.clj$" . clojure-mode))
+
+(add-to-list 'interpreter-mode-alist '("jark" . clojure-mode))
+
+(add-to-list 'interpreter-mode-alist '("cake" . clojure-mode))
+
+;;;***
+
+;;;### (autoloads (clojure-test-mode) "clojure-mode/clojure-test-mode"
+;;;;;;  "clojure-mode/clojure-test-mode.el" (20444 37112))
+;;; Generated autoloads from clojure-mode/clojure-test-mode.el
+
+(autoload 'clojure-test-mode "clojure-mode/clojure-test-mode" "\
+A minor mode for running Clojure tests.
+
+\(fn &optional ARG)" t nil)
+
+(defun clojure-test-maybe-enable nil "\
+Enable clojure-test-mode if the current buffer contains a namespace
+with a \"test.\" bit on it." (let ((ns (clojure-find-package))) (when (and ns (string-match "test\\(\\.\\|$\\)" ns)) (save-window-excursion (clojure-test-mode t)))))
+
+(add-hook 'clojure-mode-hook 'clojure-test-maybe-enable)
+
+;;;***
+
+;;;### (autoloads (clojurescript-mode) "clojure-mode/clojurescript-mode"
+;;;;;;  "clojure-mode/clojurescript-mode.el" (20444 37112))
+;;; Generated autoloads from clojure-mode/clojurescript-mode.el
+
+(autoload 'clojurescript-mode "clojure-mode/clojurescript-mode" "\
+Major mode for ClojureScript
+
+\(fn)" t nil)
+
+(add-to-list 'auto-mode-alist '("\\.cljs$" . clojurescript-mode))
 
 ;;;***
 
@@ -234,7 +313,7 @@ Initialize the color theme package by loading color-theme-libraries.
 ;;;;;;  diredp-dired-for-files-other-window diredp-dired-for-files
 ;;;;;;  diredp-dired-files-other-window diredp-dired-files diredp-w32-local-drives
 ;;;;;;  diredp-prompt-for-bookmark-prefix-flag diff-switches) "dired+/dired+"
-;;;;;;  "dired+/dired+.el" (20438 37127))
+;;;;;;  "dired+/dired+.el" (20444 16228))
 ;;; Generated autoloads from dired+/dired+.el
 
 (defvar diff-switches "-c" "\
@@ -2383,7 +2462,7 @@ running 'man git-rebase' at the command line) for details.
 ;;;### (autoloads (list-packages describe-package package-initialize
 ;;;;;;  package-refresh-contents package-install-file package-install-from-buffer
 ;;;;;;  package-install package-enable-at-startup) "package24/package"
-;;;;;;  "package24/package.el" (20438 36274))
+;;;;;;  "package24/package.el" (20444 16224))
 ;;; Generated autoloads from package24/package.el
 
 (defvar package-enable-at-startup t "\
@@ -2454,7 +2533,7 @@ The list is displayed in a buffer named `*Packages*'.
 ;;;***
 
 ;;;### (autoloads (paredit-mode) "paredit/paredit" "paredit/paredit.el"
-;;;;;;  (20438 36301))
+;;;;;;  (20444 16227))
 ;;; Generated autoloads from paredit/paredit.el
 
 (autoload 'paredit-mode "paredit/paredit" "\
@@ -2535,7 +2614,7 @@ See `undo-tree-mode' for more information on Undo-Tree mode.
 ;;;;;;  "g-client/g-load-path.el" "g-client/g.el" "g-client/gnotebook.el"
 ;;;;;;  "g-client/gwis.el" "g-client/indent-files.el" "g-client/org2blogger.el"
 ;;;;;;  "magit/magit-pkg.el" "magit/magit-wip.el" "org-fstree/org-fstree.el"
-;;;;;;  "twittering-mode/test.el") (20438 39414 11990))
+;;;;;;  "twittering-mode/test.el") (20444 37113 297383))
 
 ;;;***
 
