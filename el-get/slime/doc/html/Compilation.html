@@ -1,0 +1,110 @@
+<html lang="en">
+<head>
+<title>Compilation - SLIME User Manual, version 3.0-alpha</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="SLIME User Manual, version 3.0-alpha">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="SLIME-mode.html#SLIME-mode" title="SLIME mode">
+<link rel="prev" href="Evaluation.html#Evaluation" title="Evaluation">
+<link rel="next" href="Completion.html#Completion" title="Completion">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+Written by Luke Gorrie.
+
+Additional contributions: Jeff Cunningham,
+
+This file has been placed in the public domain.-->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<a name="Compilation"></a>
+<p>
+Next:&nbsp;<a rel="next" accesskey="n" href="Completion.html#Completion">Completion</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Evaluation.html#Evaluation">Evaluation</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="SLIME-mode.html#SLIME-mode">SLIME mode</a>
+<hr>
+</div>
+
+<h3 class="section">3.3 Compilation commands</h3>
+
+<p><a name="index-Compilation-23"></a>
+<acronym>SLIME</acronym> has fancy commands for compiling functions, files, and
+packages. The fancy part is that notes and warnings offered by the
+Lisp compiler are intercepted and annotated directly onto the
+corresponding expressions in the Lisp source buffer. (Give it a try to
+see what this means.)
+
+     
+<a name="index-Compiling-Functions-24"></a>
+<dl><dt><kbd>C-c C-c</kbd><dt><kbd>M-x slime-compile-defun</kbd><dd><a name="index-C_002dc-C_002dc-25"></a><a name="index-slime_002dcompile_002ddefun-26"></a>
+Compile the top-level form at point.  The region blinks shortly to
+give some feedback which part was chosen.
+
+     <p>With (positive) prefix argument the form is compiled with maximal
+debug settings (<kbd>C-u C-c C-c</kbd>). With negative prefix argument it is compiled for
+speed (<kbd>M-- C-c C-c</kbd>). If a numeric argument is passed set debug or speed settings
+to it depending on its sign.
+
+     <p>The code for the region is executed after compilation.  In principle,
+the command writes the region to a file, compiles that file, and loads
+the resulting code.
+
+     <br><dt><kbd>C-c C-k</kbd><dt><kbd>M-x slime-compile-and-load-file</kbd><dd><a name="index-C_002dc-C_002dk-27"></a><a name="index-slime_002dcompile_002dand_002dload_002dfile-28"></a>
+Compile and load the current buffer's source file.  If the compilation
+step fails, the file is not loaded.  It's not always easy to tell
+whether the compilation failed: occasionally you may end up in the
+debugger during the load step.
+
+     <p>With (positive) prefix argument the file is compiled with maximal
+debug settings (<kbd>C-u C-c C-k</kbd>). With negative prefix argument it is compiled for
+speed (<kbd>M-- C-c C-k</kbd>). If a numeric argument is passed set debug or speed settings
+to it depending on its sign.
+
+     <br><dt><kbd>C-c M-k</kbd><dt><kbd>M-x slime-compile-file</kbd><dd><a name="index-C_002dc-M_002dk-29"></a><a name="index-slime_002dcompile_002dfile-30"></a>
+Compile (but don't load) the current buffer's source file.
+
+     <br><dt><kbd>C-c C-l</kbd><dt><kbd>M-x slime-load-file</kbd><dd><a name="index-C_002dc-C_002dl-31"></a><a name="index-slime_002dload_002dfile-32"></a>
+Load a Lisp file.  This command uses the Common Lisp LOAD function.
+
+     <br><dt><kbd>M-x slime-compile-region</kbd><dd><a name="index-slime_002dcompile_002dregion-33"></a>
+Compile the selected region.
+
+   </dl>
+
+   <p>The annotations are indicated as underlining on source forms. The
+compiler message associated with an annotation can be read either by
+placing the mouse over the text or with the selection commands below.
+
+     <dl>
+<dt><kbd>M-n</kbd><dt><kbd>M-x slime-next-note</kbd><dd><a name="index-M_002dn-34"></a><a name="index-slime_002dnext_002dnote-35"></a>
+Move the point to the next compiler note and displays the note.
+
+     <br><dt><kbd>M-p</kbd><dt><kbd>M-x slime-previous-note</kbd><dd><a name="index-M_002dp-36"></a><a name="index-slime_002dprevious_002dnote-37"></a>
+Move the point to the previous compiler note and displays the note.
+
+     <br><dt><kbd>C-c M-c</kbd><dt><kbd>M-x slime-remove-notes</kbd><dd><a name="index-C_002dc-M_002dc-38"></a><a name="index-slime_002dremove_002dnotes-39"></a>
+Remove all annotations from the buffer.
+
+     <br><dt><kbd>C-x `</kbd><dt><kbd>M-x next-error</kbd><dd><a name="index-C_002dx-_0060-40"></a><a name="index-next_002derror-41"></a>
+Visit the next-error message.  This is not actually a <acronym>SLIME</acronym> command
+but <acronym>SLIME</acronym> creates a hidden buffer so that most of the Compilation
+mode commands (see <a href="../emacs/Compilation-Mode.html#Compilation-Mode">Compilation Mode</a>) work similarly for
+Lisp as for batch compilers.
+
+   </dl>
+
+   </body></html>
+

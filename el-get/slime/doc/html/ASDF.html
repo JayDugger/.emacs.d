@@ -1,0 +1,83 @@
+<html lang="en">
+<head>
+<title>ASDF - SLIME User Manual, version 3.0-alpha</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="SLIME User Manual, version 3.0-alpha">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Contributed-Packages.html#Contributed-Packages" title="Contributed Packages">
+<link rel="prev" href="slime_002dautodoc_002dmode.html#slime_002dautodoc_002dmode" title="slime-autodoc-mode">
+<link rel="next" href="Banner.html#Banner" title="Banner">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+Written by Luke Gorrie.
+
+Additional contributions: Jeff Cunningham,
+
+This file has been placed in the public domain.-->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<a name="ASDF"></a>
+<p>
+Next:&nbsp;<a rel="next" accesskey="n" href="Banner.html#Banner">Banner</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="slime_002dautodoc_002dmode.html#slime_002dautodoc_002dmode">slime-autodoc-mode</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Contributed-Packages.html#Contributed-Packages">Contributed Packages</a>
+<hr>
+</div>
+
+<h3 class="section">8.8 ASDF</h3>
+
+<p><acronym>ASDF</acronym> is a popular &ldquo;system construction tool&rdquo;.  The package
+<code>slime-asdf</code> provides some commands to load and compile such
+systems from Emacs.  <acronym>ASDF</acronym> itself is not included with
+<acronym>SLIME</acronym>; you have to load that yourself into your Lisp.  In
+particular, you must load <acronym>ASDF</acronym> before you connect, otherwise
+you will get errors about missing symbols.
+
+     <dl>
+<dt><kbd>M-x slime-load-system NAME</kbd><dd><a name="index-slime_002dload_002dsystem-NAME-323"></a>
+Compile and load an ASDF system.  The default system name is taken
+from the first file matching *.asd in the current directory. 
+<br><dt><kbd>M-x slime-reload-system NAME</kbd><dd><a name="index-slime_002dreload_002dsystem-NAME-324"></a>
+Recompile and load an ASDF system without recompiling its dependencies. 
+<br><dt><kbd>M-x slime-open-system NAME &amp;optional LOAD</kbd><dd><a name="index-slime_002dopen_002dsystem-NAME-_0026optional-LOAD-325"></a>
+Open all files in a system, optionally load it if LOAD is non-nil. 
+<br><dt><kbd>M-x slime-browse-system NAME</kbd><dd><a name="index-slime_002dbrowse_002dsystem-NAME-326"></a>
+Browse files in a system using Dired. 
+<br><dt><kbd>M-x slime-delete-system-fasls NAME</kbd><dd><a name="index-slime_002ddelete_002dsystem_002dfasls-NAME-327"></a>
+Delete FASLs produced by compiling a system. 
+<br><dt><kbd>M-x slime-rgrep-system NAME REGEXP</kbd><dd><a name="index-slime_002drgrep_002dsystem-NAME-REGEXP-328"></a>
+Run <code>rgrep</code> on the base directory of an ASDF system. 
+<br><dt><kbd>M-x slime-isearch-system NAME</kbd><dd><a name="index-slime_002disearch_002dsystem-NAME-329"></a>
+Run <code>isearch-forward</code> on the files of an ASDF system. 
+<br><dt><kbd>M-x slime-query-replace-system NAME FROM TO &amp;OPTIONAL DELIMITED</kbd><dd><a name="index-slime_002dquery_002dreplace_002dsystem-NAME-FROM-TO-_0026OPTIONAL-DELIMITED-330"></a>
+Run <code>query-replace</code> on an ASDF system. 
+</dl>
+   The package also installs some new REPL shortcuts (see <a href="Shortcuts.html#Shortcuts">Shortcuts</a>):
+
+     <dl>
+<dt><kbd>load-system</kbd><dd>Compile (as needed) and load an ASDF system. 
+<br><dt><kbd>reload-system</kbd><dd>Recompile and load an ASDF system. 
+<br><dt><kbd>compile-system</kbd><dd>Compile (but not load) an ASDF system. 
+<br><dt><kbd>force-compile-system</kbd><dd>Recompile (but not load) an ASDF system. 
+<br><dt><kbd>force-load-system</kbd><dd>Recompile and load an ASDF system. 
+<br><dt><kbd>open-system</kbd><dd>Open all files in a system. 
+<br><dt><kbd>browse-system</kbd><dd>Browse files in a system using Dired. 
+<br><dt><kbd>delete-system-fasls</kbd><dd>Delete FASLs produced by compiling a system. 
+</dl>
+
+   </body></html>
+

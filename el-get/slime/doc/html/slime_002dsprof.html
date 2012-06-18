@@ -1,0 +1,73 @@
+<html lang="en">
+<head>
+<title>slime-sprof - SLIME User Manual, version 3.0-alpha</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="SLIME User Manual, version 3.0-alpha">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Contributed-Packages.html#Contributed-Packages" title="Contributed Packages">
+<link rel="prev" href="Scratch-Buffer.html#Scratch-Buffer" title="Scratch Buffer">
+<link rel="next" href="slime_002dfancy.html#slime_002dfancy" title="slime-fancy">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+Written by Luke Gorrie.
+
+Additional contributions: Jeff Cunningham,
+
+This file has been placed in the public domain.-->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<a name="slime-sprof"></a>
+<a name="slime_002dsprof"></a>
+<p>
+Next:&nbsp;<a rel="next" accesskey="n" href="slime_002dfancy.html#slime_002dfancy">slime-fancy</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Scratch-Buffer.html#Scratch-Buffer">Scratch Buffer</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Contributed-Packages.html#Contributed-Packages">Contributed Packages</a>
+<hr>
+</div>
+
+<h3 class="section">8.19 <code>slime-sprof</code></h3>
+
+<p><code>slime-sprof</code> is a package for integrating SBCL's statistical profiler, sb-sprof.
+
+   <p>The variable <code>slime-sprof-exclude-swank</code> controls whether to
+display swank functions. The default value is NIL.
+
+     <dl>
+<dt><kbd>M-x slime-sprof-start</kbd><dd><a name="index-slime_002dsprof_002dstart-367"></a>
+Start profiling.
+
+     <br><dt><kbd>M-x slime-sprof-stop</kbd><dd><a name="index-slime_002dsprof_002dstop-368"></a>
+Stop profiling. 
+<br><dt><kbd>M-x slime-sprof-report</kbd><dd><a name="index-slime_002dsprof_002dreport-369"></a>
+Report results of the profiling. 
+</dl>
+
+   <p>The following keys are defined in slime-sprof-browser mode:
+     <dl>
+<dt><kbd>RET</kbd><dt><kbd>M-x slime-sprof-browser-toggle</kbd><dd><a name="index-RET-370"></a><a name="index-slime_002dsprof_002dbrowser_002dtoggle-371"></a>
+Expand / collapse function details (callers, calls to)
+<br><dt><kbd>v</kbd><dt><kbd>M-x slime-sprof-browser-view-source</kbd><dd><a name="index-v-372"></a><a name="index-slime_002dsprof_002dbrowser_002dview_002dsource-373"></a>
+View function sources. 
+<br><dt><kbd>d</kbd><dt><kbd>M-x slime-sprof-browser-disassemble-function</kbd><dd><a name="index-d-374"></a><a name="index-slime_002dsprof_002dbrowser_002ddisassemble_002dfunction-375"></a>
+Disassemble function. 
+<br><dt><kbd>s</kbd><dt><kbd>M-x slime-sprof-toggle-swank-exclusion</kbd><dd><a name="index-s-376"></a><a name="index-slime_002dsprof_002dtoggle_002dswank_002dexclusion-377"></a>
+Toggle exclusion of swank functions from the report.
+
+   </dl>
+
+   </body></html>
+

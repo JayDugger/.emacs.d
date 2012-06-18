@@ -1,0 +1,86 @@
+@numchapentry{Introduction}{1}{Introduction}{1}
+@numchapentry{Getting started}{2}{Getting started}{2}
+@numsecentry{Supported Platforms}{2.1}{Platforms}{2}
+@numsecentry{Downloading SLIME}{2.2}{Downloading}{2}
+@numsubsecentry{Downloading from CVS}{2.2.1}{CVS}{2}
+@numsubsecentry{CVS incantations}{2.2.2}{CVS Incantations}{3}
+@numsecentry{Installation}{2.3}{Installation}{3}
+@numsecentry{Running SLIME}{2.4}{Running}{3}
+@numsecentry{Setup Tuning}{2.5}{Setup Tuning}{3}
+@numsubsecentry{Autoloading}{2.5.1}{Autoloading}{4}
+@numsubsecentry{Multiple Lisps}{2.5.2}{Multiple Lisps}{4}
+@numsubsecentry{Loading Swank faster}{2.5.3}{Loading Swank faster}{5}
+@numchapentry{Using Slime mode}{3}{SLIME mode}{6}
+@numsecentry{User-interface conventions}{3.1}{User-interface conventions}{6}
+@numsubsecentry{Temporary buffers}{3.1.1}{Temporary buffers}{6}
+@numsubsecentry{@code {*inferior-lisp*} buffer}{3.1.2}{Inferior-lisp}{6}
+@numsubsecentry{Multithreading}{3.1.3}{Multithreading}{6}
+@numsubsecentry{Key bindings}{3.1.4}{Key bindings}{7}
+@numsecentry{Evaluation commands}{3.2}{Evaluation}{8}
+@numsecentry{Compilation commands}{3.3}{Compilation}{9}
+@numsecentry{Completion commands}{3.4}{Completion}{10}
+@numsecentry{Finding definitions (``Meta-Point'' commands).}{3.5}{Finding definitions}{10}
+@numsecentry{Documentation commands}{3.6}{Documentation}{11}
+@numsecentry{Cross-reference commands}{3.7}{Cross-reference}{12}
+@numsubsecentry{Xref buffer commands}{3.7.1}{Xref buffer commands}{13}
+@numsecentry{Macro-expansion commands}{3.8}{Macro-expansion}{13}
+@numsecentry{Disassembly commands}{3.9}{Disassembly}{13}
+@numsecentry{Abort/Recovery commands}{3.10}{Recovery}{14}
+@numsecentry{Inspector commands}{3.11}{Inspector}{14}
+@numsecentry{Profiling commands}{3.12}{Profiling}{15}
+@numsecentry{Shadowed Commands}{3.13}{Other}{16}
+@numsecentry{Semantic indentation}{3.14}{Semantic indentation}{16}
+@numsecentry{Reader conditional fontification}{3.15}{Reader conditionals}{16}
+@numchapentry{SLDB: the SLIME debugger}{4}{Debugger}{17}
+@numsecentry{Examining frames}{4.1}{Examining frames}{17}
+@numsecentry{Invoking restarts}{4.2}{Restarts}{17}
+@numsecentry{Navigating between frames}{4.3}{Frame Navigation}{18}
+@numsecentry{Stepping}{4.4}{Stepping}{18}
+@numsecentry{Miscellaneous Commands}{4.5}{Miscellaneous}{19}
+@numchapentry{Misc}{5}{Misc}{20}
+@numsecentry{@code {slime-selector}}{5.1}{slime-selector}{20}
+@numsecentry{slime-macroexpansion-minor-mode}{5.2}{slime-macroexpansion-minor-mode}{20}
+@numsecentry{Multiple connections}{5.3}{Multiple connections}{21}
+@numchapentry{Customization}{6}{Customization}{23}
+@numsecentry{Emacs-side}{6.1}{Emacs-side customization}{23}
+@numsubsecentry{Hooks}{6.1.1}{Hooks}{23}
+@numsecentry{Lisp-side (Swank)}{6.2}{Lisp-side}{24}
+@numsubsecentry{Communication style}{6.2.1}{Communication style}{24}
+@numsubsecentry{Other configurables}{6.2.2}{Other configurables}{25}
+@numchapentry{Tips and Tricks}{7}{Tips and Tricks}{27}
+@numsecentry{Connecting to a remote lisp}{7.1}{Connecting to a remote lisp}{27}
+@numsubsecentry{Setting up the lisp image}{7.1.1}{Setting up the lisp image}{27}
+@numsubsecentry{Setting up Emacs}{7.1.2}{Setting up Emacs}{28}
+@numsubsecentry{Setting up pathname translations}{7.1.3}{Setting up pathname translations}{28}
+@numsecentry{Globally redirecting all IO to the REPL}{7.2}{Global IO Redirection}{28}
+@numsecentry{Connecting to SLIME automatically}{7.3}{Auto-SLIME}{29}
+@numchapentry{Contributed Packages}{8}{Contributed Packages}{30}
+@numsecentry{Loading Contrib Packages}{8.1}{Loading Contribs}{30}
+@numsecentry{REPL: the ``top level''}{8.2}{REPL}{30}
+@numsubsecentry{REPL commands}{8.2.1}{REPL commands}{31}
+@numsubsecentry{Input navigation}{8.2.2}{Input Navigation}{31}
+@numsubsecentry{Shortcuts}{8.2.3}{Shortcuts}{32}
+@numsecentry{Multiple REPLs}{8.3}{slime-mrepl}{33}
+@numsecentry{@code {inferior-slime-mode}}{8.4}{inferior-slime-mode}{33}
+@numsecentry{Compound Completion}{8.5}{Compound Completion}{33}
+@numsecentry{Fuzzy Completion}{8.6}{Fuzzy Completion}{34}
+@numsecentry{@code {slime-autodoc-mode}}{8.7}{slime-autodoc-mode}{35}
+@numsecentry{ASDF}{8.8}{ASDF}{35}
+@numsecentry{Banner}{8.9}{Banner}{36}
+@numsecentry{Editing Commands}{8.10}{Editing Commands}{37}
+@numsecentry{Fancy Inspector}{8.11}{Fancy Inspector}{37}
+@numsecentry{Presentations}{8.12}{Presentations}{37}
+@numsecentry{Typeout frames}{8.13}{Typeout frames}{40}
+@numsecentry{TRAMP}{8.14}{TRAMP}{40}
+@numsecentry{Documentation Links}{8.15}{Documentation Links}{40}
+@numsecentry{Xref and Class Browser}{8.16}{Xref and Class Browser}{40}
+@numsecentry{Highlight Edits}{8.17}{Highlight Edits}{41}
+@numsecentry{Scratch Buffer}{8.18}{Scratch Buffer}{41}
+@numsecentry{@code {slime-sprof}}{8.19}{slime-sprof}{41}
+@numsecentry{Meta package: @code {slime-fancy}}{8.20}{slime-fancy}{42}
+@numchapentry{Credits}{9}{Credits}{43}
+@unnsecentry{Hackers of the good hack}{10000.1}{}{43}
+@unnsecentry{Thanks!}{10000.2}{}{44}
+@unnchapentry{Key (Character) Index}{10001}{Key Index}{45}
+@unnchapentry{Command and Function Index}{10002}{Command Index}{47}
+@unnchapentry{Variable and Concept Index}{10003}{Variable Index}{49}

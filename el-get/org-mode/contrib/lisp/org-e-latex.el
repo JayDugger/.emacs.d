@@ -957,7 +957,7 @@ This function shouldn't be used for floats.  See
       (concat (format "\\label{%s}\n" label) output))))
 
 (defun org-e-latex--text-markup (text markup)
-  "Format text depending on MARKUP text markup.
+  "Format TEXT depending on MARKUP text markup.
 See `org-e-latex-text-markup-alist' for details."
   (let ((fmt (cdr (assq markup org-e-latex-text-markup-alist))))
     (cond
@@ -991,6 +991,47 @@ See `org-e-latex-text-markup-alist' for details."
 	(format fmt text)))
      ;; Else use format string.
      (t (format fmt text)))))
+
+(defun org-e-latex--delayed-footnotes-definitions (element info)
+  "Return footnotes definitions in ELEMENT as a string.
+
+INFO is a plist used as a communication channel.
+
+Footnotes definitions are returned within \"\\footnotetxt{}\"
+commands.
+
+This functions is used within constructs that don't support
+\"\\footnote{}\" command (i.e. an item's tag).  In that case,
+\"\\footnotemark\" is used within the construct and this function
+outside of it."
+  (mapconcat
+   (lambda (ref)
+     (format
+      "\\footnotetext[%s]{%s}"
+      (org-export-get-footnote-number ref info)
+      (org-trim
+       (org-export-data
+	(org-export-get-footnote-definition ref info) info))))
+   ;; Find every footnote reference in ELEMENT.
+   (let* (all-refs
+	  search-refs			; For byte-compiler.
+	  (search-refs
+	   (function
+	    (lambda (data)
+	      ;; Return a list of all footnote references never seen
+	      ;; before in DATA.
+	      (org-element-map
+	       data 'footnote-reference
+	       (lambda (ref)
+		 (when (org-export-footnote-first-reference-p ref info)
+		   (push ref all-refs)
+		   (when (eq (org-element-property :type ref) 'standard)
+		     (funcall search-refs
+			      (org-export-get-footnote-definition ref info)))))
+	       info)
+	      (reverse all-refs)))))
+     (funcall search-refs element))
+   ""))
 
 
 
@@ -1249,6 +1290,14 @@ CONTENTS is nil.  INFO is a plist holding contextual information."
 			 '(footnote-reference footnote-definition)))
      (let ((num (org-export-get-footnote-number footnote-reference info)))
        (format "\\footnotemark[%s]{}\\setcounter{footnote}{%s}" num num)))
+    ;; Use also \footnotemark if reference is within an item's tag.
+    ;; Note: this won't work if reference has already been defined
+    ;; since we cannot specify footnote number through square
+    ;; brackets, forbidden in an optional argument.
+    ((eq (org-element-type (org-export-get-parent-element footnote-reference))
+	 'item)
+     (format "\\footnotemark\\setcounter{footnote}{%s}"
+	     (org-export-get-footnote-number footnote-reference info)))
     ;; Otherwise, define it with \footnote command.
     (t
      (let ((def (org-export-get-footnote-definition footnote-reference info)))
@@ -1259,31 +1308,7 @@ CONTENTS is nil.  INFO is a plist holding contextual information."
 	;; Retrieve all footnote references within the footnote and
 	;; add their definition after it, since LaTeX doesn't support
 	;; them inside.
-	(let* (all-refs
-	       search-refs		; for byte-compiler
-	       (search-refs
-		(function
-		 (lambda (data)
-		   ;; Return a list of all footnote references in DATA.
-		   (org-element-map
-		    data 'footnote-reference
-		    (lambda (ref)
-		      (when (org-export-footnote-first-reference-p ref info)
-			(push ref all-refs)
-			(when (eq (org-element-property :type ref) 'standard)
-			  (funcall
-			   search-refs
-			   (org-export-get-footnote-definition ref info)))))
-		    info) (reverse all-refs)))))
-	  (mapconcat
-	   (lambda (ref)
-	     (format
-	      "\\footnotetext[%s]{%s}"
-	      (org-export-get-footnote-number ref info)
-	      (org-trim
-	       (org-export-data
-		(org-export-get-footnote-definition ref info) info))))
-	   (funcall search-refs def) ""))))))))
+	(org-e-latex--delayed-footnotes-definitions def info)))))))
 
 
 ;;;; Headline
@@ -1328,7 +1353,8 @@ holding contextual information."
 		    (org-export-get-tags headline info)))
 	 (priority (and (plist-get info :with-priority)
 			(org-element-property :priority headline)))
-	 ;; Create the headline text.
+	 ;; Create the headline text along with a no-tag version.  The
+	 ;; latter is required to remove tags from table of contents.
 	 (full-text (if (functionp org-e-latex-format-headline-function)
 			;; User-defined formatting function.
 			(funcall org-e-latex-format-headline-function
@@ -1342,6 +1368,16 @@ holding contextual information."
 		       (when tags
 			 (format "\\hfill{}\\textsc{:%s:}"
 				 (mapconcat 'identity tags ":"))))))
+	 (full-text-no-tag
+	  (if (functionp org-e-latex-format-headline-function)
+	      ;; User-defined formatting function.
+	      (funcall org-e-latex-format-headline-function
+		       todo todo-type priority text nil)
+	    ;; Default formatting.
+	    (concat
+	     (when todo (format "\\textbf{\\textsf{\\textsc{%s}}} " todo))
+	     (when priority (format "\\framebox{\\#%c} " priority))
+	     text)))
 	 ;; Associate some \label to the headline for internal links.
 	 (headline-label
 	  (format "\\label{sec-%s}\n"
@@ -1374,8 +1410,33 @@ holding contextual information."
 	   (format "\n\\\\end{%s}" (if numberedp 'enumerate 'itemize))
 	   low-level-body))))
      ;; Case 3. Standard headline.  Export it as a section.
-     (t (format section-fmt full-text
-		(concat headline-label pre-blanks contents))))))
+     (t
+      (cond
+       ((not (and tags (eq (plist-get info :with-tags) 'not-in-toc)))
+	;; Regular section.  Use specified format string.
+	(format section-fmt full-text
+		(concat headline-label pre-blanks contents)))
+       ((string-match "\\`\\\\\\(.*?\\){" section-fmt)
+	;; If tags should be removed from table of contents, insert
+	;; title without tags as an alternative heading in sectioning
+	;; command.
+	(format (replace-match (concat (match-string 1 section-fmt) "[%s]")
+			       nil nil section-fmt 1)
+		;; Replace square brackets with parenthesis since
+		;; square brackets are not supported in optional
+		;; arguments.
+		(replace-regexp-in-string
+		 "\\[" "("
+		 (replace-regexp-in-string
+		  "\\]" ")"
+		  full-text-no-tag))
+		full-text
+		(concat headline-label pre-blanks contents)))
+       (t
+	;; Impossible to add an alternative heading.  Fallback to
+	;; regular sectioning format string.
+	(format section-fmt full-text
+		(concat headline-label pre-blanks contents))))))))
 
 
 ;;;; Horizontal Rule
@@ -1509,7 +1570,15 @@ contextual information."
 		(and tag (format "[%s] "
 				 (concat checkbox
 					 (org-export-data tag info)))))))
-    (concat counter "\\item" (or tag (concat " " checkbox)) contents)))
+    (concat counter "\\item" (or tag (concat " " checkbox))
+	    (org-trim contents)
+	    ;; If there are footnotes references in tag, be sure to
+	    ;; add their definition at the end of the item.  This
+	    ;; workaround is necessary since "\footnote{}" command is
+	    ;; not supported in tags.
+	    (and tag
+		 (org-e-latex--delayed-footnotes-definitions
+		  (org-element-property :tag item) info)))))
 
 
 ;;;; Keyword

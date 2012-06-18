@@ -1,0 +1,180 @@
+\entry{slime-eval-last-expression}{8}{\code {\xeatspaces { slime-eval-last-expression}}}
+\entry{slime-eval-defun}{8}{\code {\xeatspaces { slime-eval-defun}}}
+\entry{slime-interactive-eval}{8}{\code {\xeatspaces { slime-interactive-eval}}}
+\entry{slime-eval-region}{8}{\code {\xeatspaces { slime-eval-region}}}
+\entry{slime-pprint-eval-last-expression}{8}{\code {\xeatspaces { slime-pprint-eval-last-expression}}}
+\entry{slime-edit-value}{8}{\code {\xeatspaces { slime-edit-value}}}
+\entry{slime-eval-last-expression-display-output}{8}{\code {\xeatspaces { slime-eval-last-expression-display-output}}}
+\entry{slime-undefine-function}{9}{\code {slime-undefine-function}}
+\entry{slime-compile-defun}{9}{\code {slime-compile-defun}}
+\entry{slime-compile-and-load-file}{9}{\code {slime-compile-and-load-file}}
+\entry{slime-compile-file}{9}{\code {slime-compile-file}}
+\entry{slime-load-file}{9}{\code {slime-load-file}}
+\entry{slime-compile-region}{9}{\code {slime-compile-region}}
+\entry{slime-next-note}{9}{\code {slime-next-note}}
+\entry{slime-previous-note}{10}{\code {\xeatspaces { slime-previous-note}}}
+\entry{slime-remove-notes}{10}{\code {\xeatspaces { slime-remove-notes}}}
+\entry{next-error}{10}{\code {\xeatspaces { next-error}}}
+\entry{slime-complete-symbol}{10}{\code {\xeatspaces {slime-complete-symbol}}}
+\entry{slime-edit-definition}{10}{\code {\xeatspaces { slime-edit-definition}}}
+\entry{slime-pop-find-definition-stack}{10}{\code {slime-pop-find-definition-stack}}
+\entry{slime-edit-definition-other-window}{10}{\code {\xeatspaces { slime-edit-definition-other-window}}}
+\entry{slime-edit-definition-other-frame}{10}{\code {\xeatspaces { slime-edit-definition-other-frame}}}
+\entry{slime-edit-definition-with-etags}{11}{\code {\xeatspaces {slime-edit-definition-with-etags}}}
+\entry{slime-space}{11}{\code {\xeatspaces { slime-space}}}
+\entry{slime-describe-symbol}{11}{\code {\xeatspaces { slime-describe-symbol}}}
+\entry{slime-describe-function}{11}{\code {\xeatspaces { slime-describe-function}}}
+\entry{slime-apropos}{11}{\code {\xeatspaces { slime-apropos}}}
+\entry{slime-apropos-all}{11}{\code {\xeatspaces { slime-apropos-all}}}
+\entry{slime-apropos-package}{11}{\code {\xeatspaces { slime-apropos-package}}}
+\entry{slime-hyperspec-lookup}{11}{\code {\xeatspaces { slime-hyperspec-lookup}}}
+\entry{hyperspec-lookup-format}{11}{\code {\xeatspaces { hyperspec-lookup-format}}}
+\entry{hyperspec-lookup-reader-macro}{12}{\code {\xeatspaces { hyperspec-lookup-reader-macro}}}
+\entry{slime-who-calls}{12}{\code {\xeatspaces { slime-who-calls}}}
+\entry{slime-calls-who}{12}{\code {\xeatspaces { slime-calls-who}}}
+\entry{slime-who-references}{12}{\code {\xeatspaces { slime-who-references}}}
+\entry{slime-who-binds}{12}{\code {\xeatspaces { slime-who-binds}}}
+\entry{slime-who-sets}{12}{\code {\xeatspaces { slime-who-sets}}}
+\entry{slime-who-macroexpands}{12}{\code {\xeatspaces { slime-who-macroexpands}}}
+\entry{slime-who-specializes}{12}{\code {\xeatspaces {slime-who-specializes}}}
+\entry{slime-list-callers}{12}{\code {\xeatspaces { slime-list-callers}}}
+\entry{slime-list-callees}{12}{\code {\xeatspaces { slime-list-callees}}}
+\entry{slime-show-xref}{13}{\code {slime-show-xref}}
+\entry{slime-goto-xref}{13}{\code {slime-goto-xref}}
+\entry{slime-recompile-xref}{13}{\code {slime-recompile-xref}}
+\entry{slime-recompile-all-xrefs}{13}{\code {slime-recompile-all-xrefs}}
+\entry{slime-macroexpand-1}{13}{\code {slime-macroexpand-1}}
+\entry{slime-macroexpand-all}{13}{\code {slime-macroexpand-all}}
+\entry{slime-compiler-macroexpand-1}{13}{\code {slime-compiler-macroexpand-1}}
+\entry{slime-compiler-macroexpand}{13}{\code {slime-compiler-macroexpand}}
+\entry{slime-disassemble-symbol}{13}{\code {slime-disassemble-symbol}}
+\entry{slime-toggle-trace-fdefinition}{13}{\code {slime-toggle-trace-fdefinition}}
+\entry{slime-untrace-all}{13}{\code {slime-untrace-all}}
+\entry{slime-interrupt}{14}{\code {slime-interrupt}}
+\entry{slime-restart-inferior-lisp}{14}{\code {slime-restart-inferior-lisp}}
+\entry{slime-sync-package-and-default-directory}{14}{\code {slime-sync-package-and-default-directory}}
+\entry{slime-repl-set-package}{14}{\code {slime-repl-set-package}}
+\entry{slime-cd}{14}{\code {slime-cd}}
+\entry{slime-pwd}{14}{\code {slime-pwd}}
+\entry{slime-inspect}{14}{\code {slime-inspect}}
+\entry{slime-inspector-operate-on-point}{14}{\code {slime-inspector-operate-on-point}}
+\entry{slime-inspector-describe}{14}{\code {slime-inspector-describe}}
+\entry{slime-inspector-eval}{14}{\code {slime-inspector-eval}}
+\entry{slime-inspector-toggle-verbose}{14}{\code {slime-inspector-toggle-verbose}}
+\entry{slime-inspector-pop}{15}{\code {slime-inspector-pop}}
+\entry{slime-inspector-next}{15}{\code {slime-inspector-next}}
+\entry{slime-inspector-reinspect}{15}{\code {slime-inspector-reinspect}}
+\entry{slime-inspector-quit}{15}{\code {slime-inspector-quit}}
+\entry{slime-inspector-pprint}{15}{\code {slime-inspector-pprint}}
+\entry{slime-inspector-show-source}{15}{\code {slime-inspector-show-source}}
+\entry{slime-inspector-fetch-all}{15}{\code {slime-inspector-fetch-all}}
+\entry{slime-inspector-copy-down}{15}{\code {slime-inspector-copy-down}}
+\entry{slime-inspector-next-inspectable-object}{15}{\code {slime-inspector-next-inspectable-object}}
+\entry{slime-inspector-previous-inspectable-object}{15}{\code {slime-inspector-previous-inspectable-object}}
+\entry{slime-toggle-profile-fdefinition}{15}{\code {slime-toggle-profile-fdefinition}}
+\entry{slime-profile-package}{15}{\code {slime-profile-package}}
+\entry{slime-profile-by-substring}{15}{\code {slime-profile-by-substring}}
+\entry{slime-unprofile-all}{15}{\code {slime-unprofile-all}}
+\entry{slime-profile-report}{16}{\code {\xeatspaces {slime-profile-report}}}
+\entry{slime-profile-reset}{16}{\code {\xeatspaces {slime-profile-reset}}}
+\entry{slime-profiled-functions}{16}{\code {\xeatspaces {slime-profiled-functions}}}
+\entry{slime-nop}{16}{\code {\xeatspaces { slime-nop}}}
+\entry{slime-nop}{16}{\code {\xeatspaces { slime-nop}}}
+\entry{sldb-toggle-details}{17}{\code {sldb-toggle-details}}
+\entry{sldb-show-source}{17}{\code {sldb-show-source}}
+\entry{sldb-eval-in-frame}{17}{\code {sldb-eval-in-frame}}
+\entry{sldb-pprint-eval-in-frame}{17}{\code {sldb-pprint-eval-in-frame}}
+\entry{sldb-disassemble}{17}{\code {sldb-disassemble}}
+\entry{sldb-inspect-in-frame}{17}{\code {sldb-inspect-in-frame}}
+\entry{sldb-recompile-frame-source}{17}{\code {sldb-recompile-frame-source}}
+\entry{sldb-abort}{17}{\code {sldb-abort}}
+\entry{sldb-quit}{18}{\code {sldb-quit}}
+\entry{sldb-continue}{18}{\code {sldb-continue}}
+\entry{sldb-down}{18}{\code {sldb-down}}
+\entry{sldb-up}{18}{\code {sldb-up}}
+\entry{sldb-details-down}{18}{\code {sldb-details-down}}
+\entry{sldb-details-up}{18}{\code {sldb-details-up}}
+\entry{sldb-end-of-backtrace}{18}{\code {sldb-end-of-backtrace}}
+\entry{sldb-beginning-of-backtrace}{18}{\code {sldb-beginning-of-backtrace}}
+\entry{sldb-step}{18}{\code {sldb-step}}
+\entry{sldb-next}{18}{\code {sldb-next}}
+\entry{sldb-out}{18}{\code {sldb-out}}
+\entry{sldb-restart-frame}{19}{\code {\xeatspaces { sldb-restart-frame}}}
+\entry{sldb-return-from-frame}{19}{\code {\xeatspaces { sldb-return-from-frame}}}
+\entry{sldb-break-with-default-debugger}{19}{\code {\xeatspaces { sldb-break-with-default-debugger}}}
+\entry{sldb-inspect-condition}{19}{\code {\xeatspaces { sldb-inspect-condition}}}
+\entry{slime-interactive-eval}{19}{\code {\xeatspaces { slime-interactive-eval}}}
+\entry{sldb-break-with-system-debugger}{19}{\code {\xeatspaces { sldb-break-with-system-debugger}}}
+\entry{slime-macroexpand-1-inplace}{20}{\code {\xeatspaces { slime-macroexpand-1-inplace}}}
+\entry{slime-macroexpand-1-inplace}{20}{\code {\xeatspaces { slime-macroexpand-1-inplace}}}
+\entry{slime-temp-buffer-quit}{20}{\code {\xeatspaces { slime-temp-buffer-quit}}}
+\entry{slime-macroexpand-undo}{20}{\code {\xeatspaces { slime-macroexpand-undo}}}
+\entry{slime-list-connections}{21}{\code {slime-list-connections}}
+\entry{slime-cycle-connections}{21}{\code {slime-cycle-connections}}
+\entry{slime-list-threads}{21}{\code {slime-list-threads}}
+\entry{slime-goto-connection}{21}{\code {slime-goto-connection}}
+\entry{slime-connection-list-make-default}{21}{\code {slime-connection-list-make-default}}
+\entry{slime-update-connection-list}{21}{\code {slime-update-connection-list}}
+\entry{slime-temp-buffer-quit}{22}{\code {\xeatspaces { slime-temp-buffer-quit}}}
+\entry{slime-restart-connection-at-point}{22}{\code {\xeatspaces { slime-restart-connection-at-point}}}
+\entry{slime-connect}{22}{\code {\xeatspaces {slime-connect}}}
+\entry{slime-disconnect}{22}{\code {\xeatspaces {slime-disconnect}}}
+\entry{slime-abort-connection}{22}{\code {\xeatspaces {slime-abort-connection}}}
+\entry{slime-switch-to-output-buffer}{30}{\code {slime-switch-to-output-buffer}}
+\entry{slime-call-defun}{30}{\code {slime-call-defun}}
+\entry{slime-eval-last-expression-in-repl}{30}{\code {slime-eval-last-expression-in-repl}}
+\entry{slime-repl-return}{31}{\code {slime-repl-return}}
+\entry{slime-repl-closing-return}{31}{\code {slime-repl-closing-return}}
+\entry{slime-indent-and-complete-symbol}{31}{\code {slime-indent-and-complete-symbol}}
+\entry{slime-repl-newline-and-indent}{31}{\code {slime-repl-newline-and-indent}}
+\entry{slime-repl-bol}{31}{\code {slime-repl-bol}}
+\entry{slime-interrupt}{31}{\code {slime-interrupt}}
+\entry{slime-repl-clear-buffer}{31}{\code {slime-repl-clear-buffer}}
+\entry{slime-repl-clear-output}{31}{\code {slime-repl-clear-output}}
+\entry{slime-repl-forward-input}{31}{\code {slime-repl-forward-input}}
+\entry{slime-repl-backward-input}{31}{\code {slime-repl-backward-input}}
+\entry{slime-repl-next-input}{31}{\code {slime-repl-next-input}}
+\entry{slime-repl-previous-input}{31}{\code {slime-repl-previous-input}}
+\entry{slime-repl-next-matching-input}{32}{\code {\xeatspaces { slime-repl-next-matching-input}}}
+\entry{slime-repl-previous-matching-input}{32}{\code {\xeatspaces { slime-repl-previous-matching-input}}}
+\entry{slime-repl-next-prompt}{32}{\code {\xeatspaces { slime-repl-next-prompt}}}
+\entry{slime-repl-previous-prompt}{32}{\code {\xeatspaces { slime-repl-previous-prompt}}}
+\entry{inferior-slime-mode}{33}{\code {\xeatspaces {inferior-slime-mode}}}
+\entry{slime-complete-form}{34}{\code {\xeatspaces { slime-complete-form}}}
+\entry{slime-fuzzy-complete-symbol}{35}{\code {slime-fuzzy-complete-symbol}}
+\entry{slime-arglist NAME}{35}{\code {slime-arglist NAME}}
+\entry{slime-autodoc-mode}{35}{\code {slime-autodoc-mode}}
+\entry{slime-autodoc-manually}{35}{\code {slime-autodoc-manually}}
+\entry{slime-load-system NAME}{35}{\code {slime-load-system NAME}}
+\entry{slime-reload-system NAME}{36}{\code {\xeatspaces {slime-reload-system NAME}}}
+\entry{slime-open-system NAME &optional LOAD}{36}{\code {\xeatspaces {slime-open-system NAME &optional LOAD}}}
+\entry{slime-browse-system NAME}{36}{\code {\xeatspaces {slime-browse-system NAME}}}
+\entry{slime-delete-system-fasls NAME}{36}{\code {\xeatspaces {slime-delete-system-fasls NAME}}}
+\entry{slime-rgrep-system NAME REGEXP}{36}{\code {\xeatspaces {slime-rgrep-system NAME REGEXP}}}
+\entry{slime-isearch-system NAME}{36}{\code {\xeatspaces {slime-isearch-system NAME}}}
+\entry{slime-query-replace-system NAME FROM TO &OPTIONAL DELIMITED}{36}{\code {\xeatspaces {slime-query-replace-system NAME FROM TO &OPTIONAL DELIMITED}}}
+\entry{slime-reindent-defun}{37}{\code {\xeatspaces { slime-reindent-defun}}}
+\entry{slime-close-all-parens-in-sexp}{37}{\code {\xeatspaces { slime-close-all-parens-in-sexp}}}
+\entry{slime-insert-balanced-comments}{37}{\code {\xeatspaces {slime-insert-balanced-comments}}}
+\entry{slime-beginning-of-defun}{37}{\code {\xeatspaces { slime-beginning-of-defun}}}
+\entry{slime-end-of-defun}{37}{\code {\xeatspaces { slime-end-of-defun}}}
+\entry{slime-mark-presentation}{39}{\code {\xeatspaces { slime-mark-presentation}}}
+\entry{slime-copy-presentation-at-point-to-kill-ring}{39}{\code {\xeatspaces { slime-copy-presentation-at-point-to-kill-ring}}}
+\entry{slime-copy-presentation-at-point-to-repl}{39}{\code {\xeatspaces { slime-copy-presentation-at-point-to-repl}}}
+\entry{slime-describe-presentation-at-point}{39}{\code {\xeatspaces { slime-describe-presentation-at-point}}}
+\entry{slime-inspect-presentation-at-point}{39}{\code {\xeatspaces { slime-inspect-presentation-at-point}}}
+\entry{slime-next-presentation}{39}{\code {\xeatspaces { slime-next-presentation}}}
+\entry{slime-previous-presentation}{39}{\code {\xeatspaces { slime-previous-presentation}}}
+\entry{slime-ensure-typeout-frame}{40}{\code {\xeatspaces {slime-ensure-typeout-frame}}}
+\entry{slime-browse-classes}{40}{\code {\xeatspaces {slime-browse-classes}}}
+\entry{slime-browse-xrefs}{40}{\code {\xeatspaces {slime-browse-xrefs}}}
+\entry{slime-highlight-edits-mode}{41}{\code {\xeatspaces {slime-highlight-edits-mode}}}
+\entry{slime-eval-print-last-expression}{41}{\code {\xeatspaces { slime-eval-print-last-expression}}}
+\entry{slime-scratch}{41}{\code {\xeatspaces {slime-scratch}}}
+\entry{slime-sprof-start}{41}{\code {\xeatspaces {slime-sprof-start}}}
+\entry{slime-sprof-stop}{41}{\code {\xeatspaces {slime-sprof-stop}}}
+\entry{slime-sprof-report}{41}{\code {\xeatspaces {slime-sprof-report}}}
+\entry{slime-sprof-browser-toggle}{41}{\code {\xeatspaces { slime-sprof-browser-toggle}}}
+\entry{slime-sprof-browser-view-source}{41}{\code {\xeatspaces { slime-sprof-browser-view-source}}}
+\entry{slime-sprof-browser-disassemble-function}{41}{\code {\xeatspaces { slime-sprof-browser-disassemble-function}}}
+\entry{slime-sprof-toggle-swank-exclusion}{42}{\code {\xeatspaces { slime-sprof-toggle-swank-exclusion}}}
