@@ -2893,7 +2893,7 @@ returned as the value of the property.
 This list is checked after translations have been applied.  See
 `org-element-keyword-translation-alist'.")
 
-(defconst org-element-parsed-keywords '("AUTHOR" "CAPTION" "TITLE")
+(defconst org-element-parsed-keywords '("AUTHOR" "CAPTION" "DATE" "TITLE")
   "List of keywords whose value can be parsed.
 
 Their value will be stored as a secondary string: a list of
@@ -3338,12 +3338,22 @@ Nil values returned from FUN do not appear in the results."
   (unless (listp no-recursion) (setq no-recursion (list no-recursion)))
   ;; Recursion depth is determined by --CATEGORY.
   (let* ((--category
-	  (cond
-	   ((every (lambda (el) (memq el org-element-greater-elements)) types)
-	    'greater-elements)
-	   ((every (lambda (el) (memq el org-element-all-elements)) types)
-	    'elements)
-	   (t 'objects)))
+	  (catch 'found
+	    (let ((category 'greater-elements))
+	      (mapc (lambda (type)
+		      (cond ((or (memq type org-element-all-objects)
+				 (eq type 'plain-text))
+			     ;; If one object is found, the function
+			     ;; has to recurse into every object.
+			     (throw 'found 'objects))
+			    ((not (memq type org-element-greater-elements))
+			     ;; If one regular element is found, the
+			     ;; function has to recurse, at lest, into
+			     ;; every element it encounters.
+			     (and (not (eq category 'elements))
+				  (setq category 'elements)))))
+		    types)
+	      category)))
 	 --acc
 	 --walk-tree
 	 (--walk-tree
