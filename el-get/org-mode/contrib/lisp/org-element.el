@@ -34,8 +34,9 @@
 ;; `keyword', `planning', `property-drawer' and `section' types), it
 ;; can also accept a fixed set of keywords as attributes.  Those are
 ;; called "affiliated keywords" to distinguish them from other
-;; keywords, which are full-fledged elements.  All affiliated keywords
-;; are referenced in `org-element-affiliated-keywords'.
+;; keywords, which are full-fledged elements.  Almost all affiliated
+;; keywords are referenced in `org-element-affiliated-keywords'; the
+;; others are export attributes and start with "ATTR_" prefix.
 ;;
 ;; Element containing other elements (and only elements) are called
 ;; greater elements.  Concerned types are: `center-block', `drawer',
@@ -111,6 +112,220 @@
 (eval-when-compile (require 'cl))
 (require 'org)
 (declare-function org-inlinetask-goto-end "org-inlinetask" ())
+
+
+
+;;; Definitions And Rules
+;;
+;; Define elements, greater elements and specify recursive objects,
+;; along with the affiliated keywords recognized.  Also set up
+;; restrictions on recursive objects combinations.
+;;
+;; These variables really act as a control center for the parsing
+;; process.
+(defconst org-element-paragraph-separate
+  (concat "\f" "\\|" "^[ \t]*$" "\\|"
+	  ;; Headlines and inlinetasks.
+	  org-outline-regexp-bol "\\|"
+	  ;; Comments, blocks (any type), keywords and babel calls.
+	  "^[ \t]*#\\+" "\\|" "^#\\(?: \\|$\\)" "\\|"
+	  ;; Lists.
+	  (org-item-beginning-re) "\\|"
+	  ;; Fixed-width, drawers (any type) and tables.
+	  "^[ \t]*[:|]" "\\|"
+	  ;; Footnote definitions.
+	  org-footnote-definition-re "\\|"
+	  ;; Horizontal rules.
+	  "^[ \t]*-\\{5,\\}[ \t]*$" "\\|"
+	  ;; LaTeX environments.
+	  "^[ \t]*\\\\\\(begin\\|end\\)" "\\|"
+	  ;; Planning and Clock lines.
+	  "^[ \t]*\\(?:"
+	  org-clock-string "\\|"
+	  org-closed-string "\\|"
+	  org-deadline-string "\\|"
+	  org-scheduled-string "\\)")
+  "Regexp to separate paragraphs in an Org buffer.")
+
+(defconst org-element-all-elements
+  '(center-block clock comment comment-block drawer dynamic-block example-block
+		 export-block fixed-width footnote-definition headline
+		 horizontal-rule inlinetask item keyword latex-environment
+		 babel-call paragraph plain-list planning property-drawer
+		 quote-block quote-section section special-block src-block table
+		 table-row verse-block)
+  "Complete list of element types.")
+
+(defconst org-element-greater-elements
+  '(center-block drawer dynamic-block footnote-definition headline inlinetask
+		 item plain-list quote-block section special-block table)
+  "List of recursive element types aka Greater Elements.")
+
+(defconst org-element-all-successors
+  '(export-snippet footnote-reference inline-babel-call inline-src-block
+		   latex-or-entity line-break link macro radio-target
+		   statistics-cookie sub/superscript table-cell target
+		   text-markup timestamp)
+  "Complete list of successors.")
+
+(defconst org-element-object-successor-alist
+  '((subscript . sub/superscript) (superscript . sub/superscript)
+    (bold . text-markup) (code . text-markup) (italic . text-markup)
+    (strike-through . text-markup) (underline . text-markup)
+    (verbatim . text-markup) (entity . latex-or-entity)
+    (latex-fragment . latex-or-entity))
+  "Alist of translations between object type and successor name.
+
+Sharing the same successor comes handy when, for example, the
+regexp matching one object can also match the other object.")
+
+(defconst org-element-all-objects
+  '(bold code entity export-snippet footnote-reference inline-babel-call
+	 inline-src-block italic line-break latex-fragment link macro
+	 radio-target statistics-cookie strike-through subscript superscript
+	 table-cell target timestamp underline verbatim)
+  "Complete list of object types.")
+
+(defconst org-element-recursive-objects
+  '(bold italic link macro subscript radio-target strike-through superscript
+	 table-cell underline)
+  "List of recursive object types.")
+
+(defconst org-element-block-name-alist
+  '(("ASCII" . org-element-export-block-parser)
+    ("CENTER" . org-element-center-block-parser)
+    ("COMMENT" . org-element-comment-block-parser)
+    ("DOCBOOK" . org-element-export-block-parser)
+    ("EXAMPLE" . org-element-example-block-parser)
+    ("HTML" . org-element-export-block-parser)
+    ("LATEX" . org-element-export-block-parser)
+    ("ODT" . org-element-export-block-parser)
+    ("QUOTE" . org-element-quote-block-parser)
+    ("SRC" . org-element-src-block-parser)
+    ("VERSE" . org-element-verse-block-parser))
+  "Alist between block names and the associated parsing function.
+Names must be uppercase.  Any block whose name has no association
+is parsed with `org-element-special-block-parser'.")
+
+(defconst org-element-affiliated-keywords
+  '("CAPTION" "DATA" "HEADER" "HEADERS" "LABEL" "NAME" "PLOT" "RESNAME" "RESULT"
+    "RESULTS" "SOURCE" "SRCNAME" "TBLNAME")
+  "List of affiliated keywords as strings.
+By default, all keywords setting attributes (i.e. \"ATTR_LATEX\")
+are affiliated keywords and need not to be in this list.")
+
+(defconst org-element--affiliated-re
+  (format "[ \t]*#\\+%s:"
+	  ;; Regular affiliated keywords.
+	  (format "\\(%s\\|ATTR_[-_A-Za-z0-9]+\\)\\(?:\\[\\(.*\\)\\]\\)?"
+		  (regexp-opt org-element-affiliated-keywords)))
+  "Regexp matching any affiliated keyword.
+
+Keyword name is put in match group 1.  Moreover, if keyword
+belongs to `org-element-dual-keywords', put the dual value in
+match group 2.
+
+Don't modify it, set `org-element-affiliated-keywords' instead.")
+
+(defconst org-element-keyword-translation-alist
+  '(("DATA" . "NAME")  ("LABEL" . "NAME") ("RESNAME" . "NAME")
+    ("SOURCE" . "NAME") ("SRCNAME" . "NAME") ("TBLNAME" . "NAME")
+    ("RESULT" . "RESULTS") ("HEADERS" . "HEADER"))
+  "Alist of usual translations for keywords.
+The key is the old name and the value the new one.  The property
+holding their value will be named after the translated name.")
+
+(defconst org-element-multiple-keywords '("HEADER")
+  "List of affiliated keywords that can occur more that once in an element.
+
+Their value will be consed into a list of strings, which will be
+returned as the value of the property.
+
+This list is checked after translations have been applied.  See
+`org-element-keyword-translation-alist'.
+
+By default, all keywords setting attributes (i.e. \"ATTR_LATEX\")
+allow multiple occurrences and need not to be in this list.")
+
+(defconst org-element-parsed-keywords '("AUTHOR" "CAPTION" "DATE" "TITLE")
+  "List of keywords whose value can be parsed.
+
+Their value will be stored as a secondary string: a list of
+strings and objects.
+
+This list is checked after translations have been applied.  See
+`org-element-keyword-translation-alist'.")
+
+(defconst org-element-dual-keywords '("CAPTION" "RESULTS")
+  "List of keywords which can have a secondary value.
+
+In Org syntax, they can be written with optional square brackets
+before the colons.  For example, results keyword can be
+associated to a hash value with the following:
+
+  #+RESULTS[hash-string]: some-source
+
+This list is checked after translations have been applied.  See
+`org-element-keyword-translation-alist'.")
+
+(defconst org-element-object-restrictions
+  `((bold entity export-snippet inline-babel-call inline-src-block link
+	  radio-target sub/superscript target text-markup timestamp)
+    (footnote-reference entity export-snippet footnote-reference
+			inline-babel-call inline-src-block latex-fragment
+			line-break link macro radio-target sub/superscript
+			target text-markup timestamp)
+    (headline entity inline-babel-call inline-src-block latex-fragment link
+	      macro radio-target statistics-cookie sub/superscript target
+	      text-markup timestamp)
+    (inlinetask entity inline-babel-call inline-src-block latex-fragment link
+		macro radio-target sub/superscript target text-markup timestamp)
+    (italic entity export-snippet inline-babel-call inline-src-block link
+	    radio-target sub/superscript target text-markup timestamp)
+    (item entity footnote-reference inline-babel-call latex-fragment macro
+	  radio-target sub/superscript target text-markup)
+    (keyword entity latex-fragment macro sub/superscript text-markup)
+    (link entity export-snippet inline-babel-call inline-src-block
+	  latex-fragment link sub/superscript text-markup)
+    (macro macro)
+    (paragraph ,@org-element-all-successors)
+    (radio-target entity export-snippet latex-fragment sub/superscript)
+    (strike-through entity export-snippet inline-babel-call inline-src-block
+		    link radio-target sub/superscript target text-markup
+		    timestamp)
+    (subscript entity export-snippet inline-babel-call inline-src-block
+	       latex-fragment sub/superscript target text-markup)
+    (superscript entity export-snippet inline-babel-call inline-src-block
+		 latex-fragment sub/superscript target text-markup)
+    (table-cell entity export-snippet latex-fragment link macro radio-target
+		sub/superscript target text-markup timestamp)
+    (table-row table-cell)
+    (underline entity export-snippet inline-babel-call inline-src-block link
+	       radio-target sub/superscript target text-markup timestamp)
+    (verse-block entity footnote-reference inline-babel-call inline-src-block
+		 latex-fragment line-break link macro radio-target
+		 sub/superscript target text-markup timestamp))
+  "Alist of objects restrictions.
+
+CAR is an element or object type containing objects and CDR is
+a list of successors that will be called within an element or
+object of such type.
+
+For example, in a `radio-target' object, one can only find
+entities, export snippets, latex-fragments, subscript and
+superscript.
+
+This alist also applies to secondary string.  For example, an
+`headline' type element doesn't directly contain objects, but
+still has an entry since one of its properties (`:title') does.")
+
+(defconst org-element-secondary-value-alist
+  '((headline . :title)
+    (inlinetask . :title)
+    (item . :tag)
+    (footnote-reference . :inline-definition))
+  "Alist between element types and location of secondary value.")
+
 
 
 ;;; Greater elements
@@ -1899,17 +2114,12 @@ keywords.
 
 Assume point is at the beginning of the snippet."
   (save-excursion
-    (looking-at "<\\([-A-Za-z0-9]+\\)@")
-    (let* ((begin (point))
+    (re-search-forward "@@\\([-A-Za-z0-9]+\\):" nil t)
+    (let* ((begin (match-beginning 0))
 	   (back-end (org-match-string-no-properties 1))
-	   (inner-begin (match-end 0))
-	   (inner-end
-	    (let ((count 1))
-	      (goto-char inner-begin)
-	      (while (and (> count 0) (re-search-forward "[<>]" nil t))
-		(if (equal (match-string 0) "<") (incf count) (decf count)))
-	      (1- (point))))
-	   (value (buffer-substring-no-properties inner-begin inner-end))
+	   (value (buffer-substring-no-properties
+		   (point)
+		   (progn (re-search-forward "@@" nil t) (match-beginning 0))))
 	   (post-blank (skip-chars-forward " \t"))
 	   (end (point)))
       `(export-snippet
@@ -1922,7 +2132,7 @@ Assume point is at the beginning of the snippet."
 (defun org-element-export-snippet-interpreter (export-snippet contents)
   "Interpret EXPORT-SNIPPET object as Org syntax.
 CONTENTS is nil."
-  (format "<%s@%s>"
+  (format "@@%s:%s@@"
 	  (org-element-property :back-end export-snippet)
 	  (org-element-property :value export-snippet)))
 
@@ -1931,18 +2141,14 @@ CONTENTS is nil."
 
 LIMIT bounds the search.
 
-Return value is a cons cell whose CAR is `export-snippet' CDR is
+Return value is a cons cell whose CAR is `export-snippet' and CDR
 its beginning position."
   (save-excursion
-    (catch 'exit
-      (while (re-search-forward "<[-A-Za-z0-9]+@" limit t)
-	(save-excursion
-	  (let ((beg (match-beginning 0))
-		(count 1))
-	    (while (re-search-forward "[<>]" limit t)
-	      (if (equal (match-string 0) "<") (incf count) (decf count))
-	      (when (zerop count)
-		(throw 'exit (cons 'export-snippet beg))))))))))
+    (let (beg)
+      (when (and (re-search-forward "@@[-A-Za-z0-9]+:" limit t)
+		 (setq beg (match-beginning 0))
+		 (re-search-forward "@@" limit t))
+	(cons 'export-snippet beg)))))
 
 
 ;;;; Footnote Reference
@@ -2777,203 +2983,6 @@ CONTENTS is nil."
 
 
 
-;;; Definitions And Rules
-;;
-;; Define elements, greater elements and specify recursive objects,
-;; along with the affiliated keywords recognized.  Also set up
-;; restrictions on recursive objects combinations.
-;;
-;; These variables really act as a control center for the parsing
-;; process.
-(defconst org-element-paragraph-separate
-  (concat "\f" "\\|" "^[ \t]*$" "\\|"
-	  ;; Headlines and inlinetasks.
-	  org-outline-regexp-bol "\\|"
-	  ;; Comments, blocks (any type), keywords and babel calls.
-	  "^[ \t]*#\\+" "\\|" "^#\\(?: \\|$\\)" "\\|"
-	  ;; Lists.
-	  (org-item-beginning-re) "\\|"
-	  ;; Fixed-width, drawers (any type) and tables.
-	  "^[ \t]*[:|]" "\\|"
-	  ;; Footnote definitions.
-	  org-footnote-definition-re "\\|"
-	  ;; Horizontal rules.
-	  "^[ \t]*-\\{5,\\}[ \t]*$" "\\|"
-	  ;; LaTeX environments.
-	  "^[ \t]*\\\\\\(begin\\|end\\)" "\\|"
-	  ;; Planning and Clock lines.
-	  "^[ \t]*\\(?:"
-	  org-clock-string "\\|"
-	  org-closed-string "\\|"
-	  org-deadline-string "\\|"
-	  org-scheduled-string "\\)")
-  "Regexp to separate paragraphs in an Org buffer.")
-
-(defconst org-element-all-elements
-  '(center-block clock comment comment-block drawer dynamic-block example-block
-		 export-block fixed-width footnote-definition headline
-		 horizontal-rule inlinetask item keyword latex-environment
-		 babel-call paragraph plain-list planning property-drawer
-		 quote-block quote-section section special-block src-block table
-		 table-row verse-block)
-  "Complete list of element types.")
-
-(defconst org-element-greater-elements
-  '(center-block drawer dynamic-block footnote-definition headline inlinetask
-		 item plain-list quote-block section special-block table)
-  "List of recursive element types aka Greater Elements.")
-
-(defconst org-element-all-successors
-  '(export-snippet footnote-reference inline-babel-call inline-src-block
-		   latex-or-entity line-break link macro radio-target
-		   statistics-cookie sub/superscript table-cell target
-		   text-markup timestamp)
-  "Complete list of successors.")
-
-(defconst org-element-object-successor-alist
-  '((subscript . sub/superscript) (superscript . sub/superscript)
-    (bold . text-markup) (code . text-markup) (italic . text-markup)
-    (strike-through . text-markup) (underline . text-markup)
-    (verbatim . text-markup) (entity . latex-or-entity)
-    (latex-fragment . latex-or-entity))
-  "Alist of translations between object type and successor name.
-
-Sharing the same successor comes handy when, for example, the
-regexp matching one object can also match the other object.")
-
-(defconst org-element-all-objects
-  '(bold code entity export-snippet footnote-reference inline-babel-call
-	 inline-src-block italic line-break latex-fragment link macro
-	 radio-target statistics-cookie strike-through subscript superscript
-	 table-cell target timestamp underline verbatim)
-  "Complete list of object types.")
-
-(defconst org-element-recursive-objects
-  '(bold italic link macro subscript radio-target strike-through superscript
-	 table-cell underline)
-  "List of recursive object types.")
-
-(defconst org-element-block-name-alist
-  '(("ASCII" . org-element-export-block-parser)
-    ("CENTER" . org-element-center-block-parser)
-    ("COMMENT" . org-element-comment-block-parser)
-    ("DOCBOOK" . org-element-export-block-parser)
-    ("EXAMPLE" . org-element-example-block-parser)
-    ("HTML" . org-element-export-block-parser)
-    ("LATEX" . org-element-export-block-parser)
-    ("ODT" . org-element-export-block-parser)
-    ("QUOTE" . org-element-quote-block-parser)
-    ("SRC" . org-element-src-block-parser)
-    ("VERSE" . org-element-verse-block-parser))
-  "Alist between block names and the associated parsing function.
-Names must be uppercase.  Any block whose name has no association
-is parsed with `org-element-special-block-parser'.")
-
-(defconst org-element-affiliated-keywords
-  '("ATTR_ASCII" "ATTR_DOCBOOK" "ATTR_HTML" "ATTR_LATEX" "ATTR_ODT" "CAPTION"
-    "DATA" "HEADER" "HEADERS" "LABEL" "NAME" "PLOT" "RESNAME" "RESULT" "RESULTS"
-    "SOURCE" "SRCNAME" "TBLNAME")
-  "List of affiliated keywords as strings.")
-
-(defconst org-element-keyword-translation-alist
-  '(("DATA" . "NAME")  ("LABEL" . "NAME") ("RESNAME" . "NAME")
-    ("SOURCE" . "NAME") ("SRCNAME" . "NAME") ("TBLNAME" . "NAME")
-    ("RESULT" . "RESULTS") ("HEADERS" . "HEADER"))
-  "Alist of usual translations for keywords.
-The key is the old name and the value the new one.  The property
-holding their value will be named after the translated name.")
-
-(defconst org-element-multiple-keywords
-  '("ATTR_ASCII" "ATTR_DOCBOOK" "ATTR_HTML" "ATTR_LATEX" "ATTR_ODT" "HEADER")
-  "List of affiliated keywords that can occur more that once in an element.
-
-Their value will be consed into a list of strings, which will be
-returned as the value of the property.
-
-This list is checked after translations have been applied.  See
-`org-element-keyword-translation-alist'.")
-
-(defconst org-element-parsed-keywords '("AUTHOR" "CAPTION" "DATE" "TITLE")
-  "List of keywords whose value can be parsed.
-
-Their value will be stored as a secondary string: a list of
-strings and objects.
-
-This list is checked after translations have been applied.  See
-`org-element-keyword-translation-alist'.")
-
-(defconst org-element-dual-keywords '("CAPTION" "RESULTS")
-  "List of keywords which can have a secondary value.
-
-In Org syntax, they can be written with optional square brackets
-before the colons.  For example, results keyword can be
-associated to a hash value with the following:
-
-  #+RESULTS[hash-string]: some-source
-
-This list is checked after translations have been applied.  See
-`org-element-keyword-translation-alist'.")
-
-(defconst org-element-object-restrictions
-  `((bold entity export-snippet inline-babel-call inline-src-block link
-	  radio-target sub/superscript target text-markup timestamp)
-    (footnote-reference entity export-snippet footnote-reference
-			inline-babel-call inline-src-block latex-fragment
-			line-break link macro radio-target sub/superscript
-			target text-markup timestamp)
-    (headline entity inline-babel-call inline-src-block latex-fragment link
-	      macro radio-target statistics-cookie sub/superscript target
-	      text-markup timestamp)
-    (inlinetask entity inline-babel-call inline-src-block latex-fragment link
-		macro radio-target sub/superscript target text-markup timestamp)
-    (italic entity export-snippet inline-babel-call inline-src-block link
-	    radio-target sub/superscript target text-markup timestamp)
-    (item entity footnote-reference inline-babel-call latex-fragment macro
-	  radio-target sub/superscript target text-markup)
-    (keyword entity latex-fragment macro sub/superscript text-markup)
-    (link entity export-snippet inline-babel-call inline-src-block
-	  latex-fragment link sub/superscript text-markup)
-    (macro macro)
-    (paragraph ,@org-element-all-successors)
-    (radio-target entity export-snippet latex-fragment sub/superscript)
-    (strike-through entity export-snippet inline-babel-call inline-src-block
-		    link radio-target sub/superscript target text-markup
-		    timestamp)
-    (subscript entity export-snippet inline-babel-call inline-src-block
-	       latex-fragment sub/superscript target text-markup)
-    (superscript entity export-snippet inline-babel-call inline-src-block
-		 latex-fragment sub/superscript target text-markup)
-    (table-cell entity export-snippet latex-fragment link macro radio-target
-		sub/superscript target text-markup timestamp)
-    (table-row table-cell)
-    (underline entity export-snippet inline-babel-call inline-src-block link
-	       radio-target sub/superscript target text-markup timestamp)
-    (verse-block entity footnote-reference inline-babel-call inline-src-block
-		 latex-fragment line-break link macro radio-target
-		 sub/superscript target text-markup timestamp))
-  "Alist of objects restrictions.
-
-CAR is an element or object type containing objects and CDR is
-a list of successors that will be called within an element or
-object of such type.
-
-For example, in a `radio-target' object, one can only find
-entities, export snippets, latex-fragments, subscript and
-superscript.
-
-This alist also applies to secondary string.  For example, an
-`headline' type element doesn't directly contain objects, but
-still has an entry since one of its properties (`:title') does.")
-
-(defconst org-element-secondary-value-alist
-  '((headline . :title)
-    (inlinetask . :title)
-    (item . :tag)
-    (footnote-reference . :inline-definition))
-  "Alist between element types and location of secondary value.")
-
-
-
 ;;; Accessors
 ;;
 ;; Provide four accessors: `org-element-type', `org-element-property'
@@ -3166,23 +3175,6 @@ element it has to parse."
 ;;
 ;; A keyword may belong to more than one category.
 
-(defconst org-element--affiliated-re
-  (format "[ \t]*#\\+\\(%s\\):"
-	  (mapconcat
-	   (lambda (keyword)
-	     (if (member keyword org-element-dual-keywords)
-		 (format "\\(%s\\)\\(?:\\[\\(.*\\)\\]\\)?"
-			 (regexp-quote keyword))
-	       (regexp-quote keyword)))
-	   org-element-affiliated-keywords "\\|"))
-  "Regexp matching any affiliated keyword.
-
-Keyword name is put in match group 1.  Moreover, if keyword
-belongs to `org-element-dual-keywords', put the dual value in
-match group 2.
-
-Don't modify it, set `org-element-affiliated-keywords' instead.")
-
 (defun org-element-collect-affiliated-keywords
   (&optional key-re trans-list consed parsed duals)
   "Collect affiliated keywords before point.
@@ -3225,8 +3217,7 @@ CDR a plist of keywords and values."
 	  (restrict (org-element-restriction 'keyword))
 	  output)
       (unless (bobp)
-	(while (and (not (bobp))
-		    (progn (forward-line -1) (looking-at key-re)))
+	(while (and (not (bobp)) (progn (forward-line -1) (looking-at key-re)))
 	  (let* ((raw-kwd (upcase (or (match-string 2) (match-string 1))))
 		 ;; Apply translation to RAW-KWD.  From there, KWD is
 		 ;; the official keyword.
@@ -3252,7 +3243,8 @@ CDR a plist of keywords and values."
 	    (when (member kwd duals)
 	      ;; VALUE is mandatory.  Set it to nil if there is none.
 	      (setq value (and value (cons value dual-value))))
-	    (when (member kwd consed)
+	    ;; Attributes are always consed.
+	    (when (or (member kwd consed) (string-match "^ATTR_" kwd))
 	      (setq value (cons value (plist-get output kwd-sym))))
 	    ;; Eventually store the new value in OUTPUT.
 	    (setq output (plist-put output kwd-sym value))))
@@ -3726,21 +3718,28 @@ If there is no affiliated keyword, return the empty string."
 			value)
 		      "\n"))))))
     (mapconcat
-     (lambda (key)
-       (let ((value (org-element-property (intern (concat ":" (downcase key)))
-					  element)))
+     (lambda (prop)
+       (let ((value (org-element-property prop element))
+	     (keyword (upcase (substring (symbol-name prop) 1))))
 	 (when value
-	   (if (member key org-element-multiple-keywords)
-	       (mapconcat (lambda (line)
-			    (funcall keyword-to-org key line))
-			  value "")
-	     (funcall keyword-to-org key value)))))
-     ;; Remove translated keywords.
-     (delq nil
-	   (mapcar
-	    (lambda (key)
-	      (and (not (assoc key org-element-keyword-translation-alist)) key))
-	    org-element-affiliated-keywords))
+	   (if (or (member keyword org-element-multiple-keywords)
+		   ;; All attribute keywords can have multiple lines.
+		   (string-match "^ATTR_" keyword))
+	       (mapconcat (lambda (line) (funcall keyword-to-org keyword line))
+			  value
+			  "")
+	     (funcall keyword-to-org keyword value)))))
+     ;; List all ELEMENT's properties matching an attribute line or an
+     ;; affiliated keyword, but ignore translated keywords since they
+     ;; cannot belong to the property list.
+     (loop for prop in (nth 1 element) by 'cddr
+	   when (let ((keyword (upcase (substring (symbol-name prop) 1))))
+		  (or (string-match "^ATTR_" keyword)
+		      (and
+		       (member keyword org-element-affiliated-keywords)
+		       (not (assoc keyword
+				   org-element-keyword-translation-alist)))))
+	   collect prop)
      "")))
 
 ;; Because interpretation of the parse tree must return the same
