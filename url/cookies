@@ -1,15 +1,0 @@
-;; Emacs-W3 HTTP cookies file
-;; Automatically generated file!!! DO NOT EDIT!!!
-
-(setq url-cookie-storage
- 'nil)
-(setq url-cookie-secure-storage
- '(("github.com"
-  [url-cookie "_gh_sess" "BAh7BzoPc2Vzc2lvbl9pZCIlYzI0N2UyZTM4MzlmZmNkMzYzMDU1OTQxNmJmNWRhYTU6EF9jc3JmX3Rva2VuIjFIR1FXbWhUeWVnWGl5cFArRllVTXFIc21WT2JXUWpibUFYazVzK1FxZWx3PQ%3D%3D--88ff2698b933fb2fb59aca8dd2093e979c046d8c" "01-Jan-2022 00:00:00.00 GMT" "/" "github.com" t]
-  [url-cookie "HttpOnly" nil "01-Jan-2022 00:00:00.00 GMT" "/" "github.com" t]))
-)
-
-;; Local Variables:
-;; version-control: never
-;; no-byte-compile: t
-;; End:
