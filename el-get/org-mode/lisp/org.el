@@ -5442,6 +5442,12 @@ by a #."
   :version "24.1"
   :group 'org-appearance)
 
+(defcustom org-doi-server-url "http://dx.doi.org/"
+  "The URL of the DOI server."
+  :type 'string
+  :version "24.2"
+  :group 'org-link)
+
 (defun org-fontify-meta-lines-and-blocks (limit)
   (condition-case nil
       (org-fontify-meta-lines-and-blocks-1 limit)
@@ -9720,10 +9726,10 @@ application the system uses for this file type."
 					 path))))
 
 	 ((string= type "doi")
-	  (browse-url (concat "http://dx.doi.org/" (if (org-string-match-p "[[:nonascii:] ]" path)
-						       (org-link-escape
-							path org-link-escape-chars-browser)
-						     path))))
+	  (browse-url (concat org-doi-server-url (if (org-string-match-p "[[:nonascii:] ]" path)
+						     (org-link-escape
+						      path org-link-escape-chars-browser)
+						   path))))
 
 	 ((member type '("message"))
 	  (browse-url (concat type ":" path)))
@@ -19139,9 +19145,10 @@ stars to add."
 	  (lambda (pos)
 	    (save-excursion
 	      (goto-char pos)
+	      (while (org-at-comment-p) (forward-line))
 	      (skip-chars-forward " \r\t\n")
 	      (point-at-bol)))))
-	beg end)
+	beg end toggled)
     ;; Determine boundaries of changes.  If a universal prefix has
     ;; been given, put the list in a region.  If region ends at a bol,
     ;; do not consider the last line to be in the region.
@@ -19166,7 +19173,8 @@ stars to add."
 	((org-at-heading-p)
 	 (while (< (point) end)
 	   (when (org-at-heading-p t)
-	     (looking-at org-outline-regexp) (replace-match ""))
+	     (looking-at org-outline-regexp) (replace-match "")
+	     (setq toggled t))
 	   (forward-line)))
 	;; Case 2. Started at an item: change items into headlines.
 	;;         One star will be added by `org-list-to-subtree'.
@@ -19194,7 +19202,8 @@ stars to add."
 		    (org-list-to-subtree
 		     (org-list-parse-list t)
 		     '(:istart (concat stars add-stars (funcall get-stars depth))
-			       :icount (concat stars add-stars (funcall get-stars depth))))))))
+			       :icount (concat stars add-stars (funcall get-stars depth)))))))
+	       (setq toggled t))
 	     (forward-line))))
 	;; Case 3. Started at normal text: make every line an heading,
 	;;         skipping headlines and items.
@@ -19210,10 +19219,11 @@ stars to add."
 			 (t "*")))                  ; inside heading, oddeven
 		  (rpl (concat stars add-stars " ")))
 	     (while (< (point) end)
-	       (when (and (not (org-at-heading-p)) (not (org-at-item-p))
+	       (when (and (not (or (org-at-heading-p) (org-at-item-p) (org-at-comment-p)))
 			  (looking-at "\\([ \t]*\\)\\(\\S-\\)"))
-		 (replace-match (concat rpl (match-string 2))))
-	       (forward-line)))))))))
+		 (replace-match (concat rpl (match-string 2))) (setq toggled t))
+	       (forward-line)))))))
+    (unless toggled (message "Cannot toggle heading from here"))))
 
 (defun org-meta-return (&optional arg)
   "Insert a new heading or wrap a region in a table.
@@ -21207,6 +21217,12 @@ This version does not only check the character property, but also
   (outline-on-heading-p t))
 ;; Compatibility alias with Org versions < 7.8.03
 (defalias 'org-on-heading-p 'org-at-heading-p)
+
+(defun org-at-comment-p nil
+  "Is cursor in a line starting with a # character?"
+  (save-excursion
+    (beginning-of-line)
+    (looking-at "^#")))
 
 (defun org-at-drawer-p nil
   "Is cursor at a drawer keyword?"
