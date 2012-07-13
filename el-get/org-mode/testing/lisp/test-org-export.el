@@ -392,22 +392,6 @@ body\n")))
 		    (delete-region (point) (progn (forward-line) (point)))))))))
 	(should (equal (org-export-as 'test) "Body 1\nBody 2\n"))))))
 
-(ert-deftest test-org-export/set-element ()
-  "Test `org-export-set-element' specifications."
-  (org-test-with-parsed-data "* Headline\n*a*"
-    (org-export-set-element
-     (org-element-map tree 'bold 'identity nil t)
-     '(italic nil "b"))
-    ;; Check if object is correctly replaced.
-    (should (org-element-map tree 'italic 'identity))
-    (should-not (org-element-map tree 'bold 'identity))
-    ;; Check if new object's parent is correctly set.
-    (should
-     (equal
-      (org-element-property :parent
-			    (org-element-map tree 'italic 'identity nil t))
-      (org-element-map tree 'paragraph 'identity nil t)))))
-
 
 
 ;;; Affiliated Keywords
@@ -1591,6 +1575,38 @@ Another text. (ref:text)
      (org-export-table-row-ends-header-p
       (org-element-map tree 'table-row 'identity info 'first-match)
       info))))
+
+
+
+;;; Topology
+
+(ert-deftest test-org-export/get-next-element ()
+  "Test `org-export-get-next-element' specifications."
+  ;; Standard test.
+  (should
+   (equal "b"
+	  (org-test-with-parsed-data "* Headline\n*a* b"
+	    (org-export-get-next-element
+	     (org-element-map tree 'bold 'identity info t)))))
+  ;; Return nil when no previous element.
+  (should-not
+   (org-test-with-parsed-data "* Headline\na *b*"
+     (org-export-get-next-element
+      (org-element-map tree 'bold 'identity info t)))))
+
+(ert-deftest test-org-export/get-previous-element ()
+  "Test `org-export-get-previous-element' specifications."
+  ;; Standard test.
+  (should
+   (equal "a "
+	  (org-test-with-parsed-data "* Headline\na *b*"
+	    (org-export-get-previous-element
+	     (org-element-map tree 'bold 'identity info t)))))
+  ;; Return nil when no previous element.
+  (should-not
+   (org-test-with-parsed-data "* Headline\n*a* b"
+     (org-export-get-previous-element
+      (org-element-map tree 'bold 'identity info t)))))
 
 
 (provide 'test-org-export)

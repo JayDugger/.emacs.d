@@ -1842,7 +1842,11 @@ For more examples, see the system specific constants
 			(string :tag "Command")
 			(sexp :tag "Lisp form")))))
 
-
+(defcustom org-doi-server-url "http://dx.doi.org/"
+  "The URL of the DOI server."
+  :type 'string
+  :version "24.2"
+  :group 'org-link-follow)
 
 (defgroup org-refile nil
   "Options concerning refiling entries in Org-mode."
@@ -5441,12 +5445,6 @@ by a #."
   :type 'boolean
   :version "24.1"
   :group 'org-appearance)
-
-(defcustom org-doi-server-url "http://dx.doi.org/"
-  "The URL of the DOI server."
-  :type 'string
-  :version "24.2"
-  :group 'org-link)
 
 (defun org-fontify-meta-lines-and-blocks (limit)
   (condition-case nil
@@ -15009,13 +15007,20 @@ Return the position where this entry starts, or nil if there is no such entry."
 
 (defun org-time-stamp (arg &optional inactive)
   "Prompt for a date/time and insert a time stamp.
-If the user specifies a time like HH:MM, or if this command is called
-with a prefix argument, the time stamp will contain date and time.
-Otherwise, only the date will be included.  All parts of a date not
-specified by the user will be filled in from the current date/time.
-So if you press just return without typing anything, the time stamp
-will represent the current date/time.  If there is already a timestamp
-at the cursor, it will be modified."
+If the user specifies a time like HH:MM or if this command is
+called with at least one prefix argument, the time stamp contains
+the date and the time.  Otherwise, only the date is be included.
+
+All parts of a date not specified by the user is filled in from
+the current date/time.  So if you just press return without
+typing anything, the time stamp will represent the current
+date/time.
+
+If there is already a timestamp at the cursor, it will be
+modified.
+
+With two universal prefix arguments, insert an active timestamp
+with the current time without prompting the user."
   (interactive "P")
   (let* ((ts nil)
 	 (default-time
@@ -15061,6 +15066,8 @@ at the cursor, it will be modified."
 		    (concat (substring org-last-inserted-timestamp 0 -1)
 			    " " repeater ">"))))
       (message "Timestamp updated"))
+     ((equal arg '(16))
+      (org-insert-time-stamp (current-time) t))
      (t
       (setq time (let ((this-command this-command))
 		   (org-read-date arg 'totime nil nil default-time default-input inactive)))
@@ -17832,6 +17839,7 @@ BEG and END default to the buffer boundaries."
     ("c" . org-cycle)
     ("C" . org-shifttab)
     (" " . org-display-outline-path)
+    (":" . org-columns)
     ("Outline Structure Editing")
     ("U" . org-shiftmetaup)
     ("D" . org-shiftmetadown)
@@ -17845,6 +17853,7 @@ BEG and END default to the buffer boundaries."
     ("w" . org-refile)
     ("a" . org-archive-subtree-default-with-confirmation)
     ("." . org-mark-subtree)
+    ("#" . org-toggle-comment)
     ("Clock Commands")
     ("I" . org-clock-in)
     ("O" . org-clock-out)

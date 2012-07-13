@@ -318,7 +318,9 @@ create all custom agenda views, for upload to the mobile phone."
 	  (org-mobile-check-setup)
 	  (org-mobile-prepare-file-lists)
 	  (message "Creating agendas...")
-	  (let ((inhibit-redisplay t)) (org-mobile-create-sumo-agenda))
+	  (let ((inhibit-redisplay t)
+		(org-agenda-files (mapcar 'car org-mobile-files-alist)))
+	    (org-mobile-create-sumo-agenda))
 	  (message "Creating agendas...done")
 	  (org-save-all-org-buffers) ; to save any IDs created by this process
 	  (message "Copying files...")
@@ -1006,7 +1008,7 @@ The edit only takes place if the current value is equal (except for
 white space) the OLD.  If this is so, OLD will be replace by NEW
 and the command will return t.  If something goes wrong, a string will
 be returned that indicates what went wrong."
-  (let (current old1 new1)
+  (let (current old1 new1 level)
     (if (stringp what) (setq what (intern what)))
 
     (cond
