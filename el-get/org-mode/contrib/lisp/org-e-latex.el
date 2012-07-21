@@ -1262,7 +1262,7 @@ INFO is a plist used as a communication channel."
 		(let ((fn-lbl (org-element-property :label fn)))
 		  (cond
 		   ;; Anonymous footnote match: return number.
-		   ((equal fn footnote-reference) (length seen-refs))
+		   ((eq fn footnote-reference) (length seen-refs))
 		   ;; Anonymous footnote: it's always a new one.
 		   ;; Also, be sure to return nil from the `cond' so
 		   ;; `first-match' doesn't get us out of the loop.
@@ -2151,7 +2151,14 @@ holding contextual information."
   "Transcode a SUBSCRIPT object from Org to LaTeX.
 CONTENTS is the contents of the object.  INFO is a plist holding
 contextual information."
-  (format (if (= (length contents) 1) "$_%s$" "$_{\\mathrm{%s}}$") contents))
+  (format (if (or (= (length contents) 1)
+		  (let ((parsed-contents (org-element-contents subscript)))
+		    (and (not (cdr parsed-contents))
+			 (memq (org-element-type (car parsed-contents))
+			       '(entity latex-fragment)))))
+	      "$_%s$"
+	    "$_{\\mathrm{%s}}$")
+	  contents))
 
 
 ;;;; Superscript
@@ -2160,7 +2167,14 @@ contextual information."
   "Transcode a SUPERSCRIPT object from Org to LaTeX.
 CONTENTS is the contents of the object.  INFO is a plist holding
 contextual information."
-  (format (if (= (length contents) 1) "$^%s$" "$^{\\mathrm{%s}}$") contents))
+  (format (if (or (= (length contents) 1)
+		  (let ((parsed-contents (org-element-contents superscript)))
+		    (and (not (cdr parsed-contents))
+			 (memq (org-element-type (car parsed-contents))
+			       '(entity latex-fragment)))))
+	      "$^%s$"
+	    "$^{\\mathrm{%s}}$")
+	  contents))
 
 
 ;;;; Table
@@ -2420,12 +2434,21 @@ information."
 CONTENTS is nil.  INFO is a plist holding contextual
 information."
   (let ((value (org-translate-time (org-element-property :value timestamp)))
-	(type (org-element-property :type timestamp)))
-    (cond ((memq type '(active active-range))
-	   (format org-e-latex-active-timestamp-format value))
-	  ((memq type '(inactive inactive-range))
-	   (format org-e-latex-inactive-timestamp-format value))
-	  (t (format org-e-latex-diary-timestamp-format value)))))
+	(range-end (org-element-property :range-end timestamp)))
+    (case (org-element-property :type timestamp)
+      (active (format org-e-latex-active-timestamp-format value))
+      (active-range
+       (concat (format org-e-latex-active-timestamp-format value)
+	       "--"
+	       (format org-e-latex-active-timestamp-format
+		       (org-translate-time range-end))))
+      (inactive (format org-e-latex-inactive-timestamp-format value))
+      (inactive-range
+       (concat (format org-e-latex-inactive-timestamp-format value)
+	       "--"
+	       (format org-e-latex-inactive-timestamp-format
+		       (org-translate-time range-end))))
+      (otherwise (format org-e-latex-diary-timestamp-format value)))))
 
 
 ;;;; Underline
@@ -2473,6 +2496,42 @@ contextual information."
 
 ;;; Interactive functions
 
+;;;###autoload
+(defun org-e-latex-export-as-latex
+  (&optional subtreep visible-only body-only ext-plist)
+  "Export current buffer as a LaTeX buffer.
+
+If narrowing is active in the current buffer, only export its
+narrowed part.
+
+If a region is active, export that region.
+
+When optional argument SUBTREEP is non-nil, export the sub-tree
+at point, extracting information from the headline properties
+first.
+
+When optional argument VISIBLE-ONLY is non-nil, don't export
+contents of hidden elements.
+
+When optional argument BODY-ONLY is non-nil, only write code
+between \"\\begin{document}\" and \"\\end{document}\".
+
+EXT-PLIST, when provided, is a property list with external
+parameters overriding Org default settings, but still inferior to
+file-local settings.
+
+Export is done in a buffer named \"*Org E-LATEX Export*\", which
+will be displayed when `org-export-show-temporary-export-buffer'
+is non-nil."
+  (interactive)
+  (let ((outbuf (org-export-to-buffer
+		 'e-latex "*Org E-LATEX Export*"
+		 subtreep visible-only body-only ext-plist)))
+    (with-current-buffer outbuf (LaTeX-mode))
+    (when org-export-show-temporary-export-buffer
+      (switch-to-buffer-other-window outbuf))))
+
+;;;###autoload
 (defun org-e-latex-export-to-latex
   (&optional subtreep visible-only body-only ext-plist pub-dir)
   "Export current buffer to a LaTeX file.
@@ -2505,6 +2564,7 @@ Return output file's name."
     (org-export-to-file
      'e-latex outfile subtreep visible-only body-only ext-plist)))
 
+;;;###autoload
 (defun org-e-latex-export-to-pdf
   (&optional subtreep visible-only body-only ext-plist pub-dir)
   "Export current buffer to LaTeX then process through to PDF.
@@ -2573,7 +2633,7 @@ Return PDF file name or an error if it couldn't be produced."
 		  outbuf))
 	       org-e-latex-pdf-process)
 	      ;; Collect standard errors from output buffer.
-	      (setq errors (org-e-latex-collect-errors outbuf))))
+	      (setq errors (org-e-latex--collect-errors outbuf))))
 	   (t (error "No valid command to process to PDF")))
 	  (let ((pdffile (concat base ".pdf")))
 	    ;; Check for process failure.  Provide collected errors if
@@ -2594,7 +2654,7 @@ Return PDF file name or an error if it couldn't be produced."
 	    pdffile))
       (set-window-configuration wconfig))))
 
-(defun org-e-latex-collect-errors (buffer)
+(defun org-e-latex--collect-errors (buffer)
   "Collect some kind of errors from \"pdflatex\" command output.
 
 BUFFER is the buffer containing output.

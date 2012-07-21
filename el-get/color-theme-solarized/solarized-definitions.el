@@ -321,6 +321,8 @@ the \"Gen RGB\" column in solarized-definitions.el to improve them further."
              (org-started-kwd-face ((t (,@fg-yellow ,@bg-base03))))
              (org-cancelled-kwd-face ((t (,@fg-green ,@bg-base03))))
              (org-delegated-kwd-face ((t (,@fg-cyan ,@bg-base03))))
+             ;; table
+             (table-cell ((t (,@fmt-none ,@fg-base0 ,@bg-back))))
              ;; outline - pandocBlockQuoteLeader*
              (outline-1 ((t (,@fmt-none ,@fg-blue))))
              (outline-2 ((t (,@fmt-none ,@fg-cyan))))
@@ -496,7 +498,13 @@ the \"Gen RGB\" column in solarized-definitions.el to improve them further."
              (rcirc-prompt ((t (:foreground ,yellow))))
              (rcirc-bright-nick ((t (:foreground ,magenta))))
              (rcirc-server ((t (:foreground ,base1))))
-             (rcirc-timestamp ((t (:foreground ,base01)))))
+             (rcirc-timestamp ((t (:foreground ,base01))))
+             ;;font-latex
+             (font-latex-warning-face ((t (,@fg-red))))
+             (font-latex-sectioning-5-face ((t (,@fg-violet))))
+             ;;flyspell
+             (flyspell-incorrect ((t (,@fg-red))))
+             (flyspell-duplicate ((t (,@fg-yellow)))))
 
             ((foreground-color . ,(when (<= 16 (display-color-cells)) base0))
              (background-color . ,back)

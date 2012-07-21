@@ -894,7 +894,7 @@ value."
 ;;;###autoload
 (defun org-e-beamer-export-as-latex
   (&optional subtreep visible-only body-only ext-plist)
-  "Export current buffer as a Beamer presentation.
+  "Export current buffer as a Beamer buffer.
 
 If narrowing is active in the current buffer, only export its
 narrowed part.
@@ -915,9 +915,9 @@ EXT-PLIST, when provided, is a property list with external
 parameters overriding Org default settings, but still inferior to
 file-local settings.
 
-Export is done in a buffer named \"*Org E-BEAMER Export*\".  It
-will be displayed if `org-export-show-temporary-export-buffer' is
-non-nil."
+Export is done in a buffer named \"*Org E-BEAMER Export*\", which
+will be displayed when `org-export-show-temporary-export-buffer'
+is non-nil."
   (interactive)
   (let ((outbuf (org-export-to-buffer
 		 'e-beamer "*Org E-BEAMER Export*"
@@ -962,7 +962,7 @@ Return output file's name."
 ;;;###autoload
 (defun org-e-beamer-export-to-pdf
   (&optional subtreep visible-only body-only ext-plist pub-dir)
-  "Export current buffer as a BEAMER presentation (pdf).
+  "Export current buffer as a BEAMER presentation (PDF).
 
 If narrowing is active in the current buffer, only export its
 narrowed part.
@@ -1018,7 +1018,7 @@ aid, but the tag does not have any semantic meaning."
     (org-set-tags)
     (let ((tags (or (ignore-errors (org-get-tags-string)) "")))
       (cond
-       ((equal org-last-tag-selection-key ?|)
+       ((eq org-last-tag-selection-key ?|)
 	(if (string-match ":BMCOL:" tags)
 	    (org-set-property "BEAMER_col" (read-string "Column width: "))
 	  (org-delete-property "BEAMER_col")))

@@ -346,7 +346,7 @@ Introduction
 * Installation::                How to install a downloaded version of Org
 * Activation::                  How to activate Org for certain buffers
 * Feedback::                    Bug reports, ideas, patches etc.
-* Conventions::                 Type-setting conventions in the manual
+* Conventions::                 Typesetting conventions in the manual
 
 Document structure
 
@@ -559,7 +559,7 @@ Embedded @LaTeX{}
 
 * Special symbols::             Greek letters and other symbols
 * Subscripts and superscripts::  Simple syntax for raising/lowering text
-* @LaTeX{} fragments::             Complex formulas made easy
+* @LaTeX{} fragments::          Complex formulas made easy
 * Previewing @LaTeX{} fragments::  What will this snippet look like?
 * CDLaTeX mode::                Speed up entering of formulas
 
@@ -777,7 +777,7 @@ MobileOrg
 * Installation::                How to install a downloaded version of Org
 * Activation::                  How to activate Org for certain buffers
 * Feedback::                    Bug reports, ideas, patches etc.
-* Conventions::                 Type-setting conventions in the manual
+* Conventions::                 Typesetting conventions in the manual
 @end menu
 
 @node Summary, Installation, Introduction, Introduction
@@ -962,6 +962,10 @@ Do not forget to activate Org as described in the following section.
 @cindex autoload
 @cindex global key bindings
 @cindex key bindings, global
+@findex org-agenda
+@findex org-capture
+@findex org-store-link
+@findex org-iswitchb
 
 To make sure files with extension @file{.org} use Org mode, add the following
 line to your @file{.emacs} file.
@@ -1113,7 +1117,9 @@ attach it to your bug report.
 @node Conventions,  , Feedback, Introduction
 @section Typesetting conventions used in this manual
 
-Org uses three types of keywords: TODO keywords, tags and property
+@subsubheading TODO keywords, tags, properties, etc.
+
+Org mainly uses three types of keywords: TODO keywords, tags and property
 names.  In this manual we use the following conventions:
 
 @table @code
@@ -1138,17 +1144,26 @@ readability, but you can use lowercase in your Org files@footnote{Easy
 templates insert lowercase keywords and Babel dynamically inserts
 @code{#+results}.}
 
-The manual lists both the keys and the corresponding commands for accessing a
-functionality.  Org mode often uses the same key for different functions,
-depending on context.  The command that is bound to such keys has a generic
-name, like @code{org-metaright}.  In the manual we will, wherever possible,
-give the function that is internally called by the generic command.  For
-example, in the chapter on document structure, @kbd{M-@key{right}} will be
-listed to call @code{org-do-demote}, while in the chapter on tables, it will
-be listed to call org-table-move-column-right.
+@subsubheading Keybindings and commands
+@kindex C-c a
+@findex org-agenda
+@kindex C-c c
+@findex org-capture
 
-If you prefer, you can compile the manual without the command names by
-unsetting the flag @code{cmdnames} in @file{org.texi}.
+The manual suggests two global keybindings: @kbd{C-c a} for @code{org-agenda}
+and @kbd{C-c c} for @code{org-capture}.  These are only suggestions, but the
+rest of the manual assumes that you are using these keybindings.
+
+Also, the manual lists both the keys and the corresponding commands for
+accessing a functionality.  Org mode often uses the same key for different
+functions, depending on context.  The command that is bound to such keys has
+a generic name, like @code{org-metaright}.  In the manual we will, wherever
+possible, give the function that is internally called by the generic command.
+For example, in the chapter on document structure, @kbd{M-@key{right}} will
+be listed to call @code{org-do-demote}, while in the chapter on tables, it
+will be listed to call @code{org-table-move-column-right}.  If you prefer,
+you can compile the manual without the command names by unsetting the flag
+@code{cmdnames} in @file{org.texi}.
 
 @node Document Structure, Tables, Introduction, Top
 @chapter Document structure
@@ -3555,18 +3570,26 @@ that relates the linkwords to replacement text.  Here is an example:
 @smalllisp
 @group
 (setq org-link-abbrev-alist
-  '(("bugzilla" . "http://10.1.2.9/bugzilla/show_bug.cgi?id=")
-    ("google"   . "http://www.google.com/search?q=")
-    ("gmap"     . "http://maps.google.com/maps?q=%s")
-    ("omap"     . "http://nominatim.openstreetmap.org/search?q=%s&polygon=1")
-    ("ads"      . "http://adsabs.harvard.edu/cgi-bin/nph-abs_connect?author=%s&db_key=AST")))
+  '(("bugzilla"  . "http://10.1.2.9/bugzilla/show_bug.cgi?id=")
+    ("url-to-ja" . "http://translate.google.fr/translate?sl=en&tl=ja&u=%h")
+    ("google"    . "http://www.google.com/search?q=")
+    ("gmap"      . "http://maps.google.com/maps?q=%s")
+    ("omap"      . "http://nominatim.openstreetmap.org/search?q=%s&polygon=1")
+    ("ads"       . "http://adsabs.harvard.edu/cgi-bin/nph-abs_connect?author=%s&db_key=AST")))
 @end group
 @end smalllisp
 
 If the replacement text contains the string @samp{%s}, it will be
-replaced with the tag.  Otherwise the tag will be appended to the string
-in order to create the link.  You may also specify a function that will
-be called with the tag as the only argument to create the link.
+replaced with the tag.  Using @samp{%h} instead of @samp{%s} will
+url-encode the tag (see the example above, where we need to encode
+the URL parameter.)  Using @samp{%(my-function)} will pass the tag
+to a custom function, and replace it by the resulting string.
+
+If the replacement text don't contain any specifier, it will simply
+be appended to the string in order to create the link.
+
+Instead of a string, you may also specify a function that will be
+called with the tag as the only argument to create the link.
 
 With the above setting, you could link to a specific bug with
 @code{[[bugzilla:129]]}, search the web for @samp{OrgMode} with
@@ -3901,9 +3924,10 @@ from @code{DONE} to @code{REPORT} in the example above.  See also
 @subsection Fast access to TODO states
 
 If you would like to quickly change an entry to an arbitrary TODO state
-instead of cycling through the states, you can set up keys for
-single-letter access to the states.  This is done by adding the section
-key after each keyword, in parentheses.  For example:
+instead of cycling through the states, you can set up keys for single-letter
+access to the states.  This is done by adding the selection
+letter@footnote{Only alphabetical letters are allowed for fast TODO selection
+keys.} after each keyword, in parentheses.  For example:
 
 @lisp
 (setq org-todo-keywords
@@ -5997,6 +6021,7 @@ what to do with it.
 @table @kbd
 @orgcmd{C-c C-x C-i,org-clock-in}
 @vindex org-clock-into-drawer
+@vindex org-clock-continuously
 @cindex property, LOG_INTO_DRAWER
 Start the clock on the current item (clock-in).  This inserts the CLOCK
 keyword together with a timestamp.  If this is not the first clocking of
@@ -6007,9 +6032,10 @@ the setting of this variable for a subtree by setting a
 @code{CLOCK_INTO_DRAWER} or @code{LOG_INTO_DRAWER} property.
 When called with a @kbd{C-u} prefix argument,
 select the task from a list of recently clocked tasks.  With two @kbd{C-u
-C-u} prefixes, clock into the task at point and mark it as the default task.
-The default task will always be available when selecting a clocking task,
-with letter @kbd{d}.@*
+C-u} prefixes, clock into the task at point and mark it as the default task;
+the default task will then always be available with letter @kbd{d} when
+selecting a clocking task.  With three @kbd{C-u C-u C-u} prefixes, force
+continuous clocking by starting the clock when the last clock stopped.@*
 @cindex property: CLOCK_MODELINE_TOTAL
 @cindex property: LAST_REPEAT
 @vindex org-clock-modeline-total
@@ -6039,6 +6065,12 @@ HH:MM}.  See the variable @code{org-log-note-clock-out} for the
 possibility to record an additional note together with the clock-out
 timestamp@footnote{The corresponding in-buffer setting is:
 @code{#+STARTUP: lognoteclock-out}}.
+@orgcmd{C-c C-x C-I,org-clock-in-last}
+@vindex org-clock-continuously
+Reclock the last clocked task.  With one @kbd{C-u} prefix argument,
+select the task from the clock history.  With two @kbd{C-u} prefixes,
+force continuous clocking by starting the clock when the last clock
+stopped.
 @orgcmd{C-c C-x C-e,org-clock-modify-effort-estimate}
 Update the effort estimate for the current clock task.
 @kindex C-c C-y
@@ -6072,6 +6104,10 @@ buffer (see variable @code{org-remove-highlights-with-change}) or press
 The @kbd{l} key may be used in the timeline (@pxref{Timeline}) and in
 the agenda (@pxref{Weekly/daily agenda}) to show which tasks have been
 worked on or closed during a day.
+
+@strong{Important:} note that both @code{org-clock-out} and
+@code{org-clock-in-last} can have a global keybinding and will not
+modify the window disposition.
 
 @node The clock table, Resolving idle time, Clocking commands, Clocking work time
 @subsection The clock table
@@ -6210,7 +6246,9 @@ would be
 @end example
 
 @node Resolving idle time,  , The clock table, Clocking work time
-@subsection Resolving idle time
+@subsection Resolving idle time and continuous clocking
+
+@subsubheading Resolving idle time
 @cindex resolve idle time
 
 @cindex idle, resolve, dangling
@@ -6276,6 +6314,18 @@ to a recovery event rather than a set amount of idle time.
 
 You can also check all the files visited by your Org agenda for dangling
 clocks at any time using @kbd{M-x org-resolve-clocks}.
+
+@subsubheading Continuous clocking
+@cindex continuous clocking
+@vindex org-clock-continuously
+
+You may want to start clocking from the time when you clocked out the
+previous task.  To enable this systematically, set @code{org-clock-continuously}
+to @code{t}.  Each time you clock in, Org retrieves the clock-out time of the
+last clocked entry for this session, and start the new clock from there.
+
+If you only want this from time to time, use three universal prefix arguments
+with @code{org-clock-in} and two @kbd{C-u C-u} with @code{org-clock-in-last}.
 
 @node Effort estimates, Relative timer, Clocking work time, Dates and Times
 @section Effort estimates
@@ -9380,7 +9430,7 @@ readily processed to produce pretty output for a number of export backends.
 @menu
 * Special symbols::             Greek letters and other symbols
 * Subscripts and superscripts::  Simple syntax for raising/lowering text
-* @LaTeX{} fragments::             Complex formulas made easy
+* @LaTeX{} fragments::          Complex formulas made easy
 * Previewing @LaTeX{} fragments::  What will this snippet look like?
 * CDLaTeX mode::                Speed up entering of formulas
 @end menu

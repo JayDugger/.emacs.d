@@ -209,12 +209,7 @@ identifier."
   :group 'org-id)
 
 ;;; Version
-(eval-when-compile
-  (defun org-release () "N/A")
-  (defun org-git-version () "N/A !!check installation!!")
-  (and (load (concat (org-find-library-dir "org") "../UTILITIES/org-fixup.el")
-	    'noerror 'nomessage 'nosuffix)
-       (org-no-warnings (org-fixup))))
+(org-check-version)
 ;;;###autoload
 (defun org-version (&optional here full message)
   "Show the org-mode version in the echo area.
@@ -503,7 +498,7 @@ frequently in plain text.
 
 Not all export backends support this, but HTML does.
 
-This option can also be set with the +OPTIONS line, e.g. \"^:nil\"."
+This option can also be set with the #+OPTIONS line, e.g. \"^:nil\"."
   :group 'org-startup
   :group 'org-export-translation
   :version "24.1"
@@ -1319,9 +1314,12 @@ The 'linkkey' must be a word word, starting with a letter, followed
 by letters, numbers, '-' or '_'.
 
 If REPLACE is a string, the tag will simply be appended to create the link.
-If the string contains \"%s\", the tag will be inserted there.  Alternatively,
-the placeholder \"%h\" will cause a url-encoded version of the tag to
-be inserted at that point (see the function `url-hexify-string').
+If the string contains \"%s\", the tag will be inserted there.  If the string
+contains \"%h\", it will cause a url-encoded version of the tag to be inserted
+at that point (see the function `url-hexify-string').  If the string contains
+the specifier \"%(my-function)\", then the custom function `my-function' will
+be invoked: this function takes the tag as its only argument and must return
+a string.
 
 REPLACE may also be a function that will be called with the tag as the
 only argument to create the link, which should be returned as a string.
@@ -2104,11 +2102,11 @@ cycling, see the manual.
 TODO keywords and interpretation can also be set on a per-file basis with
 the special #+SEQ_TODO and #+TYP_TODO lines.
 
-Each keyword can optionally specify a character for fast state selection
+Each keyword can optionally specify a letter for fast state selection
 \(in combination with the variable `org-use-fast-todo-selection')
-and specifiers for state change logging, using the same syntax
-that is used in the \"#+TODO:\" lines.  For example, \"WAIT(w)\" says
-that the WAIT state can be selected with the \"w\" key.  \"WAIT(w!)\"
+and specifiers for state change logging, using the same syntax that
+is used in the \"#+TODO:\" lines.  For example, \"WAIT(w)\" says that
+the WAIT state can be selected with the \"w\" letter.  \"WAIT(w!)\"
 indicates to record a time stamp each time this state is selected.
 
 Each keyword may also specify if a timestamp or a note should be
@@ -2122,7 +2120,7 @@ define X.  You may omit any of the fast-selection key or X or /Y,
 so WAIT(w@), WAIT(w/@) and WAIT(@/@) are all valid.
 
 For backward compatibility, this variable may also be just a list
-of keywords - in this case the interpretation (sequence or type) will be
+of keywords.  In this case the interpretation (sequence or type) will be
 taken from the (otherwise obsolete) variable `org-todo-interpretation'."
   :group 'org-todo
   :group 'org-keywords
@@ -2193,16 +2191,16 @@ selection scheme.
 
 When nil, fast selection is never used.
 
-When the symbol `prefix', it will be used when `org-todo' is called with
-a prefix argument,  i.e. `C-u C-c C-t' in an Org-mode buffer, and `C-u t'
-in an agenda buffer.
+When the symbol `prefix', it will be used when `org-todo' is called
+with a prefix argument,  i.e. `C-u C-c C-t' in an Org-mode buffer, and
+`C-u t' in an agenda buffer.
 
 When t, fast selection is used by default.  In this case, the prefix
 argument forces cycling instead.
 
-In all cases, the special interface is only used if access keys have actually
-been assigned by the user, i.e. if keywords in the configuration are followed
-by a letter in parenthesis, like TODO(t)."
+In all cases, the special interface is only used if access keys have
+actually been assigned by the user, i.e. if keywords in the configuration
+are followed by a letter in parenthesis, like TODO(t)."
   :group 'org-todo
   :type '(choice
 	  (const :tag "Never" nil)
@@ -4507,9 +4505,9 @@ After a match, the following groups carry important information:
     ("entitiespretty" org-pretty-entities t)
     ("entitiesplain" org-pretty-entities nil))
   "Variable associated with STARTUP options for org-mode.
-Each element is a list of three items: The startup options as written
-in the #+STARTUP line, the corresponding variable, and the value to
-set this variable to if the option is found.  An optional forth element PUSH
+Each element is a list of three items: the startup options (as written
+in the #+STARTUP line), the corresponding variable, and the value to set
+this variable to if the option is found.  An optional forth element PUSH
 means to push this value onto the list in the variable.")
 
 (defun org-update-property-plist (key val props)
@@ -5041,7 +5039,8 @@ The following commands are available:
   (org-add-hook 'kill-buffer-hook 'org-check-running-clock nil 'local)
   ;; Paragraphs and auto-filling
   (org-set-autofill-regexps)
-  (setq indent-line-function 'org-indent-line-function)
+  (org-set-local 'indent-line-function 'org-indent-line)
+  (org-set-local 'indent-region-function 'org-indent-region)
   (org-update-radio-target-regexp)
   ;; Beginning/end of defun
   (org-set-local 'beginning-of-defun-function 'org-beginning-of-defun)
@@ -6699,6 +6698,8 @@ open and agenda-wise Org files."
 	  (org-flag-drawer t))))))
 
 (defun org-flag-drawer (flag)
+  "When FLAG is non-nil, hide the drawer we are within.
+Otherwise make it visible."
   (save-excursion
     (beginning-of-line 1)
     (when (looking-at "^[ \t]*:[a-zA-Z][a-zA-Z0-9]*:")
@@ -8667,6 +8668,8 @@ call CMD."
 	  (setq rpl (cdr as))
 	  (cond
 	   ((symbolp rpl) (funcall rpl tag))
+	   ((string-match "%(\\([^)]+\\))" rpl)
+	    (replace-match (funcall (intern-soft (match-string 1 rpl)) tag) t t rpl))
 	   ((string-match "%s" rpl) (replace-match (or tag "") t t rpl))
 	   ((string-match "%h" rpl)
 	    (replace-match (url-hexify-string (or tag "")) t t rpl))
@@ -10838,7 +10841,9 @@ prefix argument (`C-u C-u C-u C-c C-w')."
 				       org-log-refile)
 		    (unless (eq org-log-refile 'note)
 		      (save-excursion (org-add-log-note))))
-		  (and org-auto-align-tags (org-set-tags nil t))
+		  (and org-auto-align-tags
+		       (let ((org-loop-over-headlines-in-active-region nil))
+			 (org-set-tags nil t)))
 		  (bookmark-set "org-refile-last-stored")
 		  ;; If we are refiling for capture, make sure that the
 		  ;; last-capture pointers point here
@@ -12403,9 +12408,9 @@ EXTRA is additional text that will be inserted into the notes buffer."
 			   (goto-char (1- (match-beginning 0))))))
 	      (insert "\n:" drawer ":\n:END:")
 	      (beginning-of-line 0)
-	      (org-indent-line-function)
+	      (org-indent-line)
 	      (beginning-of-line 2)
-	      (org-indent-line-function)
+	      (org-indent-line)
 	      (end-of-line 0)))
 	   ((and org-log-state-notes-insert-after-drawers
 		 (save-excursion
@@ -14198,7 +14203,7 @@ If the drawer does not exist and FORCE is non-nil, create the drawer."
 	  (or force (throw 'exit nil))
 	  (goto-char beg)
 	  (setq end beg)
-	  (org-indent-line-function)
+	  (org-indent-line)
 	  (insert ":END:\n"))
 	(cons beg end)))))
 
@@ -14524,10 +14529,10 @@ and the new value.")
 	    (goto-char (cdr range))
 	    (insert "\n")
 	    (backward-char 1)
-	    (org-indent-line-function))
+	    (org-indent-line))
 	  (insert ":" property ":")
 	  (and value (insert " " value))
-	  (org-indent-line-function)))))
+	  (org-indent-line)))))
     (run-hook-with-args 'org-property-changed-functions property value)))
 
 (defun org-buffer-property-keys (&optional include-specials include-defaults include-columns)
@@ -14888,7 +14893,7 @@ completion."
 	(error "Only one allowed value for this property"))
     (org-at-property-p)
     (replace-match (concat " :" key ": " nval) t t)
-    (org-indent-line-function)
+    (org-indent-line)
     (beginning-of-line 1)
     (skip-chars-forward " \t")
     (run-hook-with-args 'org-property-changed-functions key nval)))
@@ -17592,29 +17597,33 @@ BEG and END default to the buffer boundaries."
 (define-key org-mode-map [remap outline-demote] 'org-demote-subtree)
 (define-key org-mode-map [remap outline-insert-heading] 'org-ctrl-c-ret)
 
-;; Outline functions from `outline-mode-prefix-map'
-;; that can not be remapped in Org:
+;; Outline functions from `outline-mode-prefix-map' that can not
+;; be remapped in Org:
+;;
 ;; - the column "key binding" shows whether the Outline function is still
 ;;   available in Org mode on the same key that it has been bound to in
 ;;   Outline mode:
 ;;   - "overridden": key used for a different functionality in Org mode
 ;;   - else: key still bound to the same Outline function in Org mode
+;;
 ;; | Outline function                   | key binding | Org replacement       |
 ;; |------------------------------------+-------------+-----------------------|
 ;; | `outline-next-visible-heading'     | `C-c C-n'   | still same function   |
 ;; | `outline-previous-visible-heading' | `C-c C-p'   | still same function   |
-;; | `show-children'                    | `C-c C-i'   | visibility cycling    |
-;; | `hide-subtree'                     | overridden  | visibility cycling    |
 ;; | `outline-up-heading'               | `C-c C-u'   | still same function   |
-;; | `hide-body'                        | overridden  | no replacement        |
-;; | `show-all'                         | overridden  | no replacement        |
-;; | `hide-entry'                       | overridden  | visibility cycling    |
+;; | `outline-move-subtree-up'          | `C-c C-^'   | better: org-shiftup   |
+;; | `outline-move-subtree-down'        | overridden  | better: org-shiftdown |
 ;; | `show-entry'                       | overridden  | no replacement        |
+;; | `show-children'                    | `C-c C-i'   | visibility cycling    |
+;; | `show-branches'                    | `C-c C-k'   | still same function   |
+;; | `show-subtree'                     | overridden  | visibility cycling    |
+;; | `show-all'                         | overridden  | no replacement        |
+;; | `hide-subtree'                     | overridden  | visibility cycling    |
+;; | `hide-body'                        | overridden  | no replacement        |
+;; | `hide-entry'                       | overridden  | visibility cycling    |
 ;; | `hide-leaves'                      | overridden  | no replacement        |
 ;; | `hide-sublevels'                   | overridden  | no replacement        |
 ;; | `hide-other'                       | overridden  | no replacement        |
-;; | `outline-move-subtree-up'          | `C-c C-^'   | better: org-shiftup   |
-;; | `outline-move-subtree-down'        | overridden  | better: org-shiftdown |
 
 ;; Make `C-c C-x' a prefix key
 (org-defkey org-mode-map "\C-c\C-x" (make-sparse-keymap))
@@ -17788,9 +17797,10 @@ BEG and END default to the buffer boundaries."
 
 (org-defkey org-mode-map "\C-c\C-x\C-t" 'org-toggle-time-stamp-overlays)
 (org-defkey org-mode-map "\C-c\C-x\C-i" 'org-clock-in)
+(org-defkey org-mode-map "\C-c\C-x\C-x" 'org-clock-in-last)
 (org-defkey org-mode-map "\C-c\C-x\C-o" 'org-clock-out)
 (org-defkey org-mode-map "\C-c\C-x\C-j" 'org-clock-goto)
-(org-defkey org-mode-map "\C-c\C-x\C-x" 'org-clock-cancel)
+(org-defkey org-mode-map "\C-c\C-x\C-q" 'org-clock-cancel)
 (org-defkey org-mode-map "\C-c\C-x\C-d" 'org-clock-display)
 (org-defkey org-mode-map "\C-c\C-x\C-r" 'org-clock-report)
 (org-defkey org-mode-map "\C-c\C-x\C-u" 'org-dblock-update)
@@ -18456,6 +18466,15 @@ for more information."
   (interactive "P")
   (cond
    ((run-hook-with-args-until-success 'org-metaup-hook))
+   ((org-region-active-p)
+    (let* ((a (min (region-beginning) (region-end)))
+	   (b (1- (max (region-beginning) (region-end))))
+	   (c (save-excursion (goto-char a)
+			      (move-beginning-of-line 0)))
+	   (d (save-excursion (goto-char a)
+			      (move-end-of-line 0) (point))))
+      (transpose-regions a b c d)
+      (goto-char c)))
    ((org-at-table-p) (org-call-with-arg 'org-table-move-row 'up))
    ((org-at-heading-p) (call-interactively 'org-move-subtree-up))
    ((org-at-item-p) (call-interactively 'org-move-item-up))
@@ -18469,6 +18488,15 @@ commands for more information."
   (interactive "P")
   (cond
    ((run-hook-with-args-until-success 'org-metadown-hook))
+   ((org-region-active-p)
+    (let* ((a (min (region-beginning) (region-end)))
+	   (b (max (region-beginning) (region-end)))
+	   (c (save-excursion (goto-char b)
+			      (move-beginning-of-line 1)))
+	   (d (save-excursion (goto-char b)
+			      (move-end-of-line 1) (1+ (point)))))
+      (transpose-regions a b c d)
+      (goto-char d)))
    ((org-at-table-p) (call-interactively 'org-table-move-row))
    ((org-at-heading-p) (call-interactively 'org-move-subtree-down))
    ((org-at-item-p) (call-interactively 'org-move-item-down))
@@ -18941,7 +18969,7 @@ See the individual commands for more information."
 	(let ((ind (org-get-indentation)))
 	  (newline)
 	  (if (org-looking-back org-list-end-re)
-	      (org-indent-line-function)
+	      (org-indent-line)
 	    (org-indent-line-to ind)))))
      ((and org-return-follows-link
 	   (org-at-timestamp-p t)
@@ -20337,32 +20365,6 @@ ones and overrule settings in the other lists."
 	(setq rtn (plist-put rtn p v))))
     rtn))
 
-(defun org-move-line-down (arg)
-  "Move the current line down.  With prefix argument, move it past ARG lines."
-  (interactive "p")
-  (let ((col (current-column))
-	beg end pos)
-    (beginning-of-line 1) (setq beg (point))
-    (beginning-of-line 2) (setq end (point))
-    (beginning-of-line (+ 1 arg))
-    (setq pos (move-marker (make-marker) (point)))
-    (insert (delete-and-extract-region beg end))
-    (goto-char pos)
-    (org-move-to-column col)))
-
-(defun org-move-line-up (arg)
-  "Move the current line up.  With prefix argument, move it past ARG lines."
-  (interactive "p")
-  (let ((col (current-column))
-	beg end pos)
-    (beginning-of-line 1) (setq beg (point))
-    (beginning-of-line 2) (setq end (point))
-    (beginning-of-line (- arg))
-    (setq pos (move-marker (make-marker) (point)))
-    (insert (delete-and-extract-region beg end))
-    (goto-char pos)
-    (org-move-to-column col)))
-
 (defun org-replace-escapes (string table)
   "Replace %-escapes in STRING with values in TABLE.
 TABLE is an association list with keys like \"%a\" and string values.
@@ -20488,7 +20490,7 @@ If point is in an inline task, mark that task instead."
 ;;; Paragraph filling stuff.
 ;; We want this to be just right, so use the full arsenal.
 
-(defun org-indent-line-function ()
+(defun org-indent-line ()
   "Indent line depending on context."
   (interactive)
   (let* ((pos (point))
@@ -20643,6 +20645,17 @@ If point is in an inline task, mark that task instead."
     (when folded (org-cycle)))
   (message "Block at point indented"))
 
+(defun org-indent-region (start end)
+  "Indent region."
+  (interactive "r")
+  (save-excursion
+    (let ((line-end (org-current-line end)))
+      (goto-char start)
+      (while (< (org-current-line) line-end)
+	(cond ((org-in-src-block-p) (org-src-native-tab-command-maybe))
+	      (t (call-interactively 'org-indent-line)))
+	(move-beginning-of-line 2)))))
+
 ;; For reference, this is the default value of adaptive-fill-regexp
 ;;  "[ \t]*\\([-|#;>*]+[ \t]*\\|(?[0-9]+[.)][ \t]*\\)*"
 (defvar org-adaptive-fill-regexp-backup adaptive-fill-regexp
@@ -20724,13 +20737,18 @@ the functionality can be provided as a fall-back.")
   "Re-align a table, pass through to fill-paragraph if no table."
   (let ((table-p (org-at-table-p))
 	(table.el-p (org-at-table.el-p))
-	(itemp (org-in-item-p)))
+	(itemp (org-in-item-p))
+	(srcp (org-in-src-block-p)))
     (cond ((and (equal (char-after (point-at-bol)) ?*)
 		(save-excursion (goto-char (point-at-bol))
 				(looking-at org-outline-regexp)))
 	   t)				; skip headlines
 	  (table.el-p t)		; skip table.el tables
 	  (table-p (org-table-align) t)	; align Org tables
+	  (srcp                         ; indent entire src block to prevent
+	   (save-excursion              ; fill-paragraph-as-region to mess up
+	     (org-babel-do-in-edit-buffer
+	      (indent-region (point-min) (point-max)))))
 	  (itemp			; align text in items
 	   (let* ((struct (save-excursion (goto-char itemp)
 					  (org-list-struct)))

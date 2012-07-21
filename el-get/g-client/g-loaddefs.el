@@ -379,7 +379,7 @@ The retrieved entry is placed in a buffer ready for editing.
 ;;;;;;  greader-title-feed greader-unsubscribe-feed greader-subscribe-feed
 ;;;;;;  greader-opml greader-feed-list greader-subscriptions greader-subscription-list
 ;;;;;;  greader-preferences greader-reading-list) "greader" "greader.el"
-;;;;;;  (20325 24345))
+;;;;;;  (20490 16891))
 ;;; Generated autoloads from greader.el
 
 (autoload 'greader-reading-list "greader" "\
@@ -631,7 +631,7 @@ Location address. Setting this updates gweb-my-location coordinates  via geocodi
 
 ;;;### (autoloads nil nil ("g-autogen.el" "g-cus-load.el" "g-load-path.el"
 ;;;;;;  "g-utils.el" "g.el" "gnotebook.el" "gwis.el" "indent-files.el"
-;;;;;;  "org2blogger.el") (20477 44316 843159))
+;;;;;;  "org2blogger.el") (20490 16898 258593))
 
 ;;;***
 

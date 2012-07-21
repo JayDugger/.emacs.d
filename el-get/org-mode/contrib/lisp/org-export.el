@@ -104,10 +104,17 @@
 (eval-when-compile (require 'cl))
 (require 'org-element)
 
+
+(declare-function org-e-ascii-export-as-ascii "org-e-ascii"
+		  (&optional subtreep visible-only body-only ext-plist))
 (declare-function org-e-ascii-export-to-ascii "org-e-ascii"
+		  (&optional subtreep visible-only body-only ext-plist pub-dir))
+(declare-function org-e-html-export-as-html "org-e-html"
 		  (&optional subtreep visible-only body-only ext-plist pub-dir))
 (declare-function org-e-html-export-to-html "org-e-html"
 		  (&optional subtreep visible-only body-only ext-plist pub-dir))
+(declare-function org-e-latex-export-as-latex "org-e-latex"
+		  (&optional subtreep visible-only body-only ext-plist))
 (declare-function org-e-latex-export-to-latex "org-e-latex"
 		  (&optional subtreep visible-only body-only ext-plist pub-dir))
 (declare-function org-e-latex-export-to-pdf "org-e-latex"
@@ -1342,7 +1349,7 @@ Assume buffer is in Org mode.  Narrowing, if any, is ignored."
 			    ;; Like `org-element-parse-buffer', but
 			    ;; makes sure the definition doesn't start
 			    ;; with a section element.
-			    (org-element-parse-elements
+			    (org-element--parse-elements
 			     (point-min) (point-max) nil nil nil nil
 			     (list 'org-data nil))))
 		    alist))))
@@ -1523,7 +1530,7 @@ OPTIONS is a plist holding export options."
       (mapc
        (lambda (blob)
 	 (when (and (eq (org-element-type blob) 'headline)
-		    (not (member blob (plist-get options :ignore-list))))
+		    (not (memq blob (plist-get options :ignore-list))))
 	   (setq min-level
 		 (min (org-element-property :level blob) min-level)))
 	 (when (= min-level 1) (throw 'exit 1)))
@@ -1636,7 +1643,7 @@ tag."
 	      thereis (member k tags))
 	;; When a select tag is present in the buffer, ignore any tree
 	;; without it.
-	(and selected (not (member blob selected)))
+	(and selected (not (memq blob selected)))
 	;; Ignore commented sub-trees.
 	(org-element-property :commentedp blob)
 	;; Ignore archived subtrees if `:with-archived-trees' is nil.
@@ -1708,7 +1715,7 @@ INFO is a plist containing export directives."
     ;; Return contents only for complete parse trees.
     (if (eq type 'org-data) (lambda (blob contents info) contents)
       (let ((transcoder (cdr (assq type (plist-get info :translate-alist)))))
-	(and (fboundp transcoder) transcoder)))))
+	(and (functionp transcoder) transcoder)))))
 
 (defun org-export-data (data info)
   "Convert DATA into current back-end format.
@@ -1721,7 +1728,7 @@ Return transcoded string."
          (results
           (cond
            ;; Ignored element/object.
-           ((member data (plist-get info :ignore-list)) nil)
+           ((memq data (plist-get info :ignore-list)) nil)
            ;; Plain text.
            ((eq type 'plain-text)
             (org-export-filter-apply-functions
@@ -1750,7 +1757,7 @@ Return transcoded string."
                      (eq (plist-get info :with-archived-trees) 'headline)
                      (org-element-property :archivedp data)))
             (let ((transcoder (org-export-transcoder data info)))
-              (and (fboundp transcoder) (funcall transcoder data nil info))))
+              (and (functionp transcoder) (funcall transcoder data nil info))))
            ;; Element/Object with contents.
            (t
             (let ((transcoder (org-export-transcoder data info)))
@@ -1775,7 +1782,7 @@ Return transcoded string."
 			     ;; might be misleading.
 			     (when (eq type 'paragraph)
 			       (let ((parent (org-export-get-parent data)))
-				 (and (equal (car (org-element-contents parent))
+				 (and (eq (car (org-element-contents parent))
 					     data)
 				      (memq (org-element-type parent)
 					    '(footnote-definition item))))))))
@@ -2393,7 +2400,7 @@ Return code as a string."
 				    (plist-get info :translate-alist))))
 	       (output (org-export-filter-apply-functions
 			(plist-get info :filter-final-output)
-			(if (or (not (fboundp template)) body-only) body
+			(if (or (not (functionp template)) body-only) body
 			  (funcall template body info))
 			info)))
 	  ;; Maybe add final OUTPUT to kill ring, then return it.
@@ -2806,7 +2813,7 @@ INFO is the plist used as a communication channel."
 		  ;; Don't enter footnote definitions since it will
 		  ;; happen when their first reference is found.
 		  info 'first-match 'footnote-definition)))))
-	(equal (catch 'exit (funcall search-refs (plist-get info :parse-tree)))
+	(eq (catch 'exit (funcall search-refs (plist-get info :parse-tree)))
 	       footnote-reference)))))
 
 (defun org-export-get-footnote-definition (footnote-reference info)
@@ -2835,7 +2842,7 @@ INFO is the plist used as a communication channel."
 		(let ((fn-lbl (org-element-property :label fn)))
 		  (cond
 		   ;; Anonymous footnote match: return number.
-		   ((and (not fn-lbl) (equal fn footnote))
+		   ((and (not fn-lbl) (eq fn footnote))
 		    (throw 'exit (1+ (length seen-refs))))
 		   ;; Labels match: return number.
 		   ((and label (string= label fn-lbl))
@@ -3241,7 +3248,7 @@ objects of the same type."
 	  (plist-get info :parse-tree) (or types (org-element-type element))
 	  (lambda (el)
 	    (cond
-	     ((equal element el) (1+ counter))
+	     ((eq element el) (1+ counter))
 	     ((not predicate) (incf counter) nil)
 	     ((funcall predicate el info) (incf counter) nil)))
 	  info 'first-match))))))
@@ -3282,7 +3289,7 @@ ELEMENT is excluded from count."
      (lambda (el)
        (cond
         ;; ELEMENT is reached: Quit the loop.
-        ((equal el element) t)
+        ((eq el element))
         ;; Only count lines from src-block and example-block elements
         ;; with a "+n" or "-n" switch.  A "-n" switch resets counter.
         ((not (memq (org-element-type el) '(src-block example-block))) nil)
@@ -3547,7 +3554,7 @@ rows and table rules.  Group 1 is also table's header."
 	     (unless row-flag (incf group) (setq row-flag t)))
 	    ((eq (org-element-property :type row) 'rule)
 	     (setq row-flag nil)))
-	   (when (equal table-row row) (throw 'found group)))
+	   (when (eq table-row row) (throw 'found group)))
 	 (org-element-contents (org-export-get-parent table-row)))))))
 
 (defun org-export-table-cell-width (table-cell info)
@@ -3559,7 +3566,7 @@ Return value is the width given by the last width cookie in the
 same column as TABLE-CELL, or nil."
   (let* ((row (org-export-get-parent table-cell))
 	 (column (let ((cells (org-element-contents row)))
-		   (- (length cells) (length (member table-cell cells)))))
+		   (- (length cells) (length (memq table-cell cells)))))
 	 (table (org-export-get-parent-table table-cell))
 	 cookie-width)
     (mapc
@@ -3596,7 +3603,7 @@ column (see `org-table-number-fraction' for more information).
 Possible values are `left', `right' and `center'."
   (let* ((row (org-export-get-parent table-cell))
 	 (column (let ((cells (org-element-contents row)))
-		   (- (length cells) (length (member table-cell cells)))))
+		   (- (length cells) (length (memq table-cell cells)))))
 	 (table (org-export-get-parent-table table-cell))
 	 (number-cells 0)
 	 (total-cells 0)
@@ -3669,7 +3676,7 @@ Returned borders ignore special rows."
 		       (if rule-flag (throw 'exit (push 'above borders))
 			 (throw 'exit nil)))))
 	      ;; Look at every row before the current one.
-	      (cdr (member row (reverse (org-element-contents table)))))
+	      (cdr (memq row (reverse (org-element-contents table)))))
 	;; No rule above, or rule found starts the table (ignoring any
 	;; special row): TABLE-CELL is at the top of the table.
 	(when rule-flag (push 'above borders))
@@ -3685,7 +3692,7 @@ Returned borders ignore special rows."
 		       (if rule-flag (throw 'exit (push 'below borders))
 			 (throw 'exit nil)))))
 	      ;; Look at every row after the current one.
-	      (cdr (member row (org-element-contents table))))
+	      (cdr (memq row (org-element-contents table))))
 	;; No rule below, or rule found ends the table (modulo some
 	;; special row): TABLE-CELL is at the bottom of the table.
 	(when rule-flag (push 'below borders))
@@ -3696,7 +3703,7 @@ Returned borders ignore special rows."
     ;; cells.
     (catch 'exit
       (let ((column (let ((cells (org-element-contents row)))
-		      (- (length cells) (length (member table-cell cells))))))
+		      (- (length cells) (length (memq table-cell cells))))))
 	(mapc
 	 (lambda (row)
 	   (unless (eq (org-element-property :type row) 'rule)
@@ -3737,7 +3744,7 @@ INFO is a plist used as a communication channel."
   ;; A cell starts a column group either when it is at the beginning
   ;; of a row (or after the special column, if any) or when it has
   ;; a left border.
-  (or (equal (org-element-map
+  (or (eq (org-element-map
 	      (org-export-get-parent table-cell)
 	      'table-cell 'identity info 'first-match)
 	     table-cell)
@@ -3748,7 +3755,7 @@ INFO is a plist used as a communication channel."
 INFO is a plist used as a communication channel."
   ;; A cell ends a column group either when it is at the end of a row
   ;; or when it has a right border.
-  (or (equal (car (last (org-element-contents
+  (or (eq (car (last (org-element-contents
 			 (org-export-get-parent table-cell))))
 	     table-cell)
       (memq 'right (org-export-table-cell-borders table-cell info))))
@@ -3822,7 +3829,7 @@ function returns nil for other cells."
     ;; Ignore cells in special rows or in special column.
     (unless (or (org-export-table-row-is-special-p table-row info)
 		(and (org-export-table-has-special-column-p table)
-		     (equal (car (org-element-contents table-row)) table-cell)))
+		     (eq (car (org-element-contents table-row)) table-cell)))
       (cons
        ;; Row number.
        (let ((row-count 0))
@@ -3830,7 +3837,7 @@ function returns nil for other cells."
 	  table 'table-row
 	  (lambda (row)
 	    (cond ((eq (org-element-property :type row) 'rule) nil)
-		  ((equal row table-row) row-count)
+		  ((eq row table-row) row-count)
 		  (t (incf row-count) nil)))
 	  info 'first-match))
        ;; Column number.
@@ -3838,8 +3845,7 @@ function returns nil for other cells."
 	 (org-element-map
 	  table-row 'table-cell
 	  (lambda (cell)
-	    (if (equal cell table-cell) col-count
-	      (incf col-count) nil))
+	    (if (eq cell table-cell) col-count (incf col-count) nil))
 	  info 'first-match))))))
 
 (defun org-export-get-table-cell-at (address table info)
@@ -4020,6 +4026,100 @@ a string, or nil."
     (cadr (memq blob (org-element-contents parent)))))
 
 
+;;;; Translation
+;;
+;; `org-export-translate' translates a string according to language
+;; specified by LANGUAGE keyword or `org-export-language-setup'
+;; variable and a specified charset.  `org-export-dictionary' contains
+;; the dictionary used for the translation.
+
+(defconst org-export-dictionary
+  '(("Author"
+     ("fr"
+      :ascii "Auteur"
+      :latin1 "Auteur"
+      :utf-8 "Auteur"))
+    ("Date"
+     ("fr"
+      :ascii "Date"
+      :latin1 "Date"
+      :utf-8 "Date"))
+    ("Equation")
+    ("Figure")
+    ("Footnotes"
+     ("fr"
+      :ascii "Notes de bas de page"
+      :latin1 "Notes de bas de page"
+      :utf-8 "Notes de bas de page"))
+    ("List of Listings"
+     ("fr"
+      :ascii "Liste des programmes"
+      :latin1 "Liste des programmes"
+      :utf-8 "Liste des programmes"))
+    ("List of Tables"
+     ("fr"
+      :ascii "Liste des tableaux"
+      :latin1 "Liste des tableaux"
+      :utf-8 "Liste des tableaux"))
+    ("Listing %d:"
+     ("fr"
+      :ascii "Programme %d :"
+      :latin1 "Programme %d :"
+      :utf-8 "Programme nº %d :"))
+    ("Listing %d: %s"
+     ("fr"
+      :ascii "Programme %d : %s"
+      :latin1 "Programme %d : %s"
+      :utf-8 "Programme nº %d : %s"))
+    ("See section %s"
+     ("fr"
+      :ascii "cf. section %s"
+      :latin1 "cf. section %s"
+      :utf-8 "cf. section %s"))
+    ("Table %d:"
+     ("fr"
+      :ascii "Tableau %d :"
+      :latin1 "Tableau %d :"
+      :utf-8 "Tableau nº %d :"))
+    ("Table %d: %s"
+     ("fr"
+      :ascii "Tableau %d : %s"
+      :latin1 "Tableau %d : %s"
+      :utf-8 "Tableau nº %d : %s"))
+    ("Table of Contents"
+     ("fr"
+      :ascii "Sommaire"
+      :latin1 "Table des matières"
+      :utf-8 "Table des matières"))
+    ("Unknown reference"
+     ("fr"
+      :ascii "Destination inconnue"
+      :latin1 "Référence inconnue"
+      :utf-8 "Référence inconnue")))
+  "Dictionary for export engine.
+
+Alist whose CAR is the string to translate and CDR is an alist
+whose CAR is the language string and CDR is a plist whose
+properties are possible charsets and values translated terms.
+
+It is used as a database for `org-export-translate'. Since this
+function returns the string as-is if no translation was found,
+the variable only needs to record values different from the
+entry.")
+
+(defun org-export-translate (s encoding info)
+  "Translate string S according to language specification.
+
+ENCODING is a symbol among `:ascii', `:html', `:latex', `:latin1'
+and `:utf8'.  INFO is a plist used as a communication channel.
+
+Translation depends on `:language' property.  Return the
+translated string.  If no translation is found return S."
+  (let ((lang (plist-get info :language))
+	(translations (cdr (assoc s org-export-dictionary))))
+    (or (plist-get (cdr (assoc lang translations)) encoding) s)))
+
+
 
 ;;; The Dispatcher
 ;;
@@ -4052,28 +4152,16 @@ Return an error if key pressed has no associated command."
       (?q nil)
       ;; Export with `e-ascii' back-end.
       ((?A ?N ?U)
-       (let ((outbuf
-	      (org-export-to-buffer
-	       'e-ascii "*Org E-ASCII Export*"
-	       (memq 'subtree optns) (memq 'visible optns) (memq 'body optns)
-	       `(:ascii-charset
-		 ,(case raw-key (?A 'ascii) (?N 'latin1) (t 'utf-8))))))
-	 (with-current-buffer outbuf (text-mode))
-	 (when org-export-show-temporary-export-buffer
-	   (switch-to-buffer-other-window outbuf))))
+       (org-e-ascii-export-as-ascii
+	(memq 'subtree optns) (memq 'visible optns) (memq 'body optns)
+	`(:ascii-charset ,(case raw-key (?A 'ascii) (?N 'latin1) (t 'utf-8)))))
       ((?a ?n ?u)
        (org-e-ascii-export-to-ascii
 	(memq 'subtree optns) (memq 'visible optns) (memq 'body optns)
 	`(:ascii-charset ,(case raw-key (?a 'ascii) (?n 'latin1) (t 'utf-8)))))
       ;; Export with `e-latex' back-end.
-      (?L
-       (let ((outbuf
-	      (org-export-to-buffer
-	       'e-latex "*Org E-LaTeX Export*"
-	       (memq 'subtree optns) (memq 'visible optns) (memq 'body optns))))
-	 (with-current-buffer outbuf (latex-mode))
-	 (when org-export-show-temporary-export-buffer
-	   (switch-to-buffer-other-window outbuf))))
+      (?L (org-e-latex-export-as-latex
+	   (memq 'subtree optns) (memq 'visible optns) (memq 'body optns)))
       (?l
        (org-e-latex-export-to-latex
 	(memq 'subtree optns) (memq 'visible optns) (memq 'body optns)))
@@ -4086,14 +4174,8 @@ Return an error if key pressed has no associated command."
 	 (memq 'subtree optns) (memq 'visible optns) (memq 'body optns))))
       ;; Export with `e-html' back-end.
       (?H
-       (let ((outbuf
-	      (org-export-to-buffer
-	       'e-html "*Org E-HTML Export*"
-	       (memq 'subtree optns) (memq 'visible optns) (memq 'body optns))))
-	 ;; set major mode
-	 (with-current-buffer outbuf (nxml-mode))
-	 (when org-export-show-temporary-export-buffer
-	   (switch-to-buffer-other-window outbuf))))
+       (org-e-html-export-as-html
+	(memq 'subtree optns) (memq 'visible optns) (memq 'body optns)))
       (?h
        (org-e-html-export-to-html
 	(memq 'subtree optns) (memq 'visible optns) (memq 'body optns)))

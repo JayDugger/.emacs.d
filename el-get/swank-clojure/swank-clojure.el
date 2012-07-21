@@ -18,15 +18,15 @@
     <meta content="authenticity_token" name="csrf-param" />
 <meta content="HGQWmhTyegXiypP+FYUMqHsmVObWQjbmAXk5s+Qqelw=" name="csrf-token" />
 
-    <link href="https://a248.e.akamai.net/assets.github.com/assets/github-7da8766be009b5437506fcf8d192fd111c219ec8.css" media="screen" rel="stylesheet" type="text/css" />
-    <link href="https://a248.e.akamai.net/assets.github.com/assets/github2-06963f1261440da9c40e4c988a33c023ac13be2e.css" media="screen" rel="stylesheet" type="text/css" />
+    <link href="https://a248.e.akamai.net/assets.github.com/assets/github-2ce7b3fab9fbd9a0d67ce5e4f38373b7c1abbc19.css" media="screen" rel="stylesheet" type="text/css" />
+    <link href="https://a248.e.akamai.net/assets.github.com/assets/github2-f612489af1e1ee6e1cfb55a515bda8e19e3b510b.css" media="screen" rel="stylesheet" type="text/css" />
     
     
 
 
-    <script src="https://a248.e.akamai.net/assets.github.com/assets/frameworks-41bb9f3a8ce0b760dd1d2428c5727a0cec9bf9bd.js" type="text/javascript"></script>
+    <script src="https://a248.e.akamai.net/assets.github.com/assets/frameworks-cda884a5a58f7a231c16c075e16bc5c1509f192b.js" type="text/javascript"></script>
     
-    <script defer="defer" src="https://a248.e.akamai.net/assets.github.com/assets/github-c78c3dec812d7f0fca4c269772db0f8cb7de8ffb.js" type="text/javascript"></script>
+    <script defer="defer" src="https://a248.e.akamai.net/assets.github.com/assets/github-24e061385eeaff0ed974ca8bcf1dfc4fd96ab293.js" type="text/javascript"></script>
     
     
 
@@ -34,7 +34,7 @@
   </head>
 
 
-  <body class="logged_out   vis-public fork env-production " data-blob-contribs-enabled="yes">
+  <body class="logged_out   vis-public fork env-production ">
     <div id="wrapper">
 
     
@@ -45,12 +45,13 @@
         <div class="container clearfix">
           <a class="site-logo" href="https://github.com/">
             <!--[if IE]>
-            <img alt="GitHub" class="github-logo" src="https://a248.e.akamai.net/assets.github.com/images/modules/header/logov7.png?1323882736" />
-            <img alt="GitHub" class="github-logo-hover" src="https://a248.e.akamai.net/assets.github.com/images/modules/header/logov7-hover.png?1324325373" />
+            <img alt="GitHub" class="github-logo" src="https://a248.e.akamai.net/assets.github.com/images/modules/header/logov7.png?1323882778" />
+            <img alt="GitHub" class="github-logo-hover" src="https://a248.e.akamai.net/assets.github.com/images/modules/header/logov7-hover.png?1324325424" />
             <![endif]-->
-            <img alt="GitHub" class="github-logo-4x" height="30" src="https://a248.e.akamai.net/assets.github.com/images/modules/header/logov7@4x.png?1337118067" />
-            <img alt="GitHub" class="github-logo-4x-hover" height="30" src="https://a248.e.akamai.net/assets.github.com/images/modules/header/logov7@4x-hover.png?1337118067" />
+            <img alt="GitHub" class="github-logo-4x" height="30" src="https://a248.e.akamai.net/assets.github.com/images/modules/header/logov7@4x.png?1337118070" />
+            <img alt="GitHub" class="github-logo-4x-hover" height="30" src="https://a248.e.akamai.net/assets.github.com/images/modules/header/logov7@4x-hover.png?1337118070" />
           </a>
+
 
 
                   <!--
@@ -174,16 +175,16 @@
 <div id="parallax_wrapper">
 
 <div id="parallax_field">
-    <img alt="building" class="js-plaxify" data-invert="true" data-xrange="0" data-yrange="20" height="415" id="parallax_bg" src="https://a248.e.akamai.net/assets.github.com/images/modules/404/parallax_bg.jpg?1310104853" width="940" />
+    <img alt="building" class="js-plaxify" data-invert="true" data-xrange="0" data-yrange="20" height="415" id="parallax_bg" src="https://a248.e.akamai.net/assets.github.com/images/modules/404/parallax_bg.jpg?1293753715" width="940" />
 </div>
 <div id="parallax_illustration">
-  <img alt="404 | &ldquo;This is not the web page you are looking for&rdquo;" class="js-plaxify" data-xrange="20" data-yrange="10" height="249" id="parallax_error_text" src="https://a248.e.akamai.net/assets.github.com/images/modules/404/parallax_errortext.png?1310104853" width="271" />
-  <img alt="Octobi Wan Catnobi" class="js-plaxify" data-xrange="10" data-yrange="10" height="230" id="parallax_octocat" src="https://a248.e.akamai.net/assets.github.com/images/modules/404/parallax_octocat.png?1310104853" width="188" />
-  <img alt="land speeder" class="js-plaxify" data-xrange="10" data-yrange="10" height="156" id="parallax_speeder" src="https://a248.e.akamai.net/assets.github.com/images/modules/404/parallax_speeder.png?1310104853" width="440" />
-  <img alt="Octobi Wan Catnobi's shadow" class="js-plaxify" data-xrange="10" data-yrange="10" height="49" id="parallax_octocatshadow" src="https://a248.e.akamai.net/assets.github.com/images/modules/404/parallax_octocatshadow.png?1310104853" width="166" />
-  <img alt="land speeder's shadow" class="js-plaxify" data-xrange="10" data-yrange="10" height="75" id="parallax_speedershadow" src="https://a248.e.akamai.net/assets.github.com/images/modules/404/parallax_speedershadow.png?1310104853" width="430" />
-  <img alt="building" class="js-plaxify" data-invert="true" data-xrange="50" data-yrange="20" height="123" id="parallax_building_1" src="https://a248.e.akamai.net/assets.github.com/images/modules/404/parallax_building_1.png?1310104853" width="304" />
-  <img alt="building" class="js-plaxify" data-invert="true" data-xrange="75" data-yrange="30" height="50" id="parallax_building_2" src="https://a248.e.akamai.net/assets.github.com/images/modules/404/parallax_building_2.png?1310104853" width="116" />
+  <img alt="404 | &ldquo;This is not the web page you are looking for&rdquo;" class="js-plaxify" data-xrange="20" data-yrange="10" height="249" id="parallax_error_text" src="https://a248.e.akamai.net/assets.github.com/images/modules/404/parallax_errortext.png?1293753715" width="271" />
+  <img alt="Octobi Wan Catnobi" class="js-plaxify" data-xrange="10" data-yrange="10" height="230" id="parallax_octocat" src="https://a248.e.akamai.net/assets.github.com/images/modules/404/parallax_octocat.png?1293753715" width="188" />
+  <img alt="land speeder" class="js-plaxify" data-xrange="10" data-yrange="10" height="156" id="parallax_speeder" src="https://a248.e.akamai.net/assets.github.com/images/modules/404/parallax_speeder.png?1293753715" width="440" />
+  <img alt="Octobi Wan Catnobi's shadow" class="js-plaxify" data-xrange="10" data-yrange="10" height="49" id="parallax_octocatshadow" src="https://a248.e.akamai.net/assets.github.com/images/modules/404/parallax_octocatshadow.png?1293753715" width="166" />
+  <img alt="land speeder's shadow" class="js-plaxify" data-xrange="10" data-yrange="10" height="75" id="parallax_speedershadow" src="https://a248.e.akamai.net/assets.github.com/images/modules/404/parallax_speedershadow.png?1293753715" width="430" />
+  <img alt="building" class="js-plaxify" data-invert="true" data-xrange="50" data-yrange="20" height="123" id="parallax_building_1" src="https://a248.e.akamai.net/assets.github.com/images/modules/404/parallax_building_1.png?1293753715" width="304" />
+  <img alt="building" class="js-plaxify" data-invert="true" data-xrange="75" data-yrange="30" height="50" id="parallax_building_2" src="https://a248.e.akamai.net/assets.github.com/images/modules/404/parallax_building_2.png?1293753715" width="116" />
 </div>
 
 </div>
@@ -255,7 +256,7 @@
           <li><a href="https://github.com/security">Security</a></li>
       </ul>
 
-      <p>&copy; 2012 <span title="0.11109s from fe8.rs.github.com">GitHub</span> Inc. All rights reserved.</p>
+      <p>&copy; 2012 <span title="0.02682s from fe6.rs.github.com">GitHub</span> Inc. All rights reserved.</p>
     </div><!-- /#legal or /#legal_ie-->
 
       <div class="sponsor">
@@ -309,7 +310,7 @@
       </dl>
     </div><!-- /.column.first -->
 
-    <div class="column last" style='display:none'>
+    <div class="column last js-hidden-pane" style='display:none'>
       <h3>Pull request list</h3>
       <dl class="keyboard-mappings">
         <dt>j</dt>
@@ -331,7 +332,7 @@
 
   </div><!-- /.columns.equacols -->
 
-  <div style='display:none'>
+  <div class="js-hidden-pane" style='display:none'>
     <div class="rule"></div>
 
     <h3>Issues</h3>
@@ -384,7 +385,7 @@
     </div>
   </div>
 
-  <div style='display:none'>
+  <div class="js-hidden-pane" style='display:none'>
     <div class="rule"></div>
 
     <h3>Issues Dashboard</h3>
@@ -407,7 +408,7 @@
     </div>
   </div>
 
-  <div style='display:none'>
+  <div class="js-hidden-pane" style='display:none'>
     <div class="rule"></div>
 
     <h3>Network Graph</h3>
@@ -455,10 +456,10 @@
     </div>
   </div>
 
-  <div >
+  <div class="js-hidden-pane" >
     <div class="rule"></div>
     <div class="columns threecols">
-      <div class="column first" >
+      <div class="column first js-hidden-pane" >
         <h3>Source Code Browsing</h3>
         <dl class="keyboard-mappings">
           <dt>t</dt>
@@ -480,7 +481,7 @@
     </div>
   </div>
 
-  <div style='display:none'>
+  <div class="js-hidden-pane" style='display:none'>
     <div class="rule"></div>
     <div class="columns threecols">
       <div class="column first">
@@ -504,6 +505,40 @@
       </div>
     </div>
   </div>
+
+  <div class="js-hidden-pane" style='display:none'>
+    <div class="rule"></div>
+    <h3>Notifications</h3>
+
+    <div class="columns threecols">
+      <div class="column first">
+        <dl class="keyboard-mappings">
+          <dt>j</dt>
+          <dd>Move selection down</dd>
+        </dl>
+        <dl class="keyboard-mappings">
+          <dt>k</dt>
+          <dd>Move selection up</dd>
+        </dl>
+        <dl class="keyboard-mappings">
+          <dt>o <em>or</em> enter</dt>
+          <dd>Open notification</dd>
+        </dl>
+      </div><!-- /.column.first -->
+
+      <div class="column second">
+        <dl class="keyboard-mappings">
+          <dt>e <em>or</em> shift i <em>or</em> y</dt>
+          <dd>Mark as read</dd>
+        </dl>
+        <dl class="keyboard-mappings">
+          <dt>shift m</dt>
+          <dd>Mute thread</dd>
+        </dl>
+      </div><!-- /.column.first -->
+    </div>
+  </div>
+
 </div>
 
     <div id="markdown-help" class="instapaper_ignore readability-extra">
@@ -612,18 +647,18 @@ I think you should use an
       <ul>
         <li>
           <h4>GitHub Logo</h4>
-          <a href="http://github-media-downloads.s3.amazonaws.com/GitHub_Logos.zip"><img alt="Github_logo" src="https://a248.e.akamai.net/assets.github.com/images/modules/about_page/github_logo.png?1310104853" /></a>
+          <a href="http://github-media-downloads.s3.amazonaws.com/GitHub_Logos.zip"><img alt="Github_logo" src="https://a248.e.akamai.net/assets.github.com/images/modules/about_page/github_logo.png?1306884371" /></a>
           <a href="http://github-media-downloads.s3.amazonaws.com/GitHub_Logos.zip" class="minibutton btn-download download">Download</a>
         </li>
         <li>
           <h4>The Octocat</h4>
-          <a href="http://github-media-downloads.s3.amazonaws.com/Octocats.zip"><img alt="Octocat" src="https://a248.e.akamai.net/assets.github.com/images/modules/about_page/octocat.png?1310104853" /></a>
+          <a href="http://github-media-downloads.s3.amazonaws.com/Octocats.zip"><img alt="Octocat" src="https://a248.e.akamai.net/assets.github.com/images/modules/about_page/octocat.png?1306884371" /></a>
           <a href="http://github-media-downloads.s3.amazonaws.com/Octocats.zip" class="minibutton btn-download download">Download</a>
         </li>
       </ul>
     </div>
 
     
-    <span id='server_response_time' data-time='0.11873' data-host='fe8'></span>
+    <span id='server_response_time' data-time='0.02875' data-host='fe6'></span>
   </body>
 </html>
