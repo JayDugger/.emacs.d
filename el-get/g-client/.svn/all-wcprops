@@ -1,7 +1,7 @@
 K 25
 svn:wc:ra_dav:version-url
 V 38
-/svn/!svn/ver/7944/trunk/lisp/g-client
+/svn/!svn/ver/7956/trunk/lisp/g-client
 END
 g-autogen.el
 K 25
@@ -49,7 +49,7 @@ gdocs.el
 K 25
 svn:wc:ra_dav:version-url
 V 47
-/svn/!svn/ver/7228/trunk/lisp/g-client/gdocs.el
+/svn/!svn/ver/7956/trunk/lisp/g-client/gdocs.el
 END
 g-cus-load.el.in
 K 25

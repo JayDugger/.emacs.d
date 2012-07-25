@@ -6,7 +6,6 @@
         <title>404 · GitHub</title>
     <link rel="search" type="application/opensearchdescription+xml" href="/opensearch.xml" title="GitHub" />
     <link rel="fluid-icon" href="https://github.com/fluidicon.png" title="GitHub" />
-    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
     <link rel="apple-touch-icon-precomposed" sizes="57x57" href="apple-touch-icon-114.png" />
     <link rel="apple-touch-icon-precomposed" sizes="114x114" href="apple-touch-icon-114.png" />
     <link rel="apple-touch-icon-precomposed" sizes="72x72" href="apple-touch-icon-144.png" />
@@ -14,19 +13,20 @@
 
     
     
+    <link rel="icon" type="image/x-icon" href="/favicon.png" />
 
     <meta content="authenticity_token" name="csrf-param" />
 <meta content="HGQWmhTyegXiypP+FYUMqHsmVObWQjbmAXk5s+Qqelw=" name="csrf-token" />
 
-    <link href="https://a248.e.akamai.net/assets.github.com/assets/github-2ce7b3fab9fbd9a0d67ce5e4f38373b7c1abbc19.css" media="screen" rel="stylesheet" type="text/css" />
-    <link href="https://a248.e.akamai.net/assets.github.com/assets/github2-f612489af1e1ee6e1cfb55a515bda8e19e3b510b.css" media="screen" rel="stylesheet" type="text/css" />
+    <link href="https://a248.e.akamai.net/assets.github.com/assets/github-9e5a21d39e0f8d8416f832859a549b210a6b3a8f.css" media="screen" rel="stylesheet" type="text/css" />
+    <link href="https://a248.e.akamai.net/assets.github.com/assets/github2-c8883d627442953da94b060553c4ed420a0c76ea.css" media="screen" rel="stylesheet" type="text/css" />
     
     
 
 
     <script src="https://a248.e.akamai.net/assets.github.com/assets/frameworks-cda884a5a58f7a231c16c075e16bc5c1509f192b.js" type="text/javascript"></script>
     
-    <script defer="defer" src="https://a248.e.akamai.net/assets.github.com/assets/github-24e061385eeaff0ed974ca8bcf1dfc4fd96ab293.js" type="text/javascript"></script>
+    <script defer="defer" src="https://a248.e.akamai.net/assets.github.com/assets/github-24fb817add0ab88112f819f2f4b8dac53c8da245.js" type="text/javascript"></script>
     
     
 
@@ -95,6 +95,7 @@
     #parallax_wrapper {
       position: relative;
       z-index: 0;
+      margin-bottom: 50px;
     }
     #parallax_field{
         overflow: hidden;
@@ -256,7 +257,7 @@
           <li><a href="https://github.com/security">Security</a></li>
       </ul>
 
-      <p>&copy; 2012 <span title="0.02682s from fe6.rs.github.com">GitHub</span> Inc. All rights reserved.</p>
+      <p>&copy; 2012 <span title="1.02681s from fe6.rs.github.com">GitHub</span> Inc. All rights reserved.</p>
     </div><!-- /#legal or /#legal_ie-->
 
       <div class="sponsor">
@@ -264,7 +265,7 @@
           <img alt="Dedicated Server" height="36" src="https://a248.e.akamai.net/assets.github.com/images/modules/footer/rackspaces_logo.png?1329521041" width="38" />
         </a>
         Powered by the <a href="http://www.rackspace.com ">Dedicated
-        Servers</a> and<br/> <a href="http://www.rackspacecloud.com">Cloud
+        Servers</a> and<br/> <a href="http://www.rackspace.com/cloud">Cloud
         Computing</a> of Rackspace Hosting<span>&reg;</span>
       </div>
   </div><!-- /.site -->
@@ -659,6 +660,6 @@ I think you should use an
     </div>
 
     
-    <span id='server_response_time' data-time='0.02875' data-host='fe6'></span>
+    <span id='server_response_time' data-time='1.21857' data-host='fe6'></span>
   </body>
 </html>

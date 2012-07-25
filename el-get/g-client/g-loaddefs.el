@@ -164,8 +164,8 @@ Create a new contact as specified.
 ;;;***
 
 ;;;### (autoloads (gdocs-sign-in gdocs-sign-out gdocs-view-item gdocs-delete-item
-;;;;;;  gdocs-add-collaborator gdocs-doclist) "gdocs" "gdocs.el"
-;;;;;;  (20311 29240))
+;;;;;;  gdocs-add-collaborator gdocs-publish gdocs-doclist) "gdocs"
+;;;;;;  "gdocs.el" (20495 14245))
 ;;; Generated autoloads from gdocs.el
 
 (autoload 'gdocs-doclist "gdocs" "\
@@ -173,6 +173,11 @@ Retrieve and display feed of feeds after authenticating.
 Interactive prefix arg prompts for a query string.
 
 \(fn &optional QUERY)" t nil)
+
+(autoload 'gdocs-publish "gdocs" "\
+Export from given content type to Google Docs.
+
+\(fn CONTENT-TYPE)" t nil)
 
 (autoload 'gdocs-add-collaborator "gdocs" "\
 Add collaborator to ACL at acl-url.
@@ -631,7 +636,7 @@ Location address. Setting this updates gweb-my-location coordinates  via geocodi
 
 ;;;### (autoloads nil nil ("g-autogen.el" "g-cus-load.el" "g-load-path.el"
 ;;;;;;  "g-utils.el" "g.el" "gnotebook.el" "gwis.el" "indent-files.el"
-;;;;;;  "org2blogger.el") (20490 16898 258593))
+;;;;;;  "org2blogger.el") (20495 14253 605304))
 
 ;;;***
 

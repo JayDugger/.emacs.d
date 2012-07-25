@@ -1,14 +1,14 @@
 10
 
 dir
-7950
+7956
 https://emacspeak.googlecode.com/svn/trunk/lisp/g-client
 https://emacspeak.googlecode.com/svn
 
 
 
-2012-07-20T23:18:53.189528Z
-7944
+2012-07-23T15:47:42.784590Z
+7956
 tv.raman.tv
 has-props
 
@@ -276,10 +276,10 @@ file
 
 
 
-2012-03-07T14:35:36.000000Z
-a9e4abbe8d8f9185ca7f72cb0ffe8150
-2011-09-30T18:06:31.385226Z
-7228
+2012-07-25T00:02:45.000000Z
+3227fa9e7be2efd2d257e53df513bbce
+2012-07-23T15:47:42.784590Z
+7956
 tv.raman.tv
 
 
@@ -302,7 +302,7 @@ tv.raman.tv
 
 
 
-16727
+16743
 
 g-cus-load.el.in
 file

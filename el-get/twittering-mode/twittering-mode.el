@@ -4265,6 +4265,10 @@ referring the former ID."
 	(mapcar (lambda (base-spec)
 		  (elt (gethash base-spec twittering-timeline-data-table) 1))
 		(twittering-get-primary-base-timeline-specs spec)))))
+     ((eq type 'single)
+      ;; Single tweet timelines are registered in a special way.
+      ;; See `twittering-retrieve-single-tweet-sentinel'.
+      (elt (gethash '(:single) twittering-timeline-data-table) 1))
      (t
       (elt (gethash spec twittering-timeline-data-table) 1)))))
 
@@ -4603,7 +4607,13 @@ by Snowflake."
     (let* ((epoch (twittering-snowflake-epoch-time))
 	   (str (calc-eval
 		 `(,(format "floor(rsh(10#%s,22)/1000)" id)
-		   calc-word-size 64 calc-number-radix 16))))
+		   calc-word-size 64 calc-number-radix 16)))
+	   (milisec
+	    (string-to-number
+	     (calc-eval
+	      `(,(format "rsh(10#%s,22)%%1000" id)
+		calc-word-size 64 calc-number-radix 10))
+	     10)))
       (when (string-match "^16#\\([[:xdigit:]]+\\)" str)
 	(let* ((hex-str (match-string 1 str))
 	       (hex-str
@@ -4615,6 +4625,7 @@ by Snowflake."
 			(substring hex-str 0 (- (length hex-str) 4)) 16)
 		      ,(string-to-number
 			(substring hex-str (- (length hex-str) 4)) 16)
+		      ,(* milisec 1000)
 		      ))))))))
 
 ;;;;
@@ -7907,7 +7918,15 @@ to the latest status."
 				 id (gethash retweeted-id referring-id-table)))
 			   ;; `status' is the first retweet.
 			   status)
+			  ((null (gethash retweeted-id referring-id-table))
+			   ;; If the first ID referring the retweet is unknown,
+			   ;; render it.
+			   ;; This is necessary because a referring ID table
+			   ;; of a composite timeline may lack information of
+			   ;; some component timelines.
+			   status)
 			  (t
+			   ;; Otherwise, do not render it.
 			   nil))))
 		     timeline-data)))
 	   (timeline-data (if twittering-reverse-mode
@@ -8302,9 +8321,9 @@ Return nil if no statuses are rendered."
 	       ;; Some replied statuses have been already rendered.
 	       (twittering-get-beginning-of-visible-replied-statuses pos))
 	      (twittering-reverse-mode
-	       (twittering-get-current-status-head))
+	       (twittering-get-current-status-head pos))
 	      (t
-	       (or (twittering-get-next-status-head)
+	       (or (twittering-get-next-status-head pos)
 		   (point-max)))))
 	    (prefix "  ")
 	    (buffer-read-only nil))
@@ -9295,6 +9314,7 @@ Pairs of a key symbol and an associated value are following:
 					(reply . reply)))))
 	    (direct-message-recipient . ,username)))
     (twittering-edit-setup-help)
+    (setq buffer-undo-list nil)
     (goto-char (twittering-edit-get-help-end))
     (if (eq tweet-type 'direct-message)
 	(message "C-c C-c to send, C-c C-k to cancel")

@@ -46,70 +46,61 @@
 
 ;;; Define Back-End
 
-(defvar org-e-latex-translate-alist
-  '((babel-call . org-e-latex-babel-call)
-    (bold . org-e-latex-bold)
-    (center-block . org-e-latex-center-block)
-    (clock . org-e-latex-clock)
-    (code . org-e-latex-code)
-    (comment . org-e-latex-comment)
-    (comment-block . org-e-latex-comment-block)
-    (drawer . org-e-latex-drawer)
-    (dynamic-block . org-e-latex-dynamic-block)
-    (entity . org-e-latex-entity)
-    (example-block . org-e-latex-example-block)
-    (export-block . org-e-latex-export-block)
-    (export-snippet . org-e-latex-export-snippet)
-    (fixed-width . org-e-latex-fixed-width)
-    (footnote-definition . org-e-latex-footnote-definition)
-    (footnote-reference . org-e-latex-footnote-reference)
-    (headline . org-e-latex-headline)
-    (horizontal-rule . org-e-latex-horizontal-rule)
-    (inline-babel-call . org-e-latex-inline-babel-call)
-    (inline-src-block . org-e-latex-inline-src-block)
-    (inlinetask . org-e-latex-inlinetask)
-    (italic . org-e-latex-italic)
-    (item . org-e-latex-item)
-    (keyword . org-e-latex-keyword)
-    (latex-environment . org-e-latex-latex-environment)
-    (latex-fragment . org-e-latex-latex-fragment)
-    (line-break . org-e-latex-line-break)
-    (link . org-e-latex-link)
-    (macro . org-e-latex-macro)
-    (paragraph . org-e-latex-paragraph)
-    (plain-list . org-e-latex-plain-list)
-    (plain-text . org-e-latex-plain-text)
-    (planning . org-e-latex-planning)
-    (property-drawer . org-e-latex-property-drawer)
-    (quote-block . org-e-latex-quote-block)
-    (quote-section . org-e-latex-quote-section)
-    (radio-target . org-e-latex-radio-target)
-    (section . org-e-latex-section)
-    (special-block . org-e-latex-special-block)
-    (src-block . org-e-latex-src-block)
-    (statistics-cookie . org-e-latex-statistics-cookie)
-    (strike-through . org-e-latex-strike-through)
-    (subscript . org-e-latex-subscript)
-    (superscript . org-e-latex-superscript)
-    (table . org-e-latex-table)
-    (table-cell . org-e-latex-table-cell)
-    (table-row . org-e-latex-table-row)
-    (target . org-e-latex-target)
-    (template . org-e-latex-template)
-    (timestamp . org-e-latex-timestamp)
-    (underline . org-e-latex-underline)
-    (verbatim . org-e-latex-verbatim)
-    (verse-block . org-e-latex-verse-block))
-  "Alist between element or object types and translators.")
-
-(defconst org-e-latex-options-alist
-  '((:date "DATE" nil org-e-latex-date-format t)
-    (:latex-class "LATEX_CLASS" nil org-e-latex-default-class t)
-    (:latex-class-options "LATEX_CLASS_OPTIONS" nil nil t)
-    (:latex-header-extra "LATEX_HEADER" nil nil newline))
-  "Alist between LaTeX export properties and ways to set them.
-See `org-export-options-alist' for more information on the
-structure of the values.")
+(org-export-define-backend e-latex
+  ((bold . org-e-latex-bold)
+   (center-block . org-e-latex-center-block)
+   (clock . org-e-latex-clock)
+   (code . org-e-latex-code)
+   (drawer . org-e-latex-drawer)
+   (dynamic-block . org-e-latex-dynamic-block)
+   (entity . org-e-latex-entity)
+   (example-block . org-e-latex-example-block)
+   (export-block . org-e-latex-export-block)
+   (export-snippet . org-e-latex-export-snippet)
+   (fixed-width . org-e-latex-fixed-width)
+   (footnote-definition . org-e-latex-footnote-definition)
+   (footnote-reference . org-e-latex-footnote-reference)
+   (headline . org-e-latex-headline)
+   (horizontal-rule . org-e-latex-horizontal-rule)
+   (inline-src-block . org-e-latex-inline-src-block)
+   (inlinetask . org-e-latex-inlinetask)
+   (italic . org-e-latex-italic)
+   (item . org-e-latex-item)
+   (keyword . org-e-latex-keyword)
+   (latex-environment . org-e-latex-latex-environment)
+   (latex-fragment . org-e-latex-latex-fragment)
+   (line-break . org-e-latex-line-break)
+   (link . org-e-latex-link)
+   (macro . org-e-latex-macro)
+   (paragraph . org-e-latex-paragraph)
+   (plain-list . org-e-latex-plain-list)
+   (plain-text . org-e-latex-plain-text)
+   (planning . org-e-latex-planning)
+   (property-drawer . org-e-latex-property-drawer)
+   (quote-block . org-e-latex-quote-block)
+   (quote-section . org-e-latex-quote-section)
+   (radio-target . org-e-latex-radio-target)
+   (section . org-e-latex-section)
+   (special-block . org-e-latex-special-block)
+   (src-block . org-e-latex-src-block)
+   (statistics-cookie . org-e-latex-statistics-cookie)
+   (strike-through . org-e-latex-strike-through)
+   (subscript . org-e-latex-subscript)
+   (superscript . org-e-latex-superscript)
+   (table . org-e-latex-table)
+   (table-cell . org-e-latex-table-cell)
+   (table-row . org-e-latex-table-row)
+   (target . org-e-latex-target)
+   (template . org-e-latex-template)
+   (timestamp . org-e-latex-timestamp)
+   (underline . org-e-latex-underline)
+   (verbatim . org-e-latex-verbatim)
+   (verse-block . org-e-latex-verse-block))
+  :export-block "LATEX"
+  :options-alist ((:date "DATE" nil org-e-latex-date-format t)
+		  (:latex-class "LATEX_CLASS" nil org-e-latex-default-class t)
+		  (:latex-class-options "LATEX_CLASS_OPTIONS" nil nil t)
+		  (:latex-header-extra "LATEX_HEADER" nil nil newline)))
 
 
 
@@ -2151,14 +2142,31 @@ holding contextual information."
   "Transcode a SUBSCRIPT object from Org to LaTeX.
 CONTENTS is the contents of the object.  INFO is a plist holding
 contextual information."
-  (format (if (or (= (length contents) 1)
-		  (let ((parsed-contents (org-element-contents subscript)))
-		    (and (not (cdr parsed-contents))
-			 (memq (org-element-type (car parsed-contents))
-			       '(entity latex-fragment)))))
-	      "$_%s$"
-	    "$_{\\mathrm{%s}}$")
-	  contents))
+  (if (= (length contents) 1) (format "$_%s$" contents)
+    ;; Handle multiple objects in SUBSCRIPT by creating a subscript
+    ;; command for each of them.
+    (let ((prev-blanks 0))
+      (mapconcat
+       (lambda (obj)
+	 (case (org-element-type obj)
+	   ((entity latex-fragment)
+	    (setq prev-blanks (org-element-property :post-blank obj))
+	    (let ((data (org-trim (org-export-data obj info))))
+	      (string-match
+	       "\\`\\(?:\\\\[([]\\|\\$+\\)?\\(.*?\\)\\(?:\\\\[])]\\|\\$+\\)?\\'"
+	       data)
+	      (format "$_{%s}$" (match-string 1 data))))
+	   (plain-text
+	    (format "$_\\mathrm{%s}$"
+		    (concat (make-string prev-blanks ? )
+			    ;; mathrm command doesn't handle spaces,
+			    ;; so we have to enforce them.
+			    (replace-regexp-in-string
+			     " " "\\\\ " (org-export-data obj info)))))
+	   (otherwise
+	    (setq prev-blanks (org-element-property :post-blank obj))
+	    (format "$_{%s}$" (org-export-data obj info)))))
+       (org-element-contents subscript) ""))))
 
 
 ;;;; Superscript
@@ -2167,14 +2175,31 @@ contextual information."
   "Transcode a SUPERSCRIPT object from Org to LaTeX.
 CONTENTS is the contents of the object.  INFO is a plist holding
 contextual information."
-  (format (if (or (= (length contents) 1)
-		  (let ((parsed-contents (org-element-contents superscript)))
-		    (and (not (cdr parsed-contents))
-			 (memq (org-element-type (car parsed-contents))
-			       '(entity latex-fragment)))))
-	      "$^%s$"
-	    "$^{\\mathrm{%s}}$")
-	  contents))
+  (if (= (length contents) 1) (format "$^%s$" contents)
+    ;; Handle multiple objects in SUPERSCRIPT by creating
+    ;; a superscript command for each of them.
+    (let ((prev-blanks 0))
+      (mapconcat
+       (lambda (obj)
+	 (case (org-element-type obj)
+	   ((entity latex-fragment)
+	    (setq prev-blanks (org-element-property :post-blank obj))
+	    (let ((data (org-trim (org-export-data obj info))))
+	      (string-match
+	       "\\`\\(?:\\\\[([]\\|\\$+\\)?\\(.*?\\)\\(?:\\\\[])]\\|\\$+\\)?\\'"
+	       data)
+	      (format "$^{%s}$" (match-string 1 data))))
+	   (plain-text
+	    (format "$^\\mathrm{%s}$"
+		    (concat (make-string prev-blanks ? )
+			    ;; mathrm command doesn't handle spaces,
+			    ;; so we have to enforce them.
+			    (replace-regexp-in-string
+			     " " "\\\\ " (org-export-data obj info)))))
+	   (otherwise
+	    (setq prev-blanks (org-element-property :post-blank obj))
+	    (format "$^{%s}$" (org-export-data obj info)))))
+       (org-element-contents superscript) ""))))
 
 
 ;;;; Table

@@ -256,6 +256,7 @@ brackets.  Return overlay specification, as a string, or nil."
 ;;; Define Back-End
 
 (org-export-define-derived-backend e-beamer e-latex
+  :export-block "BEAMER"
   :options-alist
   ((:beamer-theme "BEAMER_THEME" nil org-e-beamer-theme)
    (:beamer-color-theme "BEAMER_COLOR_THEME" nil nil t)
@@ -962,7 +963,7 @@ Return output file's name."
 ;;;###autoload
 (defun org-e-beamer-export-to-pdf
   (&optional subtreep visible-only body-only ext-plist pub-dir)
-  "Export current buffer as a BEAMER presentation (PDF).
+  "Export current buffer as a Beamer presentation (PDF).
 
 If narrowing is active in the current buffer, only export its
 narrowed part.
