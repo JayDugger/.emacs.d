@@ -1323,7 +1323,9 @@ for export.  Return options as a plist."
 	  (let ((property (nth 1 option)))
 	    (when (and property (not (member property seen)))
 	      (let* ((subtree-prop (concat "EXPORT_" property))
-		     (value (org-entry-get (point) subtree-prop)))
+		     ;; Export properties are not case-sensitive.
+		     (value (let ((case-fold-search t))
+			      (org-entry-get (point) subtree-prop))))
 		(push property seen)
 		(when value
 		  (setq plist
@@ -1839,7 +1841,7 @@ tag."
     (table-cell
      (and (org-export-table-has-special-column-p
 	   (org-export-get-parent-table blob))
-	  (not (org-export-get-previous-element blob))))
+	  (not (org-export-get-previous-element blob options))))
     ;; Check clock.
     (clock (not (plist-get options :with-clocks)))
     ;; Check planning.
@@ -3124,14 +3126,16 @@ Any tag belonging to this list will also be removed."
 			      (member tag tags)))
 		 (org-element-property :tags element)))
 
-(defun org-export-first-sibling-p (headline)
-  "Non-nil when HEADLINE is the first sibling in its sub-tree."
-  (not (eq (org-element-type (org-export-get-previous-element headline))
+(defun org-export-first-sibling-p (headline info)
+  "Non-nil when HEADLINE is the first sibling in its sub-tree.
+INFO is a plist used as a communication channel."
+  (not (eq (org-element-type (org-export-get-previous-element headline info))
 	   'headline)))
 
-(defun org-export-last-sibling-p (headline)
-  "Non-nil when HEADLINE is the last sibling in its sub-tree."
-  (not (org-export-get-next-element headline)))
+(defun org-export-last-sibling-p (headline info)
+  "Non-nil when HEADLINE is the last sibling in its sub-tree.
+INFO is a plist used as a communication channel."
+  (not (org-export-get-next-element headline info)))
 
 
 ;;;; For Links
@@ -4186,19 +4190,30 @@ OBJECT is either a `table-cell' or `table-element' type object."
 		(not (eq (org-element-type parent) 'table))))
     parent))
 
-(defun org-export-get-previous-element (blob)
+(defun org-export-get-previous-element (blob info)
   "Return previous element or object.
-BLOB is an element or object.  Return previous element or object,
-a string, or nil."
-  (let ((parent (org-export-get-parent blob)))
-    (cadr (memq blob (reverse (org-element-contents parent))))))
+BLOB is an element or object.  INFO is a plist used as
+a communication channel.  Return previous exportable element or
+object, a string, or nil."
+  (let (prev)
+    (catch 'exit
+      (mapc (lambda (obj)
+	      (cond ((eq obj blob) (throw 'exit prev))
+		    ((memq obj (plist-get info :ignore-list)))
+		    (t (setq prev obj))))
+	    (org-element-contents (org-export-get-parent blob))))))
 
-(defun org-export-get-next-element (blob)
+(defun org-export-get-next-element (blob info)
   "Return next element or object.
-BLOB is an element or object.  Return next element or object,
-a string, or nil."
-  (let ((parent (org-export-get-parent blob)))
-    (cadr (memq blob (org-element-contents parent)))))
+BLOB is an element or object.  INFO is a plist used as
+a communication channel.  Return next exportable element or
+object, a string, or nil."
+  (catch 'found
+    (mapc (lambda (obj)
+	    (unless (memq obj (plist-get info :ignore-list))
+	      (throw 'found obj)))
+	  (cdr (memq blob (org-element-contents (org-export-get-parent blob)))))
+    nil))
 
 
 ;;;; Translation
@@ -4286,7 +4301,7 @@ entry.")
   "Translate string S according to language specification.
 
 ENCODING is a symbol among `:ascii', `:html', `:latex', `:latin1'
-and `:utf8'.  INFO is a plist used as a communication channel.
+and `:utf-8'.  INFO is a plist used as a communication channel.
 
 Translation depends on `:language' property.  Return the
 translated string.  If no translation is found return S."

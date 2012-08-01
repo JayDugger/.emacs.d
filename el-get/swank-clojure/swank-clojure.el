@@ -18,15 +18,14 @@
     <meta content="authenticity_token" name="csrf-param" />
 <meta content="HGQWmhTyegXiypP+FYUMqHsmVObWQjbmAXk5s+Qqelw=" name="csrf-token" />
 
-    <link href="https://a248.e.akamai.net/assets.github.com/assets/github-9e5a21d39e0f8d8416f832859a549b210a6b3a8f.css" media="screen" rel="stylesheet" type="text/css" />
-    <link href="https://a248.e.akamai.net/assets.github.com/assets/github2-c8883d627442953da94b060553c4ed420a0c76ea.css" media="screen" rel="stylesheet" type="text/css" />
-    
+    <link href="https://a248.e.akamai.net/assets.github.com/assets/github-6ccf6cea137dd44cdaadff5a0bd7fbc1ba3d1703.css" media="screen" rel="stylesheet" type="text/css" />
+    <link href="https://a248.e.akamai.net/assets.github.com/assets/github2-a1a028c158d02609a3f199351472ff65e15ce83b.css" media="screen" rel="stylesheet" type="text/css" />
     
 
 
     <script src="https://a248.e.akamai.net/assets.github.com/assets/frameworks-cda884a5a58f7a231c16c075e16bc5c1509f192b.js" type="text/javascript"></script>
     
-    <script defer="defer" src="https://a248.e.akamai.net/assets.github.com/assets/github-24fb817add0ab88112f819f2f4b8dac53c8da245.js" type="text/javascript"></script>
+    <script defer="defer" src="https://a248.e.akamai.net/assets.github.com/assets/github-51bb4f9055afda80562b32fb6dc9d6fd15bb7ecb.js" type="text/javascript"></script>
     
     
 
@@ -257,7 +256,7 @@
           <li><a href="https://github.com/security">Security</a></li>
       </ul>
 
-      <p>&copy; 2012 <span title="1.02681s from fe6.rs.github.com">GitHub</span> Inc. All rights reserved.</p>
+      <p>&copy; 2012 <span title="0.03026s from fe6.rs.github.com">GitHub</span> Inc. All rights reserved.</p>
     </div><!-- /#legal or /#legal_ie-->
 
       <div class="sponsor">
@@ -660,6 +659,6 @@ I think you should use an
     </div>
 
     
-    <span id='server_response_time' data-time='1.21857' data-host='fe6'></span>
+    <span id='server_response_time' data-time='0.03245' data-host='fe6'></span>
   </body>
 </html>
