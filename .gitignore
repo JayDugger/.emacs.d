@@ -1,12 +1,12 @@
-/#*#
-/.#README.org
-/auto-save-list/.saves-11632-jsmill~
-/auto-save-list/
-/elpa/archives/gnu/*~
-/elpa/magit-1.0.0/*~
-/session.*
-/eshell/history
-/*~
+#*#
+.#README.org
+auto-save-list/.saves-11632-jsmill~
+auto-save-list/
+elpa/archives/gnu/*~
+elpa/magit-1.0.0/*~
+session.*
+eshell/history
+*~
 
 
 /el-get/.loaddefs.el~
@@ -18,3 +18,4 @@
 /el-get/dired+/dired+.el
 url/cookies*
 /url/#cookies#
+/#README.org#
