@@ -3925,9 +3925,9 @@ from @code{DONE} to @code{REPORT} in the example above.  See also
 
 If you would like to quickly change an entry to an arbitrary TODO state
 instead of cycling through the states, you can set up keys for single-letter
-access to the states.  This is done by adding the selection
-letter@footnote{Only alphabetical letters are allowed for fast TODO selection
-keys.} after each keyword, in parentheses.  For example:
+access to the states.  This is done by adding the selection character after
+each keyword, in parentheses@footnote{All characters are allowed except
+@code{@@^!}, which have a special meaning here.}.  For example:
 
 @lisp
 (setq org-todo-keywords
@@ -6771,7 +6771,7 @@ buffer again after capture is completed.
 @subsubsection Template expansion
 
 In the template itself, special @kbd{%}-escapes@footnote{If you need one of
-these sequences literally, escape the @kbd{%} with a backslash.}  allow
+these sequences literally, escape the @kbd{%} with a backslash.} allow
 dynamic insertion of content.  The templates are expanded in the order given here:
 
 @smallexample
@@ -6782,11 +6782,12 @@ dynamic insertion of content.  The templates are expanded in the order given her
 %t          @r{Timestamp, date only.}
 %T          @r{Timestamp, with date and time.}
 %u, %U      @r{Like the above, but inactive timestamps.}
-%a          @r{Annotation, normally the link created with @code{org-store-link}.}
 %i          @r{Initial content, the region when capture is called while the}
             @r{region is active.}
             @r{The entire text will be indented like @code{%i} itself.}
+%a          @r{Annotation, normally the link created with @code{org-store-link}.}
 %A          @r{Like @code{%a}, but prompt for the description part.}
+%l          @r{Like %a, but only insert the literal link.}
 %c          @r{Current kill ring head.}
 %x          @r{Content of the X clipboard.}
 %k          @r{Title of the currently clocked task.}
@@ -7520,11 +7521,13 @@ in an Org or Diary file.
 @cindex appointment
 @cindex reminders
 
-Org can interact with Emacs appointments notification facility.  To add all
-the appointments of your agenda files, use the command
-@code{org-agenda-to-appt}.  This command also lets you filter through the
-list of your appointments and add only those belonging to a specific category
-or matching a regular expression.  See the docstring for details.
+Org can interact with Emacs appointments notification facility.  To add the
+appointments of your agenda files, use the command @code{org-agenda-to-appt}.
+This command lets you filter through the list of your appointments and add
+only those belonging to a specific category or matching a regular expression.
+It also reads a @code{APPT_WARNTIME} property which will then override the
+value of @code{appt-message-warning-time} for this appointment.  See the
+docstring for details.
 
 @node Global TODO list, Matching tags and properties, Weekly/daily agenda, Built-in agenda views
 @subsection The global TODO list
@@ -9148,11 +9151,11 @@ a horizontal line (@samp{<hr/>} in HTML and @code{\hrule} in @LaTeX{}).
 @cindex exporting, not
 @cindex #+BEGIN_COMMENT
 
-Lines starting with @samp{#} in column zero are treated as comments and will
-never be exported.  If you want an indented line to be treated as a comment,
-start it with @samp{#+ }.  Also entire subtrees starting with the word
-@samp{COMMENT} will never be exported.  Finally, regions surrounded by
-@samp{#+BEGIN_COMMENT} ... @samp{#+END_COMMENT} will not be exported.
+Lines starting with zero or more whitespace characters followed by @samp{#}
+are treated as comments and will never be exported.  Also entire subtrees
+starting with the word @samp{COMMENT} will never be exported.  Finally,
+regions surrounded by @samp{#+BEGIN_COMMENT} ... @samp{#+END_COMMENT} will
+not be exported.
 
 @table @kbd
 @kindex C-c ;

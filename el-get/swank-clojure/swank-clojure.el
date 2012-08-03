@@ -18,14 +18,14 @@
     <meta content="authenticity_token" name="csrf-param" />
 <meta content="HGQWmhTyegXiypP+FYUMqHsmVObWQjbmAXk5s+Qqelw=" name="csrf-token" />
 
-    <link href="https://a248.e.akamai.net/assets.github.com/assets/github-6ccf6cea137dd44cdaadff5a0bd7fbc1ba3d1703.css" media="screen" rel="stylesheet" type="text/css" />
-    <link href="https://a248.e.akamai.net/assets.github.com/assets/github2-a1a028c158d02609a3f199351472ff65e15ce83b.css" media="screen" rel="stylesheet" type="text/css" />
+    <link href="https://a248.e.akamai.net/assets.github.com/assets/github-5a9b8e138e92ac3034db71385cd71d0236985140.css" media="screen" rel="stylesheet" type="text/css" />
+    <link href="https://a248.e.akamai.net/assets.github.com/assets/github2-56bbf91df226a10cc828a828fe3f589ca2373095.css" media="screen" rel="stylesheet" type="text/css" />
     
 
 
-    <script src="https://a248.e.akamai.net/assets.github.com/assets/frameworks-cda884a5a58f7a231c16c075e16bc5c1509f192b.js" type="text/javascript"></script>
+    <script src="https://a248.e.akamai.net/assets.github.com/assets/frameworks-c12eab4295f1d4a7040c603970f25528f7f173ba.js" type="text/javascript"></script>
     
-    <script defer="defer" src="https://a248.e.akamai.net/assets.github.com/assets/github-51bb4f9055afda80562b32fb6dc9d6fd15bb7ecb.js" type="text/javascript"></script>
+    <script defer="defer" src="https://a248.e.akamai.net/assets.github.com/assets/github-81fe9322a7fcc8ea9a2be187658eb517895d56d9.js" type="text/javascript"></script>
     
     
 
@@ -36,7 +36,6 @@
   <body class="logged_out   vis-public fork env-production ">
     <div id="wrapper">
 
-    
     
     
 
@@ -70,6 +69,8 @@
           
         </div>
       </div>
+
+      
 
       
 
@@ -256,17 +257,9 @@
           <li><a href="https://github.com/security">Security</a></li>
       </ul>
 
-      <p>&copy; 2012 <span title="0.03026s from fe6.rs.github.com">GitHub</span> Inc. All rights reserved.</p>
+      <p>&copy; 2012 <span title="0.03488s from fe6.rs.github.com">GitHub</span> Inc. All rights reserved.</p>
     </div><!-- /#legal or /#legal_ie-->
 
-      <div class="sponsor">
-        <a href="http://www.rackspace.com" class="logo">
-          <img alt="Dedicated Server" height="36" src="https://a248.e.akamai.net/assets.github.com/images/modules/footer/rackspaces_logo.png?1329521041" width="38" />
-        </a>
-        Powered by the <a href="http://www.rackspace.com ">Dedicated
-        Servers</a> and<br/> <a href="http://www.rackspace.com/cloud">Cloud
-        Computing</a> of Rackspace Hosting<span>&reg;</span>
-      </div>
   </div><!-- /.site -->
 </div><!-- /.lower_footer -->
 
@@ -659,6 +652,6 @@ I think you should use an
     </div>
 
     
-    <span id='server_response_time' data-time='0.03245' data-host='fe6'></span>
+    <span id='server_response_time' data-time='0.03678' data-host='fe6'></span>
   </body>
 </html>

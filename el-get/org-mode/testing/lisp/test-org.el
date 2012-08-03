@@ -143,6 +143,28 @@ http://article.gmane.org/gmane.emacs.orgmode/21459/"
     (let ((fill-column 20))
       (org-fill-paragraph)
       (should (equal (buffer-string) "some \\\\\nlong text"))))
+  ;; Correctly fill a paragraph when point is at its very end.
+  (should
+   (equal "A B"
+	  (org-test-with-temp-text "A\nB"
+	    (let ((fill-column 20))
+	      (goto-char (point-max))
+	      (org-fill-paragraph)
+	      (buffer-string)))))
+  ;; Special case: Fill first paragraph when point is at an item or
+  ;; a plain-list or a footnote reference.
+  (should
+   (equal "- A B"
+	  (org-test-with-temp-text "- A\n  B"
+	    (let ((fill-column 20))
+	      (org-fill-paragraph)
+	      (buffer-string)))))
+  (should
+   (equal "[fn:1] A B"
+	  (org-test-with-temp-text "[fn:1] A\nB"
+	    (let ((fill-column 20))
+	      (org-fill-paragraph)
+	      (buffer-string)))))
   ;; At a verse block, fill paragraph at point, also preserving line
   ;; breaks.  Though, do nothing when point is at the block
   ;; boundaries.
@@ -166,16 +188,10 @@ http://article.gmane.org/gmane.emacs.orgmode/21459/"
 	(org-fill-paragraph)
 	(buffer-string)))
     "#+BEGIN_COMMENT\nSome text\n#+END_COMMENT"))
-  ;; Fill `comment' elements, indented or not.
+  ;; Fill `comment' elements.
   (should
-   (equal "# A B"
-	  (org-test-with-temp-text "# A\n#B"
-	    (let ((fill-column 20))
-	      (org-fill-paragraph)
-	      (buffer-string)))))
-  (should
-   (equal "  #+ A B"
-	  (org-test-with-temp-text "  #+ A\n  #+ B"
+   (equal "  # A B"
+	  (org-test-with-temp-text "  # A\n  # B"
 	    (let ((fill-column 20))
 	      (org-fill-paragraph)
 	      (buffer-string)))))
@@ -203,17 +219,10 @@ http://article.gmane.org/gmane.emacs.orgmode/21459/"
 	      (end-of-line)
 	      (org-auto-fill-function)
 	      (buffer-string)))))
-  ;; Auto fill comments, indented or not.
+  ;; Auto fill comments.
   (should
-   (equal "# 12345\n# 7890"
-	  (org-test-with-temp-text "# 12345 7890"
-	    (let ((fill-column 7))
-	      (end-of-line)
-	      (org-auto-fill-function)
-	      (buffer-string)))))
-  (should
-   (equal "  #+ 12345\n  #+ 7890"
-	  (org-test-with-temp-text "  #+ 12345 7890"
+   (equal "  # 12345\n  # 7890"
+	  (org-test-with-temp-text "  # 12345 7890"
 	    (let ((fill-column 10))
 	      (end-of-line)
 	      (org-auto-fill-function)
@@ -258,6 +267,63 @@ http://article.gmane.org/gmane.emacs.orgmode/21459/"
 	    (let ((fill-column 20))
 	      (end-of-line)
 	      (org-auto-fill-function)
+	      (buffer-string))))))
+
+
+
+;;; Comments
+
+(ert-deftest test-org/comment-dwim ()
+  "Test `comment-dwim' behaviour in an Org buffer."
+  ;; No region selected, no comment on current line and line not
+  ;; empty: insert comment on line above.
+  (should
+   (equal "# \nComment"
+	  (org-test-with-temp-text "Comment"
+	    (progn (call-interactively 'comment-dwim)
+		   (buffer-string)))))
+  ;; No region selected, no comment on current line and line empty:
+  ;; insert comment on this line.
+  (should
+   (equal "# \nParagraph"
+	  (org-test-with-temp-text "\nParagraph"
+	    (progn (call-interactively 'comment-dwim)
+		   (buffer-string)))))
+  ;; No region selected, and a comment on this line: indent it.
+  (should
+   (equal "* Headline\n  # Comment"
+	  (org-test-with-temp-text "* Headline\n# Comment"
+	    (progn (forward-line)
+		   (let ((org-adapt-indentation t))
+		     (call-interactively 'comment-dwim))
+		   (buffer-string)))))
+  ;; Also recognize single # at column 0 as comments.
+  (should
+   (equal "# Comment"
+	  (org-test-with-temp-text "# Comment"
+	    (progn (forward-line)
+		   (call-interactively 'comment-dwim)
+		   (buffer-string)))))
+  ;; Region selected and only comments and blank lines within it:
+  ;; un-comment all commented lines.
+  (should
+   (equal "Comment 1\n\nComment 2"
+	  (org-test-with-temp-text "# Comment 1\n\n# Comment 2"
+	    (progn
+	      (transient-mark-mode 1)
+	      (push-mark (point) t t)
+	      (goto-char (point-max))
+	      (call-interactively 'comment-dwim)
+	      (buffer-string)))))
+  ;; Region selected without comments: comment all non-blank lines.
+  (should
+   (equal "# Comment 1\n\n# Comment 2"
+	  (org-test-with-temp-text "Comment 1\n\nComment 2"
+	    (progn
+	      (transient-mark-mode 1)
+	      (push-mark (point) t t)
+	      (goto-char (point-max))
+	      (call-interactively 'comment-dwim)
 	      (buffer-string))))))
 
 

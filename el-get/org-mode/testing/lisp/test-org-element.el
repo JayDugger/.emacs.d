@@ -279,28 +279,41 @@ CLOCK: [2012-01-01 sun. 00:01]--[2012-01-01 sun. 00:02] =>  0:01"
      (org-element-map (org-element-parse-buffer) 'comment 'identity)))
   ;; Inline comment.
   (should
-   (org-test-with-temp-text "#+ Comment"
+   (org-test-with-temp-text "  # Comment"
      (org-element-map (org-element-parse-buffer) 'comment 'identity)))
   ;; Preserve indentation.
   (should
    (equal
     (org-element-property
      :value
-     (org-test-with-temp-text "#+ No blank\n#+  One blank"
+     (org-test-with-temp-text "# No blank\n#  One blank"
        (org-element-map (org-element-parse-buffer) 'comment 'identity nil t)))
-     "No blank\n One blank"))
+    "No blank\n One blank"))
   ;; Comment with blank lines.
   (should
    (equal
     (org-element-property
      :value
-     (org-test-with-temp-text "#+ First part\n#+ \n#+\n#+ Second part"
+     (org-test-with-temp-text "# First part\n# \n#\n# Second part"
        (org-element-map (org-element-parse-buffer) 'comment 'identity nil t)))
     "First part\n\n\nSecond part"))
   ;; Keywords without colons are treated as comments.
   (should
    (org-test-with-temp-text "#+wrong_keyword something"
-     (org-element-map (org-element-parse-buffer) 'comment 'identity))))
+     (org-element-map (org-element-parse-buffer) 'comment 'identity)))
+  ;; Do not mix comments and keywords.
+  (should
+   (eq 1
+       (org-test-with-temp-text "#+keyword: value\n# comment\n#+keyword: value"
+	 (length (org-element-map
+		  (org-element-parse-buffer) 'comment 'identity)))))
+  (should
+   (equal "comment"
+	  (org-test-with-temp-text "#+keyword: value\n# comment\n#+keyword: value"
+	    (org-element-property
+	     :value
+	     (org-element-map
+	      (org-element-parse-buffer) 'comment 'identity nil t))))))
 
 
 ;;;; Comment Block
@@ -1763,13 +1776,13 @@ CLOCK: [2012-01-01 sun. 00:01]--[2012-01-01 sun. 00:02] =>  0:01"))
 (ert-deftest test-org-element/comment-interpreter ()
   "Test comment interpreter."
   ;; Regular comment.
-  (should (equal (org-test-parse-and-interpret "#Comment") "#+ Comment\n"))
+  (should (equal (org-test-parse-and-interpret "#Comment") "# Comment\n"))
   ;; Inline comment.
-  (should (equal (org-test-parse-and-interpret "  #+ Comment")
-		 "#+ Comment\n"))
+  (should (equal (org-test-parse-and-interpret "  # Comment")
+		 "# Comment\n"))
   ;; Preserve indentation.
-  (should (equal (org-test-parse-and-interpret "  #+ No blank\n#+  One blank")
-		 "#+ No blank\n#+  One blank\n")))
+  (should (equal (org-test-parse-and-interpret "  # No blank\n#  One blank")
+		 "# No blank\n#  One blank\n")))
 
 (ert-deftest test-org-element/comment-block-interpreter ()
   "Test comment block interpreter."
@@ -2491,10 +2504,13 @@ Outside."
 
 (ert-deftest test-org-element/down ()
   "Test `org-element-down' specifications."
-  ;; 1. Error when the element hasn't got a recursive type.
+  ;; Error when the element hasn't got a recursive type.
   (org-test-with-temp-text "Paragraph."
     (should-error (org-element-down)))
-  ;; 2. When at a plain-list, move to first item.
+  ;; Error when the element has no contents
+  (org-test-with-temp-text "* Headline"
+    (should-error (org-element-down)))
+  ;; When at a plain-list, move to first item.
   (org-test-with-temp-text "- Item 1\n  - Item 1.1\n  - Item 2.2"
     (goto-line 2)
     (org-element-down)
@@ -2502,11 +2518,11 @@ Outside."
   (org-test-with-temp-text "#+NAME: list\n- Item 1"
     (org-element-down)
     (should (looking-at " Item 1")))
-  ;; 3. When at a table, move to first row
+  ;; When at a table, move to first row
   (org-test-with-temp-text "#+NAME: table\n| a | b |"
     (org-element-down)
     (should (looking-at " a | b |")))
-  ;; 4. Otherwise, move inside the greater element.
+  ;; Otherwise, move inside the greater element.
   (org-test-with-temp-text "#+BEGIN_CENTER\nParagraph.\n#+END_CENTER"
     (org-element-down)
     (should (looking-at "Paragraph"))))

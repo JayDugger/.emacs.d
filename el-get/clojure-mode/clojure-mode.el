@@ -108,7 +108,6 @@ Clojure to load that file."
     (define-key map "\C-c\C-l" 'clojure-load-file)
     (define-key map "\C-c\C-r" 'lisp-eval-region)
     (define-key map "\C-c\C-z" 'clojure-display-inferior-lisp-buffer)
-    (define-key map (kbd "RET") 'reindent-then-newline-and-indent)
     (define-key map (kbd "C-c t") 'clojure-jump-to-test)
     (define-key map (kbd "C-c M-q") 'clojure-fill-docstring)
     map)
@@ -188,13 +187,14 @@ if that value is non-nil."
 
   (clojure-mode-font-lock-setup)
 
-  (run-mode-hooks 'clojure-mode-hook)
-  (run-hooks 'prog-mode-hook)
+  (add-hook 'paredit-mode-hook
+            (lambda ()
+              (when (>= paredit-version 21)
+                (define-key clojure-mode-map "{" 'paredit-open-curly)
+                (define-key clojure-mode-map "}" 'paredit-close-curly))))
 
-  ;; Enable curly braces when paredit is enabled in clojure-mode-hook
-  (when (and (featurep 'paredit) paredit-mode (>= paredit-version 21))
-    (define-key clojure-mode-map "{" 'paredit-open-curly)
-    (define-key clojure-mode-map "}" 'paredit-close-curly)))
+  (run-mode-hooks 'clojure-mode-hook)
+  (run-hooks 'prog-mode-hook))
 
 (defun clojure-display-inferior-lisp-buffer ()
   "Display a buffer bound to `inferior-lisp-buffer'."

@@ -41,6 +41,7 @@
 (declare-function org-table-clean-before-export "org-exp"
 		  (lines &optional maybe-quoted))
 (declare-function org-format-org-table-html "org-html" (lines &optional splice))
+(declare-function aa2u "ext:ascii-art-to-unicode" ())
 (defvar orgtbl-mode) ; defined below
 (defvar orgtbl-mode-menu) ; defined when orgtbl mode get initialized
 (defvar org-export-html-table-tag) ; defined in org-exp.el
@@ -85,7 +86,13 @@ this variable requires a restart of Emacs to become effective."
 <!--
 #+ORGTBL: SEND %n orgtbl-to-html :splice nil :skip 0
 | | |
--->\n"))
+-->\n")
+    (org-mode "#+ BEGIN RECEIVE ORGTBL %n
+#+ END RECEIVE ORGTBL %n
+
+#+ORGTBL: SEND %n orgtbl-to-orgtbl :splice nil :skip 0
+| | |
+"))
   "Templates for radio tables in different major modes.
 All occurrences of %n in a template will be replaced with the name of the
 table, obtained by prompting the user."
@@ -4526,8 +4533,6 @@ This may be either a string or a function of two arguments:
 
 In addition to this, the parameters :skip and :skipcols are always handled
 directly by `orgtbl-send-table'.  See manual."
-  (interactive)
-
   (let* ((splicep (plist-get params :splice))
 	 (hline (plist-get params :hline))
 	 (skipheadrule (plist-get params :skipheadrule))
@@ -4726,7 +4731,37 @@ provide ORGTBL directives for the generated table."
 	   :lstart "| "
 	   :lend " |"))
 	 (params (org-combine-plists params2 params)))
-    (orgtbl-to-generic table params)))
+    (with-temp-buffer
+      (insert (orgtbl-to-generic table params))
+      (goto-char (point-min))
+      (while (re-search-forward org-table-hline-regexp nil t)
+	(org-table-align))
+      (buffer-substring 1 (buffer-size)))))
+
+(defun orgtbl-to-table.el (table params)
+  "Convert the orgtbl-mode TABLE into a table.el table."
+  (with-temp-buffer
+    (insert (orgtbl-to-orgtbl table params))
+    (org-table-align)
+    (replace-regexp-in-string
+     "-|" "-+"
+     (replace-regexp-in-string "|-" "+-" (buffer-substring 1 (buffer-size))))))
+
+(defun orgtbl-to-unicode (table params)
+  "Convert the orgtbl-mode TABLE into a table with unicode characters.
+You need the ascii-art-to-unicode.el package for this.  You can download
+it here: http://gnuvola.org/software/j/aa2u/ascii-art-to-unicode.el."
+  (with-temp-buffer
+    (insert (orgtbl-to-table.el table params))
+    (goto-char (point-min))
+    (if (or (featurep 'ascii-art-to-unicode)
+	    (require 'ascii-art-to-unicode nil t))
+	(aa2u)
+      (unless (delq nil (mapcar (lambda (l) (string-match "aa2u" (car l))) org-stored-links))
+	(push '("http://gnuvola.org/software/j/aa2u/ascii-art-to-unicode.el"
+		"Link to ascii-art-to-unicode.el") org-stored-links))
+      (error "Please download ascii-art-to-unicode.el (use C-c C-l to insert the link to it)"))
+    (buffer-string)))
 
 (defun org-table-get-remote-range (name-or-id form)
   "Get a field value or a list of values in a range from table at ID.

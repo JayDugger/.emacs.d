@@ -202,11 +202,14 @@ identifier."
   :group 'org-id)
 
 ;;; Version
+(require 'org-compat)
 (org-check-version)
 ;;;###autoload
 (defun org-version (&optional here full message)
   "Show the org-mode version in the echo area.
-With prefix arg HERE, insert it at point."
+With prefix argument HERE, insert it at point.
+When FULL is non-nil, use a verbose version string.
+When MESSAGE is non-nil, display a message with the version."
   (interactive "P")
   (let* ((org-dir         (ignore-errors (org-find-library-dir "org")))
 	 (org-install-dir (ignore-errors (org-find-library-dir "org-install.el")))
@@ -1277,7 +1280,7 @@ See also the variable `org-table-auto-blank-field'."
 	  (const :tag "on" t)
 	  (const :tag "on, optimized" optimized)))
 
-(defcustom org-self-insert-cluster-for-undo t
+(defcustom org-self-insert-cluster-for-undo (version<= emacs-version "24.1")
   "Non-nil means cluster self-insert commands for undo when possible.
 If this is set, then, like in the Emacs command loop, 20 consecutive
 characters will be undone together.
@@ -2102,11 +2105,11 @@ cycling, see the manual.
 TODO keywords and interpretation can also be set on a per-file basis with
 the special #+SEQ_TODO and #+TYP_TODO lines.
 
-Each keyword can optionally specify a letter for fast state selection
+Each keyword can optionally specify a character for fast state selection
 \(in combination with the variable `org-use-fast-todo-selection')
 and specifiers for state change logging, using the same syntax that
 is used in the \"#+TODO:\" lines.  For example, \"WAIT(w)\" says that
-the WAIT state can be selected with the \"w\" letter.  \"WAIT(w!)\"
+the WAIT state can be selected with the \"w\" key.  \"WAIT(w!)\"
 indicates to record a time stamp each time this state is selected.
 
 Each keyword may also specify if a timestamp or a note should be
@@ -4964,7 +4967,7 @@ This variable is set by `org-before-change-function'.
 
 (require 'org-macs)
 (require 'org-entities)
-(require 'org-compat)
+;; (require 'org-compat) moved higher up in the file before it is first used
 (require 'org-faces)
 (require 'org-list)
 (require 'org-pcomplete)
@@ -5060,6 +5063,13 @@ The following commands are available:
   (org-set-local 'indent-line-function 'org-indent-line)
   (org-set-local 'indent-region-function 'org-indent-region)
   (org-update-radio-target-regexp)
+  ;; Comments
+  (org-set-local 'comment-use-syntax nil)
+  (org-set-local 'comment-start "#")
+  (org-set-local 'comment-start-skip "# ?")
+  (org-set-local 'comment-insert-comment-function 'org-insert-comment)
+  (org-set-local 'comment-region-function 'org-comment-or-uncomment-region)
+  (org-set-local 'uncomment-region-function 'org-comment-or-uncomment-region)
   ;; Beginning/end of defun
   (org-set-local 'beginning-of-defun-function 'org-beginning-of-defun)
   (org-set-local 'end-of-defun-function 'org-end-of-defun)
@@ -5468,7 +5478,7 @@ by a #."
   "Fontify #+ lines and blocks, in the correct ways."
   (let ((case-fold-search t))
     (if (re-search-forward
-	 "^\\([ \t]*#\\+\\(\\([a-zA-Z]+:?\\| \\|$\\)\\(_\\([a-zA-Z]+\\)\\)?\\)[ \t]*\\(\\([^ \t\n]*\\)[ \t]*\\(.*\\)\\)\\)"
+	 "^\\([ \t]*#\\(\\(\\+[a-zA-Z]+:?\\| \\|$\\)\\(_\\([a-zA-Z]+\\)\\)?\\)[ \t]*\\(\\([^ \t\n]*\\)[ \t]*\\(.*\\)\\)\\)"
 	 limit t)
 	(let ((beg (match-beginning 0))
 	      (block-start (match-end 0))
@@ -5479,7 +5489,7 @@ by a #."
 	      (dc3 (downcase (match-string 3)))
 	      end end1 quoting block-type ovl)
 	  (cond
-	   ((member dc1 '("html:" "ascii:" "latex:" "docbook:"))
+	   ((member dc1 '("+html:" "+ascii:" "+latex:" "+docbook:"))
 	    ;; a single line of backend-specific content
 	    (org-remove-flyspell-overlays-in (match-beginning 0) (match-end 0))
 	    (remove-text-properties (match-beginning 0) (match-end 0)
@@ -5490,7 +5500,7 @@ by a #."
 				 '(font-lock-fontified t face org-block))
 					; for backend-specific code
 	    t)
-	   ((and (match-end 4) (equal dc3 "begin"))
+	   ((and (match-end 4) (equal dc3 "+begin"))
 	    ;; Truly a block
 	    (setq block-type (downcase (match-string 5))
 		  quoting (member block-type org-protecting-blocks))
@@ -5533,7 +5543,7 @@ by a #."
       	      (add-text-properties (min (point-max) (1+ end)) (min (point-max) (1+ end1))
 				   '(face org-block-end-line))
 	      t))
-	   ((member dc1 '("title:" "author:" "email:" "date:"))
+	   ((member dc1 '("+title:" "+author:" "+email:" "+date:"))
 	    (add-text-properties
 	     beg (match-end 3)
 	     (if (member (intern (substring dc1 0 -1)) org-hidden-keywords)
@@ -5541,19 +5551,13 @@ by a #."
 	       '(font-lock-fontified t face org-document-info-keyword)))
 	    (add-text-properties
 	     (match-beginning 6) (match-end 6)
-	     (if (string-equal dc1 "title:")
+	     (if (string-equal dc1 "+title:")
 		 '(font-lock-fontified t face org-document-title)
 	       '(font-lock-fontified t face org-document-info))))
-	   ((not (member (char-after beg) '(?\  ?\t)))
-	    ;; just any other in-buffer setting, but not indented
-	    (add-text-properties
-	     beg (match-end 0)
-	     '(font-lock-fontified t face org-meta-line))
-	    t)
-	   ((or (member dc1 '("begin:" "end:" "caption:" "label:"
-			      "orgtbl:" "tblfm:" "tblname:" "results:"
-			      "call:" "header:" "headers:" "name:"))
-		(and (match-end 4) (equal dc3 "attr")))
+	   ((or (member dc1 '("+begin:" "+end:" "+caption:" "+label:"
+			      "+orgtbl:" "+tblfm:" "+tblname:" "+results:"
+			      "+call:" "+header:" "+headers:" "+name:"))
+		(and (match-end 4) (equal dc3 "+attr")))
 	    (add-text-properties
 	     beg (match-end 0)
 	     '(font-lock-fontified t face org-meta-line))
@@ -5562,6 +5566,12 @@ by a #."
 	    (add-text-properties
 	     beg (match-end 0)
 	     '(font-lock-fontified t face font-lock-comment-face)))
+	   ((not (member (char-after beg) '(?\  ?\t)))
+	    ;; just any other in-buffer setting, but not indented
+	    (add-text-properties
+	     beg (match-end 0)
+	     '(font-lock-fontified t face org-meta-line))
+	    t)
 	   (t nil))))))
 
 (defun org-strip-protective-commas (beg end)
@@ -5575,7 +5585,7 @@ by a #."
 			   "[^[:space:]]" end t)
 			  (goto-char (match-beginning 0))
 			  (current-column))))
-	(while (re-search-forward "^[ \t]*\\(,\\)\\([*]\\|#\\+\\)" end t)
+	(while (re-search-forward "^[ \t]*\\(,\\)\\([*]\\|#\\)" end t)
 	  (goto-char (match-beginning 1))
 	  (when (= (current-column) front-line)
 	    (replace-match "" nil nil nil 1)))))))
@@ -5957,7 +5967,7 @@ needs to be inserted at a specific position in the font-lock sequence.")
 				 org-comment-string "\\|" org-quote-string
 				 "\\)"))
 		 '(2 'org-special-keyword t))
-	   '("^#.*" (0 'font-lock-comment-face t))
+	   '("^[ \t]*#.*" (0 'font-lock-comment-face t))
 	   ;; Blocks and meta lines
 	   '(org-fontify-meta-lines-and-blocks)
 	   )))
@@ -11205,22 +11215,32 @@ This function can be used in a hook."
     "BEGIN_lstlisting" "END_lstlisting"
     "NAME:" "RESULTS:"
     "HEADER:" "HEADERS:"
-    "CATEGORY:" "COLUMNS:" "PROPERTY:"
+    "COLUMNS:" "PROPERTY:"
     "CAPTION:" "LABEL:"
     "SETUPFILE:"
-    "STARTUP:"
-    "OPTIONS:"
     "INCLUDE:"
     "BIND:"
     "MACRO:"))
 
+(defconst org-options-keywords
+  '("TITLE:" "AUTHOR:" "EMAIL:" "DATE:"
+    "DESCRIPTION:" "KEYWORDS:" "LANGUAGE:" "OPTIONS:"
+    "EXPORT_SELECT_TAGS:" "EXPORT_EXCLUDE_TAGS:"
+    "LINK_UP:" "LINK_HOME:" "LINK:"
+    "XSLT:" "CATEGORY:" "SEQ_TODO:" "TYP_TODO:"
+    "PRIORITIES:" "DRAWERS:" "STARTUP:" "TAGS:"
+    "FILETAGS:" "ARCHIVE:"))
+
 (defconst org-additional-option-like-keywords-for-flyspell
   (delete-dups
    (split-string
-    (mapconcat (lambda(k) (replace-regexp-in-string
-			   "_\\|:" " "
-			   (concat k " " (downcase k) " " (upcase k))))
-	       org-additional-option-like-keywords " ") " +" t)))
+    (mapconcat (lambda(k)
+		 (replace-regexp-in-string
+		  "_\\|:" " "
+		  (concat k " " (downcase k) " " (upcase k))))
+	       (append org-options-keywords org-additional-option-like-keywords)
+	       " ")
+    " +" t)))
 
 (defcustom org-structure-template-alist
   '(
@@ -17723,7 +17743,7 @@ BEG and END default to the buffer boundaries."
 ;; | `outline-next-visible-heading'     | `C-c C-n'   | still same function   |
 ;; | `outline-previous-visible-heading' | `C-c C-p'   | still same function   |
 ;; | `outline-up-heading'               | `C-c C-u'   | still same function   |
-;; | `outline-move-subtree-up'          | `C-c C-^'   | better: org-shiftup   |
+;; | `outline-move-subtree-up'          | overridden  | better: org-shiftup   |
 ;; | `outline-move-subtree-down'        | overridden  | better: org-shiftdown |
 ;; | `show-entry'                       | overridden  | no replacement        |
 ;; | `show-children'                    | `C-c C-i'   | visibility cycling    |
@@ -17831,14 +17851,14 @@ BEG and END default to the buffer boundaries."
 (if (boundp 'narrow-map)
     (org-defkey narrow-map "e" 'org-narrow-to-element)
   (org-defkey org-mode-map "\C-xne" 'org-narrow-to-element))
+(org-defkey org-mode-map "\C-\M-t"  'org-element-transpose)
+(org-defkey org-mode-map "\M-}"    'org-element-forward)
+(org-defkey org-mode-map "\M-{"    'org-element-backward)
+(org-defkey org-mode-map "\C-c\C-^"   'org-element-up)
+(org-defkey org-mode-map "\C-c\C-_"   'org-element-down)
 (org-defkey org-mode-map "\C-\M-t"    'org-element-transpose)
-(org-defkey org-mode-map "\C-\M-f"    'org-element-forward)
-(org-defkey org-mode-map "\C-\M-b"    'org-element-backward)
-(org-defkey org-mode-map "\C-\M-u"    'org-element-up)
-(org-defkey org-mode-map "\C-\M-d"    'org-element-down)
-(org-defkey org-mode-map "\C-\M-t"    'org-element-transpose)
-(org-defkey org-mode-map "\C-c\C-f"    'org-forward-same-level)
-(org-defkey org-mode-map "\C-c\C-b"    'org-backward-same-level)
+(org-defkey org-mode-map "\C-c\C-f"   'org-forward-same-level)
+(org-defkey org-mode-map "\C-c\C-b"   'org-backward-same-level)
 (org-defkey org-mode-map "\C-c$"    'org-archive-subtree)
 (org-defkey org-mode-map "\C-c\C-x\C-s" 'org-advertized-archive-subtree)
 (org-defkey org-mode-map "\C-c\C-x\C-a" 'org-archive-subtree-default)
@@ -17908,7 +17928,7 @@ BEG and END default to the buffer boundaries."
 (org-defkey org-mode-map "\C-c\C-x\C-mg"    'org-mobile-pull)
 (org-defkey org-mode-map "\C-c\C-x\C-mp"    'org-mobile-push)
 (org-defkey org-mode-map "\C-c@" 'org-mark-subtree)
-(org-defkey org-mode-map "\C-c\C-@" 'org-mark-list)
+(org-defkey org-mode-map "\C-c\C-@" 'org-element-mark-element)
 (org-defkey org-mode-map [?\C-c (control ?*)] 'org-list-make-subtree)
 ;;(org-defkey org-mode-map [?\C-c (control ?-)] 'org-list-make-list-from-subtree)
 
@@ -18000,6 +18020,8 @@ BEG and END default to the buffer boundaries."
     (";" . org-set-tags-command)
     ("e" . org-set-effort)
     ("E" . org-inc-effort)
+    ("W" . (lambda(m) (interactive "sMinutes before warning: ")
+	     (org-entry-put (point) "APPT_WARNTIME" m)))
     ("Agenda Views etc")
     ("v" . org-agenda)
     ("/" . org-sparse-tree)
@@ -19321,7 +19343,7 @@ stars to add."
 
     (when (and current-prefix-arg (org-at-item-p))
       (if (equal current-prefix-arg '(4)) (setq current-prefix-arg 1))
-      (org-mark-list))
+      (org-element-mark-element))
 
     (if (org-region-active-p)
 	(setq beg (funcall skip-blanks (region-beginning))
@@ -20616,8 +20638,7 @@ If point is in an inline task, mark that task instead."
     (push-mark (point) nil t)
     (goto-char beg)))
 
-;;; Paragraph filling stuff.
-;; We want this to be just right, so use the full arsenal.
+;;; Indentation
 
 (defun org-indent-line ()
   "Indent line depending on context."
@@ -20633,8 +20654,6 @@ If point is in an inline task, mark that task instead."
 	 column)
     (beginning-of-line 1)
     (cond
-     ;; Comments
-     ((looking-at "# ") (setq column 0))
      ;; Headings
      ((looking-at org-outline-regexp) (setq column 0))
      ;; Included files
@@ -20785,12 +20804,16 @@ If point is in an inline task, mark that task instead."
 	      (t (call-interactively 'org-indent-line)))
 	(move-beginning-of-line 2)))))
 
+
+;;; Filling
+
+;; We use our own fill-paragraph and auto-fill functions.  These
+;; functions will shadow `fill-prefix' (computed internally with
+;; `org-fill-context-prefix') and pass through to
+;; `fill-region-as-paragraph' and `do-auto-fill' as appropriate.
+
 (defun org-set-autofill-regexps ()
   (interactive)
-  ;; We use our own fill-paragraph and auto-fill functions.  These
-  ;; functions will shadow `fill-prefix' (computed internally with
-  ;; `org-fill-context-prefix') and pass through to
-  ;; `fill-region-as-paragraph' and `do-auto-fill' as appropriate.
   (org-set-local 'fill-paragraph-function 'org-fill-paragraph)
   ;; Prevent auto-fill from inserting unwanted new items.
   (when (boundp 'fill-nobreak-predicate)
@@ -20832,7 +20855,8 @@ meant to be filled."
 	      (point))))
       (unless (< p post-affiliated)
 	(case type
-	  (comment (looking-at "[ \t]*#\\+? ?") (match-string 0))
+	  (comment (looking-at "[ \t]*# ?") (match-string 0))
+	  (footnote-definition "")
 	  ((item plain-list)
 	   (make-string (org-list-item-body-column
 			 (org-element-property :begin element))
@@ -20870,91 +20894,109 @@ If JUSTIFY is non-nil (interactively, with prefix argument),
 justify as well.  If `sentence-end-double-space' is non-nil, then
 period followed by one space does not end a sentence, so don't
 break a line there.  The variable `fill-column' controls the
-width for filling."
-  (let ((element (org-element-at-point)))
-    ;; First check if point is in a blank line at the beginning of the
-    ;; buffer.  In that case, ignore filling.
-    (if (< (point) (org-element-property :begin element)) t
-      (case (org-element-type element)
-	;; Align Org tables, leave table.el tables as-is.
-	(table-row (org-table-align) t)
-	(table
-	 (when (eq (org-element-property :type element) 'org) (org-table-align))
-	 t)
-	;; Elements that may contain `line-break' type objects.
-	((paragraph verse-block)
-	 (let ((beg (org-element-property :contents-begin element))
-	       (end (org-element-property :contents-end element)))
-	   ;; Do nothing if point is at an affiliated keyword or at
-	   ;; verse block markers.
-	   (if (or (< (point) beg) (>= (point) end)) t
-	     ;; At a verse block, first narrow to current "paragraph"
-	     ;; and set current element to that paragraph.
-	     (save-restriction
-	       (when (eq (org-element-type element) 'verse-block)
-		 (narrow-to-region beg end)
-		 (save-excursion
-		   (end-of-line)
-		   (let ((bol-pos (point-at-bol)))
-		     (re-search-backward org-element-paragraph-separate nil 'm)
-		     (unless (or (bobp) (= (point-at-bol) bol-pos))
-		       (forward-line))
-		     (setq element (org-element-paragraph-parser end)
-			   beg (org-element-property :contents-begin element)
-			   end (org-element-property :contents-end element)))))
-	       ;; Fill paragraph, taking line breaks into consideration.
-	       ;; For that, slice the paragraph using line breaks as
-	       ;; separators, and fill the parts in reverse order to
-	       ;; avoid messing with markers.
+width for filling.
+
+For convenience, when point is at a plain list, an item or
+a footnote definition, try to fill the first paragraph within."
+  ;; Falls back on message-fill-paragraph when necessary
+  (if (and (derived-mode-p 'message-mode)
+	   (or (not (message-in-body-p))
+	       (save-excursion (move-beginning-of-line 1)
+			       (looking-at "> "))))
+      (message-fill-paragraph)
+    (save-excursion
+      ;; Move to end of line in order to get the first paragraph within
+      ;; a plain list or a footnote definition.
+      (end-of-line)
+      (let ((element (org-element-at-point)))
+	;; First check if point is in a blank line at the beginning of the
+	;; buffer.  In that case, ignore filling.
+	(if (< (point) (org-element-property :begin element)) t
+	  (case (org-element-type element)
+	    ;; Align Org tables, leave table.el tables as-is.
+	    (table-row (org-table-align) t)
+	    (table
+	     (when (eq (org-element-property :type element) 'org)
+	       (org-table-align))
+	     t)
+	    ;; Elements that may contain `line-break' type objects.
+	    ((paragraph verse-block)
+	     (let ((beg (org-element-property :contents-begin element))
+		   (end (org-element-property :contents-end element))
+		   (type (org-element-type element)))
+	       ;; Do nothing if point is at an affiliated keyword or at
+	       ;; verse block markers.
+	       (if (or (< (point) beg)
+		       (and (eq type 'verse-block) (>= (point) end)))
+		   t
+		 ;; At a verse block, first narrow to current "paragraph"
+		 ;; and set current element to that paragraph.
+		 (save-restriction
+		   (when (eq type 'verse-block)
+		     (narrow-to-region beg end)
+		     (save-excursion
+		       (let ((bol-pos (point-at-bol)))
+			 (re-search-backward
+			  org-element-paragraph-separate nil 'm)
+			 (unless (or (bobp) (= (point-at-bol) bol-pos))
+			   (forward-line))
+			 (setq element (org-element-paragraph-parser end)
+			       beg (org-element-property :contents-begin element)
+			       end (org-element-property
+				    :contents-end element)))))
+		   ;; Fill paragraph, taking line breaks into consideration.
+		   ;; For that, slice the paragraph using line breaks as
+		   ;; separators, and fill the parts in reverse order to
+		   ;; avoid messing with markers.
+		   (save-excursion
+		     (goto-char end)
+		     (mapc
+		      (lambda (pos)
+			(let ((fill-prefix (org-fill-context-prefix pos)))
+			  (fill-region-as-paragraph pos (point) justify))
+			(goto-char pos))
+		      ;; Find the list of ending positions for line breaks
+		      ;; in the current paragraph.  Add paragraph beginning
+		      ;; to include first slice.
+		      (nreverse
+		       (cons beg
+			     (org-element-map
+			      (org-element--parse-objects
+			       beg end nil org-element-all-objects)
+			      'line-break
+			      (lambda (lb) (org-element-property :end lb))))))))
+		 t)))
+	    ;; Contents of `comment-block' type elements should be filled as
+	    ;; plain text.
+	    (comment-block
+	     (let ((fill-prefix (org-fill-context-prefix (point))))
 	       (save-excursion
-		 (goto-char end)
-		 (mapc
-		  (lambda (pos)
-		    (let ((fill-prefix (org-fill-context-prefix pos)))
-		      (fill-region-as-paragraph pos (point) justify))
-		    (goto-char pos))
-		  ;; Find the list of ending positions for line breaks
-		  ;; in the current paragraph.  Add paragraph beginning
-		  ;; to include first slice.
-		  (nreverse
-		   (cons beg
-			 (org-element-map
-			  (org-element--parse-objects
-			   beg end nil org-element-all-objects)
-			  'line-break
-			  (lambda (lb) (org-element-property :end lb))))))))
-	     t)))
-	;; Contents of `comment-block' type elements should be filled as
-	;; plain text.
-	(comment-block
-	 (let ((fill-prefix (org-fill-context-prefix (point))))
-	   (save-excursion
-	     (fill-region-as-paragraph
-	      (progn
-		(goto-char (org-element-property :begin element))
-		(while (looking-at org-element--affiliated-re) (forward-line))
-		(forward-line)
-		(point))
-	      (progn
-		(goto-char (org-element-property :end element))
-		(skip-chars-backward " \r\t\n")
-		(line-beginning-position))
-	      justify))) t)
-	;; Fill comments, indented or not.
-	(comment
-	 (let ((fill-prefix (org-fill-context-prefix (point))))
-	   (save-excursion
-	     (fill-region-as-paragraph
-	      (progn
-		(goto-char (org-element-property :begin element))
-		(while (looking-at org-element--affiliated-re) (forward-line))
-		(point))
-	      (progn
-		(goto-char (org-element-property :end element))
-		(skip-chars-backward " \r\t\n")
-		(line-end-position))))))
-	;; Ignore every other element.
-	(otherwise t)))))
+		 (fill-region-as-paragraph
+		  (progn
+		    (goto-char (org-element-property :begin element))
+		    (while (looking-at org-element--affiliated-re) (forward-line))
+		    (forward-line)
+		    (point))
+		  (progn
+		    (goto-char (org-element-property :end element))
+		    (skip-chars-backward " \r\t\n")
+		    (line-beginning-position))
+		  justify))) t)
+	    ;; Fill comments, indented or not.
+	    (comment
+	     (let ((fill-prefix (org-fill-context-prefix (point))))
+	       (save-excursion
+		 (fill-region-as-paragraph
+		  (progn
+		    (goto-char (org-element-property :begin element))
+		    (while (looking-at org-element--affiliated-re) (forward-line))
+		    (point))
+		  (progn
+		    (goto-char (org-element-property :end element))
+		    (skip-chars-backward " \r\t\n")
+		    (line-end-position))))))
+	    ;; Ignore every other element.
+	    (otherwise t)))))))
 
 (defun org-auto-fill-function ()
   "Auto-fill function."
@@ -20963,6 +21005,54 @@ width for filling."
     (when (and fc (> (current-column) fc))
       (let ((fill-prefix (org-fill-context-prefix (point))))
 	(when fill-prefix (do-auto-fill))))))
+
+
+;;; Comments
+
+;; Since difference between comments and keywords is subtle, we cannot
+;; trust `comment-only-p' when applying `comment-dwim'.  Hence, both
+;; `comment-region-function' and `uncomment-region-function' point to
+;; `org-comment-or-uncomment-region', which can tell when region only
+;; contains comments or not.
+
+(defun org-insert-comment ()
+  "Insert an empty comment above current line.
+If the line is empty, insert comment at its beginning."
+  (beginning-of-line)
+  (if (looking-at "\\s-*$") (replace-match "") (open-line 1))
+  (org-indent-line)
+  (insert "# "))
+
+(defun org-comment-or-uncomment-region (beg end &rest ignore)
+  "Comment or uncomment each non-blank line in the region.
+Uncomment each non-blank line between BEG and END if it only
+contains commented lines.  Otherwise, comment them."
+  (save-excursion
+    (goto-char beg)
+    (skip-chars-forward " \r\t\n" end)
+    (beginning-of-line)
+    (let ((uncommentp
+           ;; UNCOMMENTP is non-nil when every non blank line between
+           ;; BEG and END is a comment.
+           (save-excursion
+             (while (progn (and (not (eobp))
+				(let ((element (org-element-at-point)))
+				  (and (eq (org-element-type element) 'comment)
+				       (goto-char (org-element-property
+						   :end element)))))))
+             (>= (point) end)))
+          ;; Remove or adding comment markers is going to change end
+          ;; position so make it a marker.
+          (end (copy-marker end)))
+      (while (< (point) end)
+        (unless (looking-at "\\s-*$")
+          (if (not uncommentp) (progn (back-to-indentation) (insert "# "))
+            ;; Only comments and blank lines in region: uncomment it.
+            (looking-at "[ \t]*\\(# ?\\)")
+            (replace-match "" nil nil nil 1)))
+        (forward-line))
+      (set-marker end nil))))
+
 
 ;;; Other stuff.
 
@@ -21810,6 +21900,7 @@ To get rid of the restriction, use \\[org-agenda-remove-restriction-lock]."
 	 (not (get-text-property pos 'org-no-flyspell))
 	 (not (member word org-todo-keywords-1))
 	 (not (member word org-all-time-keywords))
+	 (not (member word org-options-keywords))
 	 (not (member word (mapcar 'car org-startup-options)))
 	 (not (member word org-additional-option-like-keywords-for-flyspell)))))
 

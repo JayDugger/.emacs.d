@@ -1024,22 +1024,7 @@ Assume point is at the beginning of the item."
 (defun org-element-item-interpreter (item contents)
   "Interpret ITEM element as Org syntax.
 CONTENTS is the contents of the element."
-  (let* ((bullet
-	  (let* ((beg (org-element-property :begin item))
-		 (struct (org-element-property :structure item))
-		 (pre (org-list-prevs-alist struct))
-		 (bul (org-element-property :bullet item)))
-	    (org-list-bullet-string
-	     (if (not (eq (org-list-get-list-type beg struct pre) 'ordered)) "-"
-	       (let ((num
-		      (car
-		       (last
-			(org-list-get-item-number
-			 beg struct pre (org-list-parents-alist struct))))))
-		 (format "%d%s"
-			 num
-			 (if (eq org-plain-list-ordered-item-terminator ?\)) ")"
-			   ".")))))))
+  (let* ((bullet (org-list-bullet-string (org-element-property :bullet item)))
 	 (checkbox (org-element-property :checkbox item))
 	 (counter (org-element-property :counter item))
 	 (tag (let ((tag (org-element-property :tag item)))
@@ -1109,7 +1094,11 @@ Assume point is at the beginning of the list."
 (defun org-element-plain-list-interpreter (plain-list contents)
   "Interpret PLAIN-LIST element as Org syntax.
 CONTENTS is the contents of the element."
-  contents)
+  (with-temp-buffer
+    (insert contents)
+    (goto-char (point-min))
+    (org-list-repair)
+    (buffer-string)))
 
 
 ;;;; Quote Block
@@ -1360,22 +1349,22 @@ Assume point is at comment beginning."
 	   (begin (car keywords))
 	   ;; Match first line with a loose regexp since it might as
 	   ;; well be an ill-defined keyword.
-	   (value (progn
-		    (looking-at "#\\+? ?")
-		    (buffer-substring-no-properties
-		     (match-end 0) (progn (forward-line) (point)))))
+	   (value (prog2 (looking-at "[ \t]*#\\+? ?")
+		      (buffer-substring-no-properties
+		       (match-end 0) (line-end-position))
+		    (forward-line)))
 	   (com-end
 	    ;; Get comments ending.
 	    (progn
-	      (while (and (< (point) limit)
-			  (looking-at "\\(\\(# ?\\)[^+]\\|[ \t]*#\\+\\( \\|$\\)\\)"))
-		;; Accumulate lines without leading hash and plus sign
-		;; if any.  First whitespace is also ignored.
+	      (while (and (< (point) limit) (looking-at "[ \t]*#\\( \\|$\\)"))
+		;; Accumulate lines without leading hash and first
+		;; whitespace.
 		(setq value
 		      (concat value
+			      "\n"
 			      (buffer-substring-no-properties
-			       (or (match-end 2) (match-end 3))
-			       (progn (forward-line) (point))))))
+			       (match-end 0) (line-end-position))))
+		(forward-line))
 	      (point)))
 	   (end (progn (goto-char com-end)
 		       (skip-chars-forward " \r\t\n" limit)
@@ -1391,7 +1380,7 @@ Assume point is at comment beginning."
 (defun org-element-comment-interpreter (comment contents)
   "Interpret COMMENT element as Org syntax.
 CONTENTS is nil."
-  (replace-regexp-in-string "^" "#+ " (org-element-property :value comment)))
+  (replace-regexp-in-string "^" "# " (org-element-property :value comment)))
 
 
 ;;;; Comment Block
@@ -3324,32 +3313,26 @@ element it has to parse."
 	(org-element-fixed-width-parser limit))
        ;; Inline Comments, Blocks, Babel Calls, Dynamic Blocks and
        ;; Keywords.
-       ((looking-at "[ \t]*#\\+")
+       ((looking-at "[ \t]*#")
 	(goto-char (match-end 0))
-	(cond ((looking-at "$\\| ")
-	       (beginning-of-line)
-	       (org-element-comment-parser limit))
-	      ((looking-at "BEGIN_\\(\\S-+\\)")
+	(cond ((looking-at "\\+BEGIN_\\(\\S-+\\)")
 	       (beginning-of-line)
 	       (let ((parser (assoc (upcase (match-string 1))
 				    org-element-block-name-alist)))
 		 (if parser (funcall (cdr parser) limit)
 		   (org-element-special-block-parser limit))))
-	      ((looking-at "CALL")
+	      ((looking-at "\\+CALL")
 	       (beginning-of-line)
 	       (org-element-babel-call-parser limit))
-	      ((looking-at "BEGIN:? ")
+	      ((looking-at "\\+BEGIN:? ")
 	       (beginning-of-line)
 	       (org-element-dynamic-block-parser limit))
-	      ((looking-at "\\S-+:")
+	      ((looking-at "\\+\\S-+:")
 	       (beginning-of-line)
 	       (org-element-keyword-parser limit))
-	      ;; Ill-formed syntax is considered as a comment.
 	      (t
 	       (beginning-of-line)
 	       (org-element-comment-parser limit))))
-       ;; Comments.
-       ((eq (char-after) ?#) (org-element-comment-parser limit))
        ;; Footnote Definition.
        ((looking-at org-footnote-definition-re)
         (org-element-footnote-definition-parser limit))
@@ -4365,7 +4348,8 @@ Move to the previous element at the same level, when possible."
      ((memq (org-element-type element) org-element-greater-elements)
       ;; If contents are hidden, first disclose them.
       (when (org-element-property :hiddenp element) (org-cycle))
-      (goto-char (org-element-property :contents-begin element)))
+      (goto-char (or (org-element-property :contents-begin element)
+		     (error "No content for this element"))))
      (t (error "No inner element")))))
 
 (defun org-element-drag-backward ()
