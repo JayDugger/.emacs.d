@@ -1405,6 +1405,12 @@ description to use."
   :tag "Org Store Link"
   :group 'org-link)
 
+(defcustom org-url-hexify-p t
+  "When non-nil, hexify URL when creating a link."
+  :type 'boolean
+  :version "24.2"
+  :group 'org-link-store)
+
 (defcustom org-email-link-description-format "Email %c: %.30s"
   "Format of the description part of a link to an email or usenet message.
 The following %-escapes will be replaced by corresponding information:
@@ -1454,10 +1460,10 @@ create-if-interactive
       job for remember, only use the ID if it already exists.  The
       purpose of this setting is to avoid proliferation of unwanted
       IDs, just because you happen to be in an Org file when you
-      call `org-remember' that automatically and preemptively
-      creates a link.  If you do want to get an ID link in a remember
-      template to an entry not having an ID, create it first by
-      explicitly creating a link to it, using `C-c C-l' first.
+      call `org-capture' that automatically and preemptively creates a
+      link.  If you do want to get an ID link in a remember template to
+      an entry not having an ID, create it first by explicitly creating
+      a link to it, using `C-c C-l' first.
 
 create-if-interactive-and-no-custom-id
       Like create-if-interactive, but do not create an ID if there is
@@ -2554,13 +2560,13 @@ through DONE.  This variable forces taking a note anyway.
 
 nil     Don't force a record
 time    Record a time stamp
-note    Record a note
+note    Prompt for a note and add it with template `org-log-note-headings'
 
 This option can also be set with on a per-file-basis with
 
+   #+STARTUP: nologrepeat
    #+STARTUP: logrepeat
    #+STARTUP: lognoterepeat
-   #+STARTUP: nologrepeat
 
 You can have local logging settings for a subtree by setting the LOGGING
 property to one or more of these keywords."
@@ -3412,6 +3418,14 @@ imagemagick     Convert the LaTeX fragments to pdf files and use imagemagick
   :type '(choice
 	  (const :tag "dvipng" dvipng)
 	  (const :tag "imagemagick" imagemagick)))
+
+(defcustom org-latex-preview-ltxpng-directory "ltxpng/"
+  "Path to store latex preview images. A relative path here creates many
+   directories relative to the processed org files paths. An absolute path
+   puts all preview images at the same place."
+  :group 'org-latex
+  :version "24.2"
+  :type 'string)
 
 (defun org-format-latex-mathml-available-p ()
   "Return t if `org-latex-to-mathml-convert-command' is usable."
@@ -8833,12 +8847,12 @@ For file links, arg negates `org-context-in-file-links'."
 			     (not (string-match "Untitled" (buffer-name))))
 			(buffer-name)
 		      (url-view-url t))
-	     link (org-make-link (url-view-url t)))
+	     link (url-view-url t))
        (org-store-link-props :type "w3" :url (url-view-url t)))
 
       ((eq major-mode 'w3m-mode)
        (setq cpltxt (or w3m-current-title w3m-current-url)
-	     link (org-make-link w3m-current-url))
+	     link w3m-current-url)
        (org-store-link-props :type "w3m" :url (url-view-url t)))
 
       ((setq search (run-hook-with-args-until-success
@@ -8850,7 +8864,7 @@ For file links, arg negates `org-context-in-file-links'."
       ((eq major-mode 'image-mode)
        (setq cpltxt (concat "file:"
 			    (abbreviate-file-name buffer-file-name))
-	     link (org-make-link cpltxt))
+	     link cpltxt)
        (org-store-link-props :type "image" :file buffer-file-name))
 
       ((eq major-mode 'dired-mode)
@@ -8862,7 +8876,7 @@ For file links, arg negates `org-context-in-file-links'."
 		      ;; otherwise, no file so use current directory.
 		      default-directory))
 	 (setq cpltxt (concat "file:" file)
-	       link (org-make-link cpltxt))))
+	       link cpltxt)))
 
       ((and (buffer-file-name (buffer-base-buffer)) (derived-mode-p 'org-mode))
        (setq custom-id (org-entry-get nil "CUSTOM_ID"))
@@ -8873,22 +8887,19 @@ For file links, arg negates `org-context-in-file-links'."
 		       (abbreviate-file-name
 			(buffer-file-name (buffer-base-buffer)))
 		       "::" (match-string 1))
-	       link (org-make-link cpltxt)))
+	       link cpltxt))
 	((and (featurep 'org-id)
 	      (or (eq org-link-to-org-use-id t)
-		  (and (eq org-link-to-org-use-id 'create-if-interactive)
-		       (org-called-interactively-p 'any))
-		  (and (eq org-link-to-org-use-id
-			   'create-if-interactive-and-no-custom-id)
-		       (org-called-interactively-p 'any)
-		       (not custom-id))
-		  (and org-link-to-org-use-id
-			   (org-entry-get nil "ID"))))
+		  (and (org-called-interactively-p 'any)
+		       (or (eq org-link-to-org-use-id 'create-if-interactive)
+			   (and (eq org-link-to-org-use-id
+				    'create-if-interactive-and-no-custom-id)
+				(not custom-id))))
+		  (and org-link-to-org-use-id (org-entry-get nil "ID"))))
 	 ;; We can make a link using the ID.
 	 (setq link (condition-case nil
 			(prog1 (org-id-store-link)
-			  (setq desc (plist-get org-store-link-plist
-						:description)))
+			  (setq desc (plist-get org-store-link-plist :description)))
 		      (error
 		       ;; probably before first headline, link to file only
 		       (concat "file:"
@@ -8916,7 +8927,7 @@ For file links, arg negates `org-context-in-file-links'."
 				     (org-heading-components))) "NONE"))))
 	 (if (string-match "::\\'" cpltxt)
 	     (setq cpltxt (substring cpltxt 0 -2)))
-	 (setq link (org-make-link cpltxt)))))
+	 (setq link cpltxt))))
 
       ((buffer-file-name (buffer-base-buffer))
        ;; Just link to this file here.
@@ -8933,7 +8944,7 @@ For file links, arg negates `org-context-in-file-links'."
 	   (setq cpltxt
 		 (concat cpltxt "::" (org-make-org-heading-search-string txt))
 		 desc "NONE")))
-       (setq link (org-make-link cpltxt)))
+       (setq link cpltxt))
 
       ((org-called-interactively-p 'interactive)
        (error "Cannot link to a buffer which is not visiting a file"))
@@ -9039,10 +9050,6 @@ according to FMT (default from `org-email-link-description-format')."
 				    (reverse slines))) "\n")))))
     (mapconcat 'identity (org-split-string s "[ \t]+") " ")))
 
-(defun org-make-link (&rest strings)
-  "Concatenate STRINGS."
-  (apply 'concat strings))
-
 (defun org-make-link-string (link &optional description)
   "Make a link with brackets, consisting of LINK and DESCRIPTION."
   (unless (string-match "\\S-" link)
@@ -9079,8 +9086,6 @@ according to FMT (default from `org-email-link-description-format')."
   "List of characters that should be escaped in link.
 This is the list that is used for internal purposes.")
 
-(defvar org-url-encoding-use-url-hexify nil)
-
 (defconst org-link-escape-chars-browser
   '(?\ )
   "List of escapes for characters that are problematic in links.
@@ -9093,25 +9098,24 @@ Optional argument TABLE is a list with characters that should be
 escaped.  When nil, `org-link-escape-chars' is used.
 If optional argument MERGE is set, merge TABLE into
 `org-link-escape-chars'."
-  (if (and org-url-encoding-use-url-hexify (not table))
-      (url-hexify-string text)
-    (cond
-     ((and table merge)
-      (mapc (lambda (defchr)
-	      (unless (member defchr table)
-		(setq table (cons defchr table)))) org-link-escape-chars))
-     ((null table)
-      (setq table org-link-escape-chars)))
-    (mapconcat
-     (lambda (char)
-       (if (or (member char table)
-	       (< char 32) (= char 37) (> char 126))
-	   (mapconcat (lambda (sequence-element)
-			(format "%%%.2X" sequence-element))
-		      (or (encode-coding-char char 'utf-8)
-			  (error "Unable to percent escape character: %s"
-				 (char-to-string char))) "")
-	 (char-to-string char))) text "")))
+  (cond
+   ((and table merge)
+    (mapc (lambda (defchr)
+	    (unless (member defchr table)
+	      (setq table (cons defchr table)))) org-link-escape-chars))
+   ((null table)
+    (setq table org-link-escape-chars)))
+  (mapconcat
+   (lambda (char)
+     (if (or (member char table)
+	     (and (or (< char 32) (= char 37) (> char 126))
+		  org-url-hexify-p))
+	 (mapconcat (lambda (sequence-element)
+		      (format "%%%.2X" sequence-element))
+		    (or (encode-coding-char char 'utf-8)
+			(error "Unable to percent escape character: %s"
+			       (char-to-string char))) "")
+       (char-to-string char))) text ""))
 
 (defun org-link-unescape (str)
   "Unhex hexified Unicode strings as returned from the JavaScript function
@@ -9190,7 +9194,7 @@ The car of LINK must be a raw link the cdr of LINK must be either
 a link description or nil."
   (let ((desc (or (cadr link) "<no description>")))
     (concat (format "%-45s" (substring desc 0 (min (length desc) 40)))
-	    "[[" (car link) "]]")))
+	    "<" (car link) ">")))
 
 ;;;###autoload
 (defun org-insert-link-global ()
@@ -9209,6 +9213,29 @@ This command can be called in any mode to insert a link in Org-mode syntax."
       (org-insert-link nil (car l) (cadr l))
       (insert "\n"))))
 
+(defun org-link-fontify-links-to-this-file ()
+  "Fontify links to the current file in `org-stored-links'."
+  (let ((f (buffer-file-name)) a b)
+    (setq a (mapcar (lambda(l)
+		      (let ((ll (car l)))
+			(when (and (string-match "^file:\\(.+\\)::" ll)
+				   (equal f (expand-file-name (match-string 1 ll))))
+			  ll)))
+		    org-stored-links))
+    (when (featurep 'org-id)
+      (setq b (mapcar (lambda(l)
+			(let ((ll (car l)))
+			  (when (and (string-match "^id:\\(.+\\)$" ll)
+				     (equal f (expand-file-name
+					       (or (org-id-find-id-file
+						    (match-string 1 ll)) ""))))
+			    ll)))
+		      org-stored-links)))
+    (mapcar (lambda(l)
+	      (put-text-property 0 (length l) 'face 'font-lock-comment-face l))
+	    (delq nil (append a b)))))
+
+(defvar org-link-links-in-this-file nil)
 (defun org-insert-link (&optional complete-file link-location default-description)
   "Insert a link.  At the prompt, enter the link.
 
@@ -9257,7 +9284,7 @@ be used as the default description."
 	 (desc region)
 	 tmphist ; byte-compile incorrectly complains about this
 	 (link link-location)
-	 entry file all-prefixes)
+	 entry file all-prefixes auto-desc)
     (cond
      (link-location) ; specified by arg, just use it.
      ((org-in-regexp org-bracket-link-regexp 1)
@@ -9278,13 +9305,17 @@ be used as the default description."
       (setq link (org-file-complete-link complete-file)))
      (t
       ;; Read link, with completion for stored links.
-      (with-output-to-temp-buffer "*Org Links*"
-	(princ "Insert a link.
+      (org-link-fontify-links-to-this-file)
+      (org-switch-to-buffer-other-window "*Org Links*")
+      (with-current-buffer "*Org Links*"
+	(erase-buffer)
+	(insert "Insert a link.
 Use TAB to complete link prefixes, then RET for type-specific completion support\n")
 	(when org-stored-links
-	  (princ "\nStored links are available with <up>/<down> or M-p/n (most recent with RET):\n\n")
-	  (princ (mapconcat 'org-link-prettify
-		  (reverse org-stored-links) "\n"))))
+	  (insert "\nStored links are available with <up>/<down> or M-p/n (most recent with RET):\n\n")
+	  (insert (mapconcat 'org-link-prettify
+			     (reverse org-stored-links) "\n")))
+	(goto-char (point-min)))
       (let ((cw (selected-window)))
 	(select-window (get-buffer-window "*Org Links*" 'visible))
 	(with-current-buffer "*Org Links*" (setq truncate-lines t))
@@ -9307,12 +9338,16 @@ Use TAB to complete link prefixes, then RET for type-specific completion support
 		     (append
 		      (mapcar (lambda (x) (list (concat x ":")))
 			      all-prefixes)
-		      (mapcar 'car org-stored-links))
+		      (mapcar 'car org-stored-links)
+		      (mapcar 'cadr org-stored-links))
 		     nil nil nil
 		     'tmphist
-		     (car (car org-stored-links)))))
+		     (caar org-stored-links))))
 	    (if (not (string-match "\\S-" link))
 		(error "No link selected"))
+	    (mapc (lambda(l)
+		    (when (equal link (cadr l)) (setq link (car l) auto-desc t)))
+		  org-stored-links)
 	    (if (or (member link all-prefixes)
 		    (and (equal ":" (substring link -1))
 			 (member (substring link 0 -1) all-prefixes)
@@ -9331,7 +9366,7 @@ Use TAB to complete link prefixes, then RET for type-specific completion support
 
     (if (string-match org-plain-link-re link)
 	;; URL-like link, normalize the use of angular brackets.
-	(setq link (org-make-link (org-remove-angle-brackets link))))
+	(setq link (org-remove-angle-brackets link)))
 
     ;; Check if we are linking to the current file with a search option
     ;; If yes, simplify the link by using only the search option.
@@ -9377,7 +9412,8 @@ Use TAB to complete link prefixes, then RET for type-specific completion support
     (if org-make-link-description-function
 	(setq desc (funcall org-make-link-description-function link desc))
       (if default-description (setq desc default-description)
-	(setq desc (read-string "Description: " desc))))
+	(setq desc (or (and auto-desc desc)
+		       (read-string "Description: " desc)))))
 
     (unless (string-match "\\S-" desc) (setq desc nil))
     (if remove (apply 'delete-region remove))
@@ -9399,16 +9435,16 @@ Use TAB to complete link prefixes, then RET for type-specific completion support
 					 (expand-file-name ".")))))
       (cond
        ((equal arg '(16))
-	(setq link (org-make-link
+	(setq link (concat
 		    "file:"
 		    (abbreviate-file-name (expand-file-name file)))))
        ((string-match (concat "^" (regexp-quote pwd1) "\\(.+\\)") file)
-	(setq link  (org-make-link "file:" (match-string 1 file))))
+	(setq link  (concat "file:" (match-string 1 file))))
        ((string-match (concat "^" (regexp-quote pwd) "\\(.+\\)")
 		      (expand-file-name file))
-	(setq link  (org-make-link
+	(setq link  (concat
 		     "file:" (match-string 1 (expand-file-name file)))))
-       (t (setq link (org-make-link "file:" file)))))
+       (t (setq link (concat "file:" file)))))
     link))
 
 (defun org-completing-read (&rest args)
@@ -9635,6 +9671,7 @@ Functions in this hook must return t if they identify and follow
 a link at point.  If they don't find anything interesting at point,
 they must return nil.")
 
+(defvar clean-buffer-list-kill-buffer-names) ; Defined in midnight.el
 (defun org-open-at-point (&optional arg reference-buffer)
   "Open link at or after point.
 If there is no link at point, this function will search forward up to
@@ -9787,7 +9824,8 @@ application the system uses for this file type."
 	    (org-open-file path arg line search)))
 
 	 ((string= type "shell")
-	  (let ((cmd path))
+	  (let ((buf (generate-new-buffer "*Org Shell Output"))
+		(cmd path))
 	    (if (or (and (not (string= org-confirm-shell-link-not-regexp ""))
 			 (string-match org-confirm-shell-link-not-regexp cmd))
 		    (not org-confirm-shell-link-function)
@@ -9797,7 +9835,9 @@ application the system uses for this file type."
 				       'face 'org-warning))))
 		(progn
 		  (message "Executing %s" cmd)
-		  (shell-command cmd))
+		  (setq clean-buffer-list-kill-buffer-names
+			(cons buf clean-buffer-list-kill-buffer-names))
+		  (shell-command cmd buf))
 	      (error "Abort"))))
 
 	 ((string= type "elisp")
@@ -13187,7 +13227,7 @@ also TODO lines."
 
 (defun org-global-tags-completion-table (&optional files)
   "Return the list of all tags in all agenda buffer/files.
-Optional FILES argument is a list of files to which can be used
+Optional FILES argument is a list of files which can be used
 instead of the agenda files."
   (save-excursion
     (org-uniquify
@@ -17131,8 +17171,8 @@ The images can be removed again with \\[org-ctrl-c-ctrl-c]."
 	(narrow-to-region beg end)
 	(goto-char beg)
 	(org-format-latex
-	 (concat "ltxpng/" (file-name-sans-extension
-			    (file-name-nondirectory
+	 (concat org-latex-preview-ltxpng-directory (file-name-sans-extension
+			     (file-name-nondirectory
 			     buffer-file-name)))
 	 default-directory 'overlays msg at 'forbuffer
 	 org-latex-create-formula-image-program)
