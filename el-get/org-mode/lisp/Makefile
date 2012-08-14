@@ -7,17 +7,48 @@ endif
 LISPV = org-version.el
 LISPI = org-install.el
 LISPA = $(LISPV) $(LISPI)
-LISPF = $(filter-out $(LISPA),$(wildcard *.el))
+LISPF = $(filter-out $(LISPA),$(sort $(wildcard *.el)))
 LISPC = $(filter-out $(LISPN:%el=%elc),$(LISPF:%el=%elc))
 
 .PHONY:	all compile compile-dirty \
-		autoloads \
-		install clean cleanauto cleanall clean-install
+	dirall source slint1 slint3 slint4 \
+	compile-single compile-source \
+	compile-slint1 compile-slint2 compile-slint3 compile-slint4 \
+	autoloads \
+	install clean cleanauto cleanall cleanelc clean-install
 
 # do not clean here, done in toplevel make
-all compile::	autoloads
-all compile compile-dirty::	 $(LISPI) $(LISPV)
-	$(ELCDIR)
+all compile compile-dirty::	 autoloads
+	$(MAKE) compile-$(_COMPILE_)
+
+compile-dirall:	dirall
+compile-single: $(LISPC)
+compile-source:	source dirall
+compile-slint1:	dirall slint1
+compile-slint2:	source dirall slint1
+compile-slint3:	slint3 dirall
+compile-slint4:	slint4 dirall
+
+# internal
+dirall:
+	@$(info ==================== $@ ====================)
+	@$(ELCDIR)
+source: cleanelc
+	@$(info ==================== $@ ====================)
+	@$(foreach elc,$(LISPC),$(MAKE) $(elc) && $(RM) $(elc);)
+slint1:
+	@$(info ==================== $@ ====================)
+	@$(foreach elc,$(LISPC),$(RM) $(elc); $(MAKE) $(elc);)
+slint3:
+	@$(info ==================== $@ ====================)
+	-@$(ELINTL) $(foreach el,$(LISPF),$(ELINTF))
+slint4:
+	@$(info ==================== $@ ====================)
+	-@$(foreach el,$(LISPF),$(ELINTL) $(ELINTF);)
+
+%.elc:	%.el
+	@$(info Compiling single $(abspath $<)...)
+	-@$(ELC) $<
 
 autoloads:	cleanauto $(LISPI) $(LISPV)
 
@@ -39,7 +70,7 @@ install:	$(LISPF) compile
 
 cleanauto clean cleanall::
 	$(RM) $(LISPA) $(LISPA:%el=%elc)
-clean cleanall::
+clean cleanall cleanelc::
 	$(RM) *.elc
 
 clean-install:

@@ -111,17 +111,11 @@ svn:wc:ra_dav:version-url
 V 54
 /svn/!svn/ver/5798/trunk/lisp/g-client/indent-files.el
 END
-gbooks.el
+g-utils.el
 K 25
 svn:wc:ra_dav:version-url
-V 48
-/svn/!svn/ver/7610/trunk/lisp/g-client/gbooks.el
-END
-gweb.el
-K 25
-svn:wc:ra_dav:version-url
-V 46
-/svn/!svn/ver/7801/trunk/lisp/g-client/gweb.el
+V 49
+/svn/!svn/ver/7942/trunk/lisp/g-client/g-utils.el
 END
 gcal-view.xsl
 K 25
@@ -129,23 +123,29 @@ svn:wc:ra_dav:version-url
 V 52
 /svn/!svn/ver/4400/trunk/lisp/g-client/gcal-view.xsl
 END
-g-utils.el
+gweb.el
 K 25
 svn:wc:ra_dav:version-url
-V 49
-/svn/!svn/ver/7942/trunk/lisp/g-client/g-utils.el
+V 46
+/svn/!svn/ver/7801/trunk/lisp/g-client/gweb.el
 END
-gcontacts.el
+gbooks.el
 K 25
 svn:wc:ra_dav:version-url
-V 51
-/svn/!svn/ver/6356/trunk/lisp/g-client/gcontacts.el
+V 48
+/svn/!svn/ver/7610/trunk/lisp/g-client/gbooks.el
 END
 g-auth.el
 K 25
 svn:wc:ra_dav:version-url
 V 48
 /svn/!svn/ver/7726/trunk/lisp/g-client/g-auth.el
+END
+gcontacts.el
+K 25
+svn:wc:ra_dav:version-url
+V 51
+/svn/!svn/ver/6356/trunk/lisp/g-client/gcontacts.el
 END
 g.el
 K 25

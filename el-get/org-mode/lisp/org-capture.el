@@ -101,7 +101,7 @@ description  A short string describing the template, will be shown during
              selection.
 
 type         The type of entry.  Valid types are:
-               entry       an Org-mode node, with a headline. Will be
+               entry       an Org-mode node, with a headline.  Will be
                            filed as the child of the target entry or as
                            a top-level entry.
                item        a plain list item, will be placed in the
@@ -184,11 +184,11 @@ properties are:
                      other value is 1.
 
  :empty-lines-before Set this to the number of lines the should be inserted
-                     before the new item. Overrides :empty-lines for the
+                     before the new item.  Overrides :empty-lines for the
                      number lines inserted before.
 
  :empty-lines-after  Set this to the number of lines the should be inserted
-                     after the new item. Overrides :empty-lines for the
+                     after the new item.  Overrides :empty-lines for the
                      number of lines inserted after.
 
  :clock-in           Start the clock in this item.
@@ -219,42 +219,42 @@ will be filed as a child of the target headline.  It can also be
 freely formatted text.  Furthermore, the following %-escapes will
 be replaced with content and expanded in this order:
 
-  %[pathname] insert the contents of the file given by `pathname'.
-  %(sexp)     evaluate elisp `(sexp)' and replace with the result.
-  %<...>      the result of format-time-string on the ... format specification.
-  %t          time stamp, date only.
-  %T          time stamp with date and time.
-  %u, %U      like the above, but inactive time stamps.
-  %i          initial content, copied from the active region.  If %i is
+  %[pathname] Insert the contents of the file given by `pathname'.
+  %(sexp)     Evaluate elisp `(sexp)' and replace with the result.
+  %<...>      The result of format-time-string on the ... format specification.
+  %t          Time stamp, date only.
+  %T          Time stamp with date and time.
+  %u, %U      Like the above, but inactive time stamps.
+  %i          Initial content, copied from the active region.  If %i is
               indented, the entire inserted text will be indented as well.
-  %a          annotation, normally the link created with `org-store-link'.
-  %A          like %a, but prompt for the description part.
-  %l          like %a, but only insert the literal link.
-  %c          current kill ring head.
-  %x          content of the X clipboard.
-  %k          title of currently clocked task.
-  %K          link to currently clocked task.
-  %n          user name (taken from `user-full-name').
-  %f          file visited by current buffer when org-capture was called.
-  %F          full path of the file or directory visited by current buffer.
-  %:keyword   specific information for certain link types, see below.
-  %^g         prompt for tags, with completion on tags in target file.
-  %^G         prompt for tags, with completion on all tags in all agenda files.
-  %^t         like %t, but prompt for date.  Similarly %^T, %^u, %^U.
+  %a          Annotation, normally the link created with `org-store-link'.
+  %A          Like %a, but prompt for the description part.
+  %l          Like %a, but only insert the literal link.
+  %c          Current kill ring head.
+  %x          Content of the X clipboard.
+  %k          Title of currently clocked task.
+  %K          Link to currently clocked task.
+  %n          User name (taken from `user-full-name').
+  %f          File visited by current buffer when org-capture was called.
+  %F          Full path of the file or directory visited by current buffer.
+  %:keyword   Specific information for certain link types, see below.
+  %^g         Prompt for tags, with completion on tags in target file.
+  %^G         Prompt for tags, with completion on all tags in all agenda files.
+  %^t         Like %t, but prompt for date.  Similarly %^T, %^u, %^U.
               You may define a prompt like %^{Please specify birthday.
-  %^C         interactive selection of which kill or clip to use.
-  %^L         like %^C, but insert as link.
-  %^{prop}p   prompt the user for a value for property `prop'.
-  %^{prompt}  prompt the user for a string and replace this sequence with it.
+  %^C         Interactive selection of which kill or clip to use.
+  %^L         Like %^C, but insert as link.
+  %^{prop}p   Prompt the user for a value for property `prop'.
+  %^{prompt}  Prompt the user for a string and replace this sequence with it.
               A default value and a completion table ca be specified like this:
               %^{prompt|default|completion2|completion3|...}.
   %?          After completing the template, position cursor here.
   %\\n         Insert the text entered at the nth %^{prompt}, where `n' is
               a number, starting from 1.
 
-Apart from these general escapes, you can access information specific to the
-link type that is created.  For example, calling `org-capture' in emails
-or gnus will record the author and the subject of the message, which you
+Apart from these general escapes, you can access information specific to
+the link type that is created.  For example, calling `org-capture' in emails
+or in Gnus will record the author and the subject of the message, which you
 can access with \"%:from\" and \"%:subject\", respectively.  Here is a
 complete list of what is recorded for each link type.
 
@@ -276,71 +276,71 @@ calendar                |  %:type %:date"
   :type
   '(repeat
     (choice :value ("" "" entry (file "~/org/notes.org") "")
-     (list :tag "Multikey description"
-	   (string :tag "Keys       ")
-	   (string :tag "Description"))
-     (list :tag "Template entry"
-	   (string :tag "Keys           ")
-	   (string :tag "Description    ")
-	   (choice :tag "Capture Type   " :value entry
-		   (const :tag "Org entry" entry)
-		   (const :tag "Plain list item" item)
-		   (const :tag "Checkbox item" checkitem)
-		   (const :tag "Plain text" plain)
-		   (const :tag "Table line" table-line))
-	   (choice :tag "Target location"
-		   (list :tag "File"
-			 (const :format "" file)
-			 (file :tag "  File"))
-		   (list :tag "ID"
-			 (const :format "" id)
-			 (string :tag "  ID"))
-		   (list :tag "File & Headline"
-			 (const :format "" file+headline)
-			 (file   :tag "  File    ")
-			 (string :tag "  Headline"))
-		   (list :tag "File & Outline path"
-			 (const :format "" file+olp)
-			 (file   :tag "  File    ")
-			 (repeat :tag "Outline path" :inline t
-				 (string :tag "Headline")))
-		   (list :tag "File & Regexp"
-			 (const :format "" file+regexp)
-			 (file   :tag "  File  ")
-			 (regexp :tag "  Regexp"))
-		   (list :tag "File & Date tree"
-			 (const :format "" file+datetree)
-			 (file :tag "  File"))
-		   (list :tag "File & Date tree, prompt for date"
-			 (const :format "" file+datetree+prompt)
-			 (file :tag "  File"))
-		   (list :tag "File & function"
-			 (const :format "" file+function)
-			 (file :tag "  File    ")
-			 (sexp :tag "  Function"))
-		   (list :tag "Current clocking task"
-			 (const :format "" clock))
-		   (list :tag "Function"
-			 (const :format "" function)
-			 (sexp :tag "  Function")))
-	   (choice :tag "Template"
-		   (string)
-		   (list :tag "File"
-			 (const :format "" file)
-			 (file :tag "Template file"))
-		   (list :tag "Function"
-			 (const :format "" function)
-			 (function :tag "Template function")))
-	   (plist :inline t
-		  ;; Give the most common options as checkboxes
-		  :options (((const :format "%v " :prepend) (const t))
-			    ((const :format "%v " :immediate-finish) (const t))
-			    ((const :format "%v " :empty-lines) (const 1))
-			    ((const :format "%v " :clock-in) (const t))
-			    ((const :format "%v " :clock-keep) (const t))
-			    ((const :format "%v " :clock-resume) (const t))
-			    ((const :format "%v " :unnarrowed) (const t))
-			    ((const :format "%v " :kill-buffer) (const t))))))))
+	    (list :tag "Multikey description"
+		  (string :tag "Keys       ")
+		  (string :tag "Description"))
+	    (list :tag "Template entry"
+		  (string :tag "Keys           ")
+		  (string :tag "Description    ")
+		  (choice :tag "Capture Type   " :value entry
+			  (const :tag "Org entry" entry)
+			  (const :tag "Plain list item" item)
+			  (const :tag "Checkbox item" checkitem)
+			  (const :tag "Plain text" plain)
+			  (const :tag "Table line" table-line))
+		  (choice :tag "Target location"
+			  (list :tag "File"
+				(const :format "" file)
+				(file :tag "  File"))
+			  (list :tag "ID"
+				(const :format "" id)
+				(string :tag "  ID"))
+			  (list :tag "File & Headline"
+				(const :format "" file+headline)
+				(file   :tag "  File    ")
+				(string :tag "  Headline"))
+			  (list :tag "File & Outline path"
+				(const :format "" file+olp)
+				(file   :tag "  File    ")
+				(repeat :tag "Outline path" :inline t
+					(string :tag "Headline")))
+			  (list :tag "File & Regexp"
+				(const :format "" file+regexp)
+				(file   :tag "  File  ")
+				(regexp :tag "  Regexp"))
+			  (list :tag "File & Date tree"
+				(const :format "" file+datetree)
+				(file :tag "  File"))
+			  (list :tag "File & Date tree, prompt for date"
+				(const :format "" file+datetree+prompt)
+				(file :tag "  File"))
+			  (list :tag "File & function"
+				(const :format "" file+function)
+				(file :tag "  File    ")
+				(sexp :tag "  Function"))
+			  (list :tag "Current clocking task"
+				(const :format "" clock))
+			  (list :tag "Function"
+				(const :format "" function)
+				(sexp :tag "  Function")))
+		  (choice :tag "Template"
+			  (string)
+			  (list :tag "File"
+				(const :format "" file)
+				(file :tag "Template file"))
+			  (list :tag "Function"
+				(const :format "" function)
+				(function :tag "Template function")))
+		  (plist :inline t
+			 ;; Give the most common options as checkboxes
+			 :options (((const :format "%v " :prepend) (const t))
+				   ((const :format "%v " :immediate-finish) (const t))
+				   ((const :format "%v " :empty-lines) (const 1))
+				   ((const :format "%v " :clock-in) (const t))
+				   ((const :format "%v " :clock-keep) (const t))
+				   ((const :format "%v " :clock-resume) (const t))
+				   ((const :format "%v " :unnarrowed) (const t))
+				   ((const :format "%v " :kill-buffer) (const t))))))))
 
 (defcustom org-capture-before-finalize-hook nil
   "Hook that is run right before a capture process is finalized.
@@ -352,7 +352,7 @@ widened to the entire buffer."
 
 (defcustom org-capture-after-finalize-hook nil
   "Hook that is run right after a capture process is finalized.
-  Suitable for window cleanup"
+Suitable for window cleanup."
   :group 'org-capture
   :version "24.1"
   :type 'hook)
@@ -431,6 +431,14 @@ for a capture buffer.")
 ;;; The main commands
 
 ;;;###autoload
+(defvar org-capture-initial nil)
+(defun org-capture-string (string &optional keys)
+  (interactive "sInitial text: \n")
+  (let ((org-capture-initial string)
+	(entry (org-capture-select-template keys)))
+    (org-capture)))
+
+;;;###autoload
 (defun org-capture (&optional goto keys)
   "Capture something.
 \\<org-capture-mode-map>
@@ -462,9 +470,11 @@ bypassed."
 				org-capture-link-is-already-stored)
 			   (plist-get org-store-link-plist :annotation)
 			 (ignore-errors (org-store-link nil))))
-	   (initial (and (org-region-active-p)
-			 (buffer-substring (point) (mark))))
-	   (entry (org-capture-select-template keys)))
+	   (entry (org-capture-select-template keys))
+	   initial)
+      (setq initial (or org-capture-initial
+			(and (org-region-active-p)
+			     (buffer-substring (point) (mark)))))
       (when (stringp initial)
 	(remove-text-properties 0 (length initial) '(read-only t) initial))
       (when (stringp annotation)
@@ -703,8 +713,8 @@ already gone.  Any prefix argument will be passed to the refile command."
 (defun org-capture-kill ()
   "Abort the current capture process."
   (interactive)
-  ;; FIXME: This does not do the right thing, we need to remove the new stuff
-  ;; By hand it is easy: undo, then kill the buffer
+  ;; FIXME: This does not do the right thing, we need to remove the
+  ;; new stuff by hand it is easy: undo, then kill the buffer
   (let ((org-note-abort t)
 	(org-capture-before-finalize-hook nil))
     (org-capture-finalize)))
@@ -933,8 +943,9 @@ it.  When it is a variable, retrieve the value.  Return whatever we get."
     (setq end (point))
     (org-capture-mark-kill-region beg (1- end))
     (org-capture-narrow beg (1- end))
-    (goto-char beg)
-    (if (re-search-forward "%\\?" end t) (replace-match ""))))
+    (if (or (re-search-backward "%\\?" beg t)
+	    (re-search-forward "%\\?" end t))
+	(replace-match ""))))
 
 (defun org-capture-place-item ()
   "Place the template as a new plain list item."
@@ -990,7 +1001,9 @@ it.  When it is a variable, retrieve the value.  Return whatever we get."
     (setq end (point))
     (org-capture-mark-kill-region beg (1- end))
     (org-capture-narrow beg (1- end))
-    (if (re-search-forward "%\\?" end t) (replace-match ""))))
+    (if (or (re-search-backward "%\\?" beg t)
+	    (re-search-forward "%\\?" end t))
+	(replace-match ""))))
 
 (defun org-capture-place-table-line ()
   "Place the template as a table line."
@@ -1068,7 +1081,9 @@ it.  When it is a variable, retrieve the value.  Return whatever we get."
       (setq end (point))))
     (goto-char beg)
     (org-capture-position-for-last-stored 'table-line)
-    (if (re-search-forward "%\\?" end t) (replace-match ""))
+    (if (or (re-search-backward "%\\?" end t)
+	    (re-search-forward "%\\?" beg t))
+	(replace-match ""))
     (org-table-align)))
 
 (defun org-capture-place-plain-text ()
@@ -1103,7 +1118,9 @@ Of course, if exact position has been required, just put it there."
     (setq end (point))
     (org-capture-mark-kill-region beg (1- end))
     (org-capture-narrow beg (1- end))
-    (if (re-search-forward "%\\?" end t) (replace-match ""))))
+    (if (or (re-search-backward "%\\?" beg t)
+	    (re-search-forward "%\\?" end t))
+	(replace-match ""))))
 
 (defun org-capture-mark-kill-region (beg end)
   "Mark the region that will have to be killed when aborting capture."
@@ -1371,15 +1388,7 @@ The template may still contain \"%?\" for cursor positioning."
 	      (error (insert (format "%%![Couldn't insert %s: %s]"
 				     filename error)))))))
       ;; %() embedded elisp
-      (goto-char (point-min))
-      (while (re-search-forward "%\\((.+)\\)" nil t)
-	(unless (org-capture-escaped-%)
-	  (goto-char (match-beginning 0))
-	  (let ((template-start (point)))
-	    (forward-char 1)
-	    (let ((result (org-eval (read (current-buffer)))))
-	      (delete-region template-start (point))
-	      (insert result)))))
+      (org-capture-expand-embedded-elisp)
 
       ;; The current time
       (goto-char (point-min))
@@ -1447,7 +1456,7 @@ The template may still contain \"%?\" for cursor positioning."
 	      (setq ins (mapconcat 'identity
 				   (org-split-string
 				    ins (org-re "[^[:alnum:]_@#%]+"))
-				       ":"))
+				   ":"))
 	      (when (string-match "\\S-" ins)
 		(or (equal (char-before) ?:) (insert ":"))
 		(insert ins)
@@ -1512,6 +1521,34 @@ The template may still contain \"%?\" for cursor positioning."
 	(delete-region (1- (match-beginning 0)) (match-beginning 0))
 	t)
     nil))
+
+(defun org-capture-expand-embedded-elisp ()
+  "Evaluate embedded elisp %(sexp) and replace with the result."
+  (goto-char (point-min))
+  (while (re-search-forward "%(" nil t)
+    (unless (org-capture-escaped-%)
+      (goto-char (match-beginning 0))
+      (let ((template-start (point)))
+	(forward-char 1)
+	(let ((result (org-eval (read (current-buffer)))))
+	  (delete-region template-start (point))
+	  (insert result))))))
+
+(defun org-capture-inside-embedded-elisp-p ()
+  "Return non-nil if point is inside of embedded elisp %(sexp)."
+  (let (beg end)
+    (with-syntax-table emacs-lisp-mode-syntax-table
+      (save-excursion
+	;; `looking-at' and `search-backward' below do not match the "%(" if
+	;; point is in its middle
+	(when (equal (char-before) ?%)
+	  (backward-char))
+	(save-match-data
+	  (when (or (looking-at "%(") (search-backward "%(" nil t))
+	    (setq beg (point))
+	    (setq end (progn (forward-char) (forward-sexp) (1- (point)))))))
+      (when (and beg end)
+	(and (<= (point) end) (>= (point) beg))))))
 
 ;;;###autoload
 (defun org-capture-import-remember-templates ()

@@ -68,6 +68,8 @@
 ;;; Code:
 
 (require 'cl)
+(require 'tramp)
+(require 'inf-lisp)
 
 (defgroup clojure-mode nil
   "A mode for Clojure"
@@ -107,8 +109,8 @@ Clojure to load that file."
     (define-key map "\C-c\C-e" 'lisp-eval-last-sexp)
     (define-key map "\C-c\C-l" 'clojure-load-file)
     (define-key map "\C-c\C-r" 'lisp-eval-region)
+    (define-key map (kbd "C-c C-s") 'clojure-jump-between-tests-and-code)
     (define-key map "\C-c\C-z" 'clojure-display-inferior-lisp-buffer)
-    (define-key map (kbd "C-c t") 'clojure-jump-to-test)
     (define-key map (kbd "C-c M-q") 'clojure-fill-docstring)
     map)
   "Keymap for Clojure mode. Inherits from `lisp-mode-shared-map'.")
@@ -1135,12 +1137,13 @@ The arguments are dir, hostname, and port.  The return value should be an `alist
 
     (when (and (functionp 'slime-disconnect)
                (slime-current-connection)
-               (and (interactive-p) (y-or-n-p "Close old connections first? ")))
+               (and (called-interactively-p 'any)
+                    (y-or-n-p "Close old connections first? ")))
       (slime-disconnect)
-      (clojure-kill-swank-buffer swank-buffer-name)
-      (clojure-jack-in-start-process connection-name swank-buffer-name
-                                     dir hostname)
-      (message "Starting swank server..."))))
+      (clojure-kill-swank-buffer swank-buffer-name))
+    (clojure-jack-in-start-process connection-name swank-buffer-name
+                                   dir hostname)
+    (message "Starting swank server...")))
 
 (defun clojure-find-ns ()
   (let ((regexp clojure-namespace-name-regex))
@@ -1169,7 +1172,7 @@ The arguments are dir, hostname, and port.  The return value should be an `alist
 
 ;; Test navigation:
 (defun clojure-in-tests-p ()
-  (or (string-match-p "test\." (clojure-find-ns))
+  (or (string-match-p "-test$" (clojure-find-ns))
       (string-match-p "/test" (buffer-file-name))))
 
 (defun clojure-underscores-for-hyphens (namespace)
@@ -1180,7 +1183,8 @@ The arguments are dir, hostname, and port.  The return value should be an `alist
          (segments (split-string namespace "\\."))
          (before (subseq segments 0 clojure-test-ns-segment-position))
          (after (subseq segments clojure-test-ns-segment-position))
-         (test-segments (append before (list "test") after)))
+	 (newfile (format "%s_test" (car after)))
+         (test-segments (append before (list newfile))))
     (mapconcat 'identity test-segments "/")))
 
 (defun clojure-jump-to-test ()

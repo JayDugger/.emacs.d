@@ -4,7 +4,7 @@
 
 
 ;;;### (autoloads (artbollocks-mode) "artbollocks-mode/artbollocks-mode"
-;;;;;;  "artbollocks-mode/artbollocks-mode.el" (20444 16222))
+;;;;;;  "artbollocks-mode/artbollocks-mode.el" (20522 8004))
 ;;; Generated autoloads from artbollocks-mode/artbollocks-mode.el
 
 (autoload 'artbollocks-mode "artbollocks-mode/artbollocks-mode" "\
@@ -16,7 +16,7 @@ highlight passive voice, weasel words and artbollocks in text, provide useful te
 
 ;;;### (autoloads (clojure-enable-slime-on-existing-buffers clojure-jack-in
 ;;;;;;  clojure-mode) "clojure-mode/clojure-mode" "clojure-mode/clojure-mode.el"
-;;;;;;  (20444 37112))
+;;;;;;  (20522 8009))
 ;;; Generated autoloads from clojure-mode/clojure-mode.el
 
 (autoload 'clojure-mode "clojure-mode/clojure-mode" "\
@@ -64,7 +64,7 @@ if that value is non-nil.
 ;;;***
 
 ;;;### (autoloads (clojure-test-mode) "clojure-mode/clojure-test-mode"
-;;;;;;  "clojure-mode/clojure-test-mode.el" (20444 37112))
+;;;;;;  "clojure-mode/clojure-test-mode.el" (20522 8009))
 ;;; Generated autoloads from clojure-mode/clojure-test-mode.el
 
 (autoload 'clojure-test-mode "clojure-mode/clojure-test-mode" "\
@@ -81,7 +81,7 @@ with a \"test.\" bit on it." (let ((ns (clojure-find-package))) (when (and ns (s
 ;;;***
 
 ;;;### (autoloads (clojurescript-mode) "clojure-mode/clojurescript-mode"
-;;;;;;  "clojure-mode/clojurescript-mode.el" (20444 37112))
+;;;;;;  "clojure-mode/clojurescript-mode.el" (20487 31570))
 ;;; Generated autoloads from clojure-mode/clojurescript-mode.el
 
 (autoload 'clojurescript-mode "clojure-mode/clojurescript-mode" "\
@@ -280,10 +280,11 @@ Initialize the color theme package by loading color-theme-libraries.
 ;;;;;;  diredp-symlink-this-file diredp-relsymlink-this-file diredp-copy-this-file
 ;;;;;;  diredp-rename-this-file diredp-upcase-this-file diredp-downcase-this-file
 ;;;;;;  diredp-capitalize-this-file diredp-delete-this-file diredp-capitalize
-;;;;;;  dired-do-delete dired-do-flagged-delete dired-goto-file dired-up-directory
-;;;;;;  dired-do-find-marked-files dired-maybe-insert-subdir dired-do-load
-;;;;;;  dired-do-byte-compile dired-do-compress diredp-ediff diredp-omit-unmarked
-;;;;;;  diredp-omit-marked diredp-toggle-find-file-reuse-dir diredp-mouse-find-file-reuse-dir-buffer
+;;;;;;  dired-mark-files-regexp dired-do-delete dired-do-flagged-delete
+;;;;;;  dired-goto-file dired-up-directory dired-do-find-marked-files
+;;;;;;  dired-maybe-insert-subdir dired-do-load dired-do-byte-compile
+;;;;;;  dired-do-compress diredp-ediff diredp-omit-unmarked diredp-omit-marked
+;;;;;;  diredp-toggle-find-file-reuse-dir diredp-mouse-find-file-reuse-dir-buffer
 ;;;;;;  diredp-find-file-reuse-dir-buffer diredp-do-bookmark-in-bookmark-file
 ;;;;;;  diredp-set-bookmark-file-bookmark-for-marked diredp-mouse-do-bookmark
 ;;;;;;  diredp-do-bookmark diredp-mouse-do-set-tag-value diredp-do-set-tag-value
@@ -313,7 +314,7 @@ Initialize the color theme package by loading color-theme-libraries.
 ;;;;;;  diredp-dired-for-files-other-window diredp-dired-for-files
 ;;;;;;  diredp-dired-files-other-window diredp-dired-files diredp-w32-local-drives
 ;;;;;;  diredp-prompt-for-bookmark-prefix-flag diff-switches) "dired+/dired+"
-;;;;;;  "dired+/dired+.el" (20444 16228))
+;;;;;;  "dired+/dired+.el" (20522 8010))
 ;;; Generated autoloads from dired+/dired+.el
 
 (defvar diff-switches "-c" "\
@@ -1313,6 +1314,18 @@ non-empty directories is allowed.
 
 \(fn &optional ARG)" t nil)
 
+(autoload 'dired-mark-files-regexp "dired+/dired+" "\
+Mark all files matching REGEXP for use in later commands.
+A prefix argument means to unmark them instead.
+`.' and `..' are never marked.
+
+REGEXP is an Emacs regexp, not a shell wildcard.  Thus, use `\\.o$' for
+object files--just `.o' will mark more than you might think.
+
+REGEXP is added to `regexp-search-ring', for regexp search.
+
+\(fn REGEXP &optional MARKER-CHAR)" t nil)
+
 (autoload 'diredp-capitalize "dired+/dired+" "\
 Rename all marked (or next ARG) files by capitalizing them.
 Makes the first char of the name uppercase and the others lowercase.
@@ -1894,8 +1907,8 @@ Create a new contact as specified.
 ;;;***
 
 ;;;### (autoloads (gdocs-sign-in gdocs-sign-out gdocs-view-item gdocs-delete-item
-;;;;;;  gdocs-add-collaborator gdocs-doclist) "g-client/gdocs" "g-client/gdocs.el"
-;;;;;;  (20311 29240))
+;;;;;;  gdocs-add-collaborator gdocs-publish gdocs-doclist) "g-client/gdocs"
+;;;;;;  "g-client/gdocs.el" (20495 14245))
 ;;; Generated autoloads from g-client/gdocs.el
 
 (autoload 'gdocs-doclist "g-client/gdocs" "\
@@ -1903,6 +1916,11 @@ Retrieve and display feed of feeds after authenticating.
 Interactive prefix arg prompts for a query string.
 
 \(fn &optional QUERY)" t nil)
+
+(autoload 'gdocs-publish "g-client/gdocs" "\
+Export from given content type to Google Docs.
+
+\(fn CONTENT-TYPE)" t nil)
 
 (autoload 'gdocs-add-collaborator "g-client/gdocs" "\
 Add collaborator to ACL at acl-url.
@@ -2111,7 +2129,7 @@ The retrieved entry is placed in a buffer ready for editing.
 ;;;;;;  greader-title-feed greader-unsubscribe-feed greader-subscribe-feed
 ;;;;;;  greader-opml greader-feed-list greader-subscriptions greader-subscription-list
 ;;;;;;  greader-preferences greader-reading-list) "g-client/greader"
-;;;;;;  "g-client/greader.el" (20325 24345))
+;;;;;;  "g-client/greader.el" (20490 16891))
 ;;; Generated autoloads from g-client/greader.el
 
 (autoload 'greader-reading-list "g-client/greader" "\
@@ -2375,8 +2393,8 @@ Major mode for editing JavaScript code.
 
 ;;;***
 
-;;;### (autoloads (magit-status) "magit/magit" "magit/magit.el" (20425
-;;;;;;  35020))
+;;;### (autoloads (magit-status) "magit/magit" "magit/magit.el" (20522
+;;;;;;  8016))
 ;;; Generated autoloads from magit/magit.el
 
 (autoload 'magit-status "magit/magit" "\
@@ -2462,7 +2480,7 @@ running 'man git-rebase' at the command line) for details.
 ;;;### (autoloads (list-packages describe-package package-initialize
 ;;;;;;  package-refresh-contents package-install-file package-install-from-buffer
 ;;;;;;  package-install package-enable-at-startup) "package24/package"
-;;;;;;  "package24/package.el" (20444 16224))
+;;;;;;  "package24/package.el" (20522 8024))
 ;;; Generated autoloads from package24/package.el
 
 (defvar package-enable-at-startup t "\
@@ -2533,7 +2551,7 @@ The list is displayed in a buffer named `*Packages*'.
 ;;;***
 
 ;;;### (autoloads (paredit-mode) "paredit/paredit" "paredit/paredit.el"
-;;;;;;  (20444 16227))
+;;;;;;  (20522 8008))
 ;;; Generated autoloads from paredit/paredit.el
 
 (autoload 'paredit-mode "paredit/paredit" "\
@@ -2631,8 +2649,257 @@ For example, the function `case' has an indent property
 
 ;;;***
 
+;;;### (autoloads (sr-term-cd-program sr-term-cd-newterm sr-term-cd
+;;;;;;  sr-term sunrise-cd sr-dired sunrise sr-virtual-mode sr-mode)
+;;;;;;  "sunrise-commander/sunrise-commander" "sunrise-commander/sunrise-commander.el"
+;;;;;;  (20522 8259))
+;;; Generated autoloads from sunrise-commander/sunrise-commander.el
+
+(autoload 'sr-mode "sunrise-commander/sunrise-commander" "\
+Two-pane file manager for Emacs based on Dired and inspired by MC.
+The following keybindings are available:
+
+        /, j .......... go to directory
+        p, n .......... move cursor up/down
+        M-p, M-n ...... move cursor up/down in passive pane
+        ^, J .......... go to parent directory
+        M-^, M-J ...... go to parent directory in passive pane
+        Tab ........... switch to other pane
+        C-Tab.......... switch to viewer window
+        C-c Tab ....... switch to viewer window (console compatible)
+        RET, f ........ visit selected file/directory
+        M-RET, M-f .... visit selected file/directory in passive pane
+        C-c RET ....... visit selected in passive pane (console compatible)
+        b ............. visit selected file/directory in default browser
+        F ............. visit all marked files, each in its own window
+        C-u F ......... visit all marked files in the background
+        o,v ........... quick visit selected file (scroll with C-M-v, C-M-S-v)
+        C-u o, C-u v .. kill quick-visited buffer (restores normal scrolling)
+        X ............. execute selected file
+        C-u X.......... execute selected file with arguments
+
+        + ............. create new directory
+        M-+ ........... create new empty file(s)
+        C ............. copy marked (or current) files and directories
+        R ............. rename marked (or current) files and directories
+        D ............. delete marked (or current) files and directories
+        S ............. soft-link selected file/directory to passive pane
+        Y ............. do relative soft-link of selected file in passive pane
+        H ............. hard-link selected file to passive pane
+        K ............. clone selected files and directories into passive pane
+        M-C ........... copy (using traditional dired-do-copy)
+        M-R ........... rename (using traditional dired-do-rename)
+        M-D ........... delete (using traditional dired-do-delete)
+        M-S............ soft-link (using traditional dired-do-symlink)
+        M-Y............ do relative soft-link (traditional dired-do-relsymlink)
+        M-H............ hard-link selected file/directory (dired-do-hardlink)
+        A ............. search marked files for regular expression
+        Q ............. perform query-replace-regexp on marked files
+        C-c s ......... start a \"sticky\" interactive search in the current pane
+
+        M-a ........... move to beginning of current directory
+        M-e ........... move to end of current directory
+        M-y ........... go to previous directory in history
+        M-u ........... go to next directory in history
+        C-M-y ......... go to previous directory in history on passive pane
+        C-M-u ......... go to next directory in history on passive pane
+
+        g, C-c C-c .... refresh pane
+        s ............. sort entries (by name, number, size, time or extension)
+        r ............. reverse the order of entries in the active pane (sticky)
+        C-o ........... show/hide hidden files (requires dired-omit-mode)
+        C-Backspace ... hide/show file attributes in pane
+        C-c Backspace . hide/show file attributes in pane (console compatible)
+        y ............. show file type / size of selected files and directories.
+        M-l ........... truncate/continue long lines in pane
+        C-c v ......... put current panel in VIRTUAL mode
+        C-c C-v ....... create new pure VIRTUAL buffer
+        C-c C-w ....... browse directory tree using w3m
+
+        M-t ........... transpose panes
+        M-o ........... synchronize panes
+        C-c C-s ....... change panes layout (vertical/horizontal/top-only)
+        [ ............. enlarges the right pane by 5 columns
+        ] ............. enlarges the left pane by 5 columns
+        } ............. enlarges the panes vertically by 1 row
+        C-} ........... enlarges the panes vertically as much as it can
+        C-c } ......... enlarges the panes vertically as much as it can
+        { ............. shrinks the panes vertically by 1 row
+        C-{ ........... shrinks the panes vertically as much as it can
+        C-c { ......... shrinks the panes vertically as much as it can
+        \\ ............. restores the size of all windows back to «normal»
+        C-c C-z ....... enable/disable synchronized navigation
+
+        C-= ........... smart compare files (ediff)
+        C-c = ......... smart compare files (console compatible)
+        = ............. fast smart compare files (plain diff)
+        C-M-= ......... compare panes
+        C-x = ......... compare panes (console compatible)
+
+        C-c C-f ....... execute Find-dired in Sunrise VIRTUAL mode
+        C-c C-n ....... execute find-Name-dired in Sunrise VIRTUAL mode
+        C-c C-g ....... execute find-Grep-dired in Sunrise VIRTUAL mode
+        C-u C-c C-g ... execute find-Grep-dired with additional grep options
+        C-c C-l ....... execute Locate in Sunrise VIRTUAL mode
+        C-c C-r ....... browse list of Recently visited files (requires recentf)
+        C-c C-c ....... [after find, locate or recent] dismiss virtual buffer
+        C-c / ......... narrow the contents of current pane using fuzzy matching
+        C-c b ......... partial Branch view of selected items in current pane
+        C-c p ......... Prune paths matching regular expression from current pane
+        ; ............. follow file (go to same directory as selected file)
+        M-; ........... follow file in passive pane
+        C-M-o ......... follow a projection of current directory in passive pane
+
+        C-> ........... save named checkpoint (a.k.a. \"bookmark panes\")
+        C-c > ......... save named checkpoint (console compatible)
+        C-.    ........ restore named checkpoint
+        C-c .  ........ restore named checkpoint
+
+        C-x C-q ....... put pane in Editable Dired mode (commit with C-c C-c)
+        @! ............ fast backup files (not dirs!), each to [filename].bak
+
+        C-c t ......... open new terminal or switch to already open one
+        C-c T ......... open terminal AND/OR change directory to current
+        C-c C-t ....... open always a new terminal in current directory
+        C-c M-t ....... open a new terminal using an alternative shell program
+        q, C-x k ...... quit Sunrise Commander, restore previous window setup
+        M-q ........... quit Sunrise Commander, don't restore previous windows
+
+Additionally, the following traditional commander-style keybindings are provided
+\(these may be disabled by customizing the `sr-use-commander-keys' option):
+
+        F2 ............ go to directory
+        F3 ............ quick visit selected file
+        F4 ............ visit selected file
+        F5 ............ copy marked (or current) files and directories
+        F6 ............ rename marked (or current) files and directories
+        F7 ............ create new directory
+        F8 ............ delete marked (or current) files and directories
+        F10 ........... quit Sunrise Commander
+        C-F3 .......... sort contents of current pane by name
+        C-F4 .......... sort contents of current pane by extension
+        C-F5 .......... sort contents of current pane by time
+        C-F6 .......... sort contents of current pane by size
+        C-F7 .......... sort contents of current pane numerically
+        S-F7 .......... soft-link selected file/directory to passive pane
+        Insert ........ mark file
+        C-PgUp ........ go to parent directory
+
+Any other dired keybinding (not overridden by any of the above) can be used in
+Sunrise, like G for changing group, M for changing mode and so on.
+
+Some more bindings are available in terminals opened using any of the Sunrise
+functions (i.e. one of: C-c t, C-c T, C-c C-t, C-c M-t):
+
+        C-c Tab ....... switch focus to the active pane
+        C-c t ......... cycle through all currently open terminals
+        C-c T ......... cd to the directory in the active pane
+        C-c C-t ....... open new terminal, cd to directory in the active pane
+        C-c ; ......... follow the current directory in the active pane
+        C-c { ......... shrink the panes vertically as much as possible
+        C-c } ......... enlarge the panes vertically as much as possible
+        C-c \\ ......... restore the size of all windows back to «normal»
+        C-c C-j ....... put terminal in line mode
+        C-c C-k ....... put terminal back in char mode
+
+The following bindings are available only in line mode (eshell is considered to
+be *always* in line mode):
+
+        M-<up>, M-P ... move cursor up in the active pane
+        M-<down>, M-N . move cursor down in the active pane
+        M-Return ...... visit selected file/directory in the active pane
+        M-J ........... go to parent directory in the active pane
+        M-G ........... refresh active pane
+        M-Tab ......... switch to passive pane (without leaving the terminal)
+        M-M ........... mark selected file/directory in the active pane
+        M-Backspace ... unmark previous file/directory in the active pane
+        M-U ........... remove all marks from the active pane
+        C-Tab ......... switch focus to the active pane
+
+In a terminal in line mode the following substitutions are also performed
+automatically:
+
+       %f - expands to the currently selected file in the left pane
+       %F - expands to the currently selected file in the right pane
+       %m - expands to the list of paths of all marked files in the left pane
+       %M - expands to the list of paths of all marked files in the right pane
+       %n - expands to the list of names of all marked files in the left pane
+       %N - expands to the list of names of all marked files in the right pane
+       %d - expands to the current directory in the left pane
+       %D - expands to the current directory in the right pane
+       %a - expands to the list of paths of all marked files in the active pane
+       %A - expands to the current directory in the active pane
+       %p - expands to the list of paths of all marked files in the passive pane
+       %P - expands to the current directory in the passive pane
+       %% - inserts a single % sign.
+
+\(fn)" t nil)
+
+(autoload 'sr-virtual-mode "sunrise-commander/sunrise-commander" "\
+Sunrise Commander Virtual Mode. Useful for reusing find and locate results.
+
+\(fn)" t nil)
+
+(autoload 'sunrise "sunrise-commander/sunrise-commander" "\
+Toggle the Sunrise Commander file manager.
+If LEFT-DIRECTORY is given, the left window will display that
+directory (same for RIGHT-DIRECTORY). Specifying nil for any of
+these values uses the default, ie. $HOME.
+
+\(fn &optional LEFT-DIRECTORY RIGHT-DIRECTORY FILENAME)" t nil)
+
+(autoload 'sr-dired "sunrise-commander/sunrise-commander" "\
+Visit the given target (file or directory) in `sr-mode'.
+
+\(fn &optional TARGET SWITCHES)" t nil)
+
+(autoload 'sunrise-cd "sunrise-commander/sunrise-commander" "\
+Toggle the Sunrise Commander FM keeping the current file in focus.
+If Sunrise is off, enable it and focus the file displayed in the current buffer.
+If Sunrise is on, disable it and switch to the buffer currently displayed in the
+viewer window.
+
+\(fn)" t nil)
+ (autoload 'sr-checkpoint-handler "sunrise-commander" "" t)
+
+(autoload 'sr-term "sunrise-commander/sunrise-commander" "\
+Run terminal in a new buffer or switch to an existing one.
+If the optional argument CD is non-nil, directory is changed to
+the current one in the active pane. A non-nil NEWTERM argument
+forces the creation of a new terminal. If PROGRAM is provided
+and exists in `exec-path', then it will be used instead of the
+default `sr-terminal-program'.
+
+\(fn &optional CD NEWTERM PROGRAM)" t nil)
+
+(autoload 'sr-term-cd "sunrise-commander/sunrise-commander" "\
+Run terminal in a new buffer or switch to an existing one.
+cd's to the current directory of the active pane.
+
+\(fn)" t nil)
+
+(autoload 'sr-term-cd-newterm "sunrise-commander/sunrise-commander" "\
+Open a NEW terminal (don't switch to an existing one).
+cd's to the current directory of the active pane.
+
+\(fn)" t nil)
+
+(autoload 'sr-term-cd-program "sunrise-commander/sunrise-commander" "\
+Open a NEW terminal using PROGRAM as the shell.
+
+\(fn &optional PROGRAM)" t nil)
+
+;;;***
+
+;;;### (autoloads nil "sunrise-x-loop/sunrise-x-loop" "sunrise-x-loop/sunrise-x-loop.el"
+;;;;;;  (20522 9211))
+;;; Generated autoloads from sunrise-x-loop/sunrise-x-loop.el
+ (eval-after-load 'sunrise-commander '(sr-extend-with 'sunrise-x-loop))
+
+;;;***
+
 ;;;### (autoloads (twit) "twittering-mode/twittering-mode" "twittering-mode/twittering-mode.el"
-;;;;;;  (20392 37167))
+;;;;;;  (20495 14246))
 ;;; Generated autoloads from twittering-mode/twittering-mode.el
 
 (autoload 'twit "twittering-mode/twittering-mode" "\
@@ -2643,7 +2910,7 @@ Start twittering-mode.
 ;;;***
 
 ;;;### (autoloads (global-undo-tree-mode undo-tree-mode) "undo-tree/undo-tree"
-;;;;;;  "undo-tree/undo-tree.el" (20438 39412))
+;;;;;;  "undo-tree/undo-tree.el" (20495 14252))
 ;;; Generated autoloads from undo-tree/undo-tree.el
 
 (autoload 'undo-tree-mode "undo-tree/undo-tree" "\
@@ -2689,33 +2956,136 @@ See `undo-tree-mode' for more information on Undo-Tree mode.
 
 ;;;***
 
+;;;### (autoloads (wikipedia-draft-buffer wikipedia-draft-page wikipedia-draft
+;;;;;;  wikipedia-mode) "wikipedia-mode/wikipedia-mode" "wikipedia-mode/wikipedia-mode.el"
+;;;;;;  (20522 8010))
+;;; Generated autoloads from wikipedia-mode/wikipedia-mode.el
+
+(autoload 'wikipedia-mode "wikipedia-mode/wikipedia-mode" "\
+Major mode for editing articles written in the markup language used by
+Wikipedia, the free on-line encyclopedia (http://www.wikipedia.org).
+
+There are several ways to use wikipedia-mode. One is to copy articles
+between Emacs and your web browser's text box. However for GNU emacs,
+that does not work always smoothly, since copying marked regions into
+other X applications is somehow buggy for GNU emacs. Another way is to
+use MozEx, a Mozilla/Firefox web browser extension that allows you to
+call Emacs from a text box (http://mozex.mozdev.org/). Another way is
+to use the PERL script ee-helper, which allows you to up and download
+wiki texts.
+
+Wikipedia articles are usually unfilled: newline characters are not
+used for breaking paragraphs into lines. Unfortunately, Emacs does not
+handle word wrapping yet. As a workaround, wikipedia-mode turns on
+longlines-mode automatically. In case something goes wrong, the
+following commands may come in handy:
+
+\\[wikipedia-fill-article] fills the buffer.
+\\[wikipedia-unfill-article] unfills the buffer.
+Be warned that function can be dead  slow, better use wikipedia-unfill-paragraph-or-region.
+\\[wikipedia-unfill-paragraph-or-region] unfills the paragraph
+\\[wikipedia-unfill-paragraph-simple] doehe same but simpler.
+
+
+
+The following commands put in markup structures.
+
+\\[wikipedia-insert-strong-emphasis] inserts italics
+\\[wikipedia-insert-bold] inserts bold text
+\\[wikipedia-insert-italics] italics
+\\[wikipedia-insert-header] header
+\\[wikipedia-insert-link] inserts a link
+
+The following commands are also defined:
+\\[wikipedia-insert-user] inserts user name
+\\[wikipedia-insert-signature] inserts ~~~~
+\\[wikipedia-insert-enumerate] inserts enumerate type structures
+\\[wikipedia-insert-itemize] inserts itemize type structures
+\\[wikipedia-insert-hline] inserts a hline
+
+The draft functionality
+\\[wikipedia-draft]
+\\[wikipedia-draft-region]
+\\[wikipedia-draft-view-draft]
+\\[wikipedia-draft-page]
+\\[wikipedia-draft-buffer]
+
+Replying and sending functionality
+\\[wikipedia-reply-at-point-simple]
+\\[wikipedia-draft-reply]
+\\[wikipedia-send-draft-to-mozex]
+
+
+The register functionality
+\\[wikipedia-copy-page-to-register]
+\\[defun wikipedia-insert-page-to-register]
+
+
+Some simple editing commands.
+\\[wikipedia-enhance-indent]
+\\[wikipedia-yank-prefix]
+\\[wikipedia-unfill-paragraph-or-region]
+
+
+
+\\[wikipedia-terminate-paragraph]     starts a new list item or paragraph in a context-aware manner.
+\\[wikipedia-next-header]     moves to the next (sub)section header.
+\\[wikipedia-prev-header]     moves to the previous (sub)section header.
+
+\(fn)" t nil)
+
+(autoload 'wikipedia-draft "wikipedia-mode/wikipedia-mode" "\
+Open a temporary buffer in wikipedia mode for editing an wikipedia
+ draft, which an arbitrary piece of data. After finishing the editing
+ either use C-c C-k \\[wikipedia-draft-buffer] to send the data into
+ the wikipedia-draft-data-file, or send  the buffer using C-c C-c
+\\[wikipedia-draft-send-to-mozex]  and insert it later into a wikipedia article.
+
+\(fn)" t nil)
+
+(autoload 'wikipedia-draft-page "wikipedia-mode/wikipedia-mode" "\
+
+
+\(fn)" t nil)
+
+(autoload 'wikipedia-draft-buffer "wikipedia-mode/wikipedia-mode" "\
+Wikipedia-draft-buffer sends the contents of the current (temporary)
+buffer to the wikipedia-draft-buffer, see the variable
+wikipedia-draft-data-file.
+
+\(fn)" t nil)
+
+(defvar wikipedia-draft-send-archive t "\
+*Archive the reply.")
+
+;;;***
+
 ;;;### (autoloads nil nil ("calfw/calfw-cal.el" "calfw/calfw-howm.el"
 ;;;;;;  "calfw/calfw-ical.el" "calfw/calfw-org.el" "calfw/calfw.el"
 ;;;;;;  "color-theme-solarized/color-theme-solarized-pkg.el" "color-theme/color-theme-autoloads.el"
 ;;;;;;  "el-get/el-get-install.el" "el-get/el-get.el" "g-client/g-autogen.el"
 ;;;;;;  "g-client/g-load-path.el" "g-client/g.el" "g-client/gnotebook.el"
 ;;;;;;  "g-client/gwis.el" "g-client/indent-files.el" "g-client/org2blogger.el"
-;;;;;;  "magit/magit-pkg.el" "magit/magit-wip.el" "org-fstree/org-fstree.el"
-;;;;;;  "slime/contrib/bridge.el" "slime/contrib/inferior-slime.el"
-;;;;;;  "slime/contrib/slime-asdf.el" "slime/contrib/slime-autodoc.el"
-;;;;;;  "slime/contrib/slime-banner.el" "slime/contrib/slime-c-p-c.el"
-;;;;;;  "slime/contrib/slime-clipboard.el" "slime/contrib/slime-compiler-notes-tree.el"
-;;;;;;  "slime/contrib/slime-editing-commands.el" "slime/contrib/slime-enclosing-context.el"
-;;;;;;  "slime/contrib/slime-fancy-inspector.el" "slime/contrib/slime-fancy.el"
-;;;;;;  "slime/contrib/slime-fontifying-fu.el" "slime/contrib/slime-fuzzy.el"
-;;;;;;  "slime/contrib/slime-highlight-edits.el" "slime/contrib/slime-hyperdoc.el"
-;;;;;;  "slime/contrib/slime-indentation.el" "slime/contrib/slime-mdot-fu.el"
-;;;;;;  "slime/contrib/slime-media.el" "slime/contrib/slime-motd.el"
-;;;;;;  "slime/contrib/slime-mrepl.el" "slime/contrib/slime-package-fu.el"
-;;;;;;  "slime/contrib/slime-parse.el" "slime/contrib/slime-presentation-streams.el"
-;;;;;;  "slime/contrib/slime-presentations.el" "slime/contrib/slime-references.el"
-;;;;;;  "slime/contrib/slime-repl.el" "slime/contrib/slime-sbcl-exts.el"
-;;;;;;  "slime/contrib/slime-scheme.el" "slime/contrib/slime-scratch.el"
-;;;;;;  "slime/contrib/slime-snapshot.el" "slime/contrib/slime-sprof.el"
-;;;;;;  "slime/contrib/slime-tramp.el" "slime/contrib/slime-typeout-frame.el"
-;;;;;;  "slime/contrib/slime-xref-browser.el" "slime/hyperspec.el"
-;;;;;;  "slime/slime-autoloads.el" "slime/slime.el" "swank-clojure/swank-clojure.el"
-;;;;;;  "twittering-mode/test.el") (20444 44419 661514))
+;;;;;;  "magit/magit-pkg.el" "org-fstree/org-fstree.el" "slime/contrib/bridge.el"
+;;;;;;  "slime/contrib/inferior-slime.el" "slime/contrib/slime-asdf.el"
+;;;;;;  "slime/contrib/slime-autodoc.el" "slime/contrib/slime-banner.el"
+;;;;;;  "slime/contrib/slime-c-p-c.el" "slime/contrib/slime-clipboard.el"
+;;;;;;  "slime/contrib/slime-compiler-notes-tree.el" "slime/contrib/slime-editing-commands.el"
+;;;;;;  "slime/contrib/slime-enclosing-context.el" "slime/contrib/slime-fancy-inspector.el"
+;;;;;;  "slime/contrib/slime-fancy.el" "slime/contrib/slime-fontifying-fu.el"
+;;;;;;  "slime/contrib/slime-fuzzy.el" "slime/contrib/slime-highlight-edits.el"
+;;;;;;  "slime/contrib/slime-hyperdoc.el" "slime/contrib/slime-indentation.el"
+;;;;;;  "slime/contrib/slime-mdot-fu.el" "slime/contrib/slime-media.el"
+;;;;;;  "slime/contrib/slime-motd.el" "slime/contrib/slime-mrepl.el"
+;;;;;;  "slime/contrib/slime-package-fu.el" "slime/contrib/slime-parse.el"
+;;;;;;  "slime/contrib/slime-presentation-streams.el" "slime/contrib/slime-presentations.el"
+;;;;;;  "slime/contrib/slime-references.el" "slime/contrib/slime-repl.el"
+;;;;;;  "slime/contrib/slime-sbcl-exts.el" "slime/contrib/slime-scheme.el"
+;;;;;;  "slime/contrib/slime-scratch.el" "slime/contrib/slime-snapshot.el"
+;;;;;;  "slime/contrib/slime-sprof.el" "slime/contrib/slime-tramp.el"
+;;;;;;  "slime/contrib/slime-typeout-frame.el" "slime/contrib/slime-xref-browser.el"
+;;;;;;  "slime/hyperspec.el" "slime/slime-autoloads.el" "twittering-mode/test.el")
+;;;;;;  (20522 9212 502352))
 
 ;;;***
 

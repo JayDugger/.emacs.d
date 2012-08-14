@@ -35,7 +35,7 @@ CONF_BASE = EMACS DESTDIR
 CONF_DEST = lispdir infodir datadir testdir
 CONF_TEST = BTEST_PRE BTEST_POST BTEST_OB_LANGUAGES BTEST_EXTRA
 CONF_EXEC = CP MKDIR RM RMR FIND SUDO PDFTEX TEXI2PDF TEXI2HTML MAKEINFO INSTALL_INFO
-CONF_CALL = BATCH BATCHL ELCDIR BTEST MAKE_LOCAL_MK MAKE_ORG_INSTALL MAKE_ORG_VERSION
+CONF_CALL = BATCH BATCHL ELCDIR ELINTL ELINTF BTEST MAKE_LOCAL_MK MAKE_ORG_INSTALL MAKE_ORG_VERSION
 config-eol:: EOL = \#
 config-eol:: config-all
 config config-all::
@@ -118,26 +118,25 @@ clean:	cleanrel
 	$(MAKE) -C lisp clean
 	$(MAKE) -C doc clean
 
-cleanall: cleandirs cleantest cleancontrib cleantesting cleanutils
+cleanall: cleandirs cleantest
 	-$(FIND) . -name \*~ -o -name \*# -o -name .#\* -exec $(RM) {} \;
+	-$(FIND) contrib testing UTILITIES -name \*~ -o -name \*.elc -exec $(RM) {} \;
 
-cleancontrib:
-	-$(FIND) contrib -name \*~ -o -name \*.elc -exec $(RM) {} \;
+cleancontrib cleantesting cleanUTILITIES:
+	-$(FIND) $(@:clean%=%) -name \*~ -o -name \*.elc -exec $(RM) {} \;
 
-cleantesting:
-	-$(FIND) testing -name \*~ -o -name \*.elc -exec $(RM) {} \;
-
-cleanutils:
-	-$(FIND) UTILITIES -name \*~ -o -name \*.elc -exec $(RM) {} \;
+cleanutils:	cleanUTILITIES
 
 cleanrel:
 	$(RMR) RELEASEDIR
 	$(RMR) org-7.*
 	$(RMR) org-7*zip org-7*tar.gz
 
-cleanelc cleanlisp:
+cleanelc:
+	$(MAKE) -C lisp $@
+
+cleanlisp:
 	$(MAKE) -C lisp clean
-	-$(FIND) lisp -name \*~ -exec $(RM) {} \;
 
 cleandoc cleandocs:
 	$(MAKE) -C doc clean

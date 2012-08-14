@@ -326,7 +326,7 @@ When COMBINE is non nil, add the category to each line."
 	      "DTSTART"))
 	hd ts ts2 state status (inc t) pos b sexp rrule
 	scheduledp deadlinep todo prefix due start tags
-	tmp pri categories location summary desc uid alarm
+	tmp pri categories location summary desc uid alarm alarm-time
 	(sexp-buffer (get-buffer-create "*ical-tmp*")))
     (org-refresh-category-properties)
     (save-excursion
@@ -359,6 +359,8 @@ When COMBINE is non nil, add the category to each line."
 			(org-id-get-create)
 		      (or (org-id-get) (org-id-new)))
 		categories (org-export-get-categories)
+		alarm-time (org-entry-get nil "APPT_WARNTIME")
+		alarm-time (when alarm-time (string-to-number alarm-time))
 		alarm ""
 		deadlinep nil scheduledp nil)
 	  (if (looking-at re2)
@@ -419,11 +421,11 @@ When COMBINE is non nil, add the category to each line."
 	  ;; (c) only a DISPLAY action is defined.
 	  ;; [ESF]
 	  (let ((t1 (ignore-errors (org-parse-time-string ts 'nodefault))))
-	    (if (and (> org-icalendar-alarm-time 0)
+	    (if (and (or (> alarm-time 0) (> org-icalendar-alarm-time 0))
 		     (car t1) (nth 1 t1) (nth 2 t1))
-		(setq alarm (format "\nBEGIN:VALARM\nACTION:DISPLAY\nDESCRIPTION:%s\nTRIGGER:-P0DT0H%dM0S\nEND:VALARM" summary org-icalendar-alarm-time))
-	      (setq alarm ""))
-	    )
+		(setq alarm (format "\nBEGIN:VALARM\nACTION:DISPLAY\nDESCRIPTION:%s\nTRIGGER:-P0DT0H%dM0S\nEND:VALARM"
+				    summary (or alarm-time org-icalendar-alarm-time)))
+	      (setq alarm "")))
 	  (if (string-match org-bracket-link-regexp summary)
 	      (setq summary
 		    (replace-match (if (match-end 3)
@@ -525,7 +527,7 @@ END:VEVENT\n"
 		    due (and (member 'todo-due org-icalendar-use-deadline)
 			     (org-entry-get nil "DEADLINE"))
 		    start (and (member 'todo-start org-icalendar-use-scheduled)
-			     (org-entry-get nil "SCHEDULED"))
+			       (org-entry-get nil "SCHEDULED"))
 		    categories (org-export-get-categories)
 		    uid (if org-icalendar-store-UID
 			    (org-id-get-create)
@@ -588,10 +590,10 @@ characters."
   (if (not s)
       nil
     (if is-body
-      (let ((re (concat "\\(" org-drawer-regexp "\\)[^\000]*?:END:.*\n?"))
-	    (re2 (concat "^[ \t]*" org-keyword-time-regexp ".*\n?")))
-	(while (string-match re s) (setq s (replace-match "" t t s)))
-	(while (string-match re2 s) (setq s (replace-match "" t t s))))
+	(let ((re (concat "\\(" org-drawer-regexp "\\)[^\000]*?:END:.*\n?"))
+	      (re2 (concat "^[ \t]*" org-keyword-time-regexp ".*\n?")))
+	  (while (string-match re s) (setq s (replace-match "" t t s)))
+	  (while (string-match re2 s) (setq s (replace-match "" t t s))))
       (setq s (replace-regexp-in-string "[[:space:]]+" " " s)))
     (let ((start 0))
       (while (string-match "\\([,;]\\)" s start)
@@ -680,7 +682,7 @@ a time), or the day by one (if it does not contain a time)."
 		    (replace-regexp-in-string "%Z"
 					      org-icalendar-timezone
 					      org-icalendar-date-time-format)
-		    ";VALUE=DATE:%Y%m%d"))
+		  ";VALUE=DATE:%Y%m%d"))
       (concat keyword (format-time-string fmt time
 					  (and (org-icalendar-use-UTC-date-timep)
 					       have-time))))))
