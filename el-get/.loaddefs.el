@@ -4,7 +4,7 @@
 
 
 ;;;### (autoloads (artbollocks-mode) "artbollocks-mode/artbollocks-mode"
-;;;;;;  "artbollocks-mode/artbollocks-mode.el" (20522 8004))
+;;;;;;  "artbollocks-mode/artbollocks-mode.el" (20527 21105))
 ;;; Generated autoloads from artbollocks-mode/artbollocks-mode.el
 
 (autoload 'artbollocks-mode "artbollocks-mode/artbollocks-mode" "\
@@ -16,7 +16,7 @@ highlight passive voice, weasel words and artbollocks in text, provide useful te
 
 ;;;### (autoloads (clojure-enable-slime-on-existing-buffers clojure-jack-in
 ;;;;;;  clojure-mode) "clojure-mode/clojure-mode" "clojure-mode/clojure-mode.el"
-;;;;;;  (20522 8009))
+;;;;;;  (20527 21105))
 ;;; Generated autoloads from clojure-mode/clojure-mode.el
 
 (autoload 'clojure-mode "clojure-mode/clojure-mode" "\
@@ -64,7 +64,7 @@ if that value is non-nil.
 ;;;***
 
 ;;;### (autoloads (clojure-test-mode) "clojure-mode/clojure-test-mode"
-;;;;;;  "clojure-mode/clojure-test-mode.el" (20522 8009))
+;;;;;;  "clojure-mode/clojure-test-mode.el" (20527 21105))
 ;;; Generated autoloads from clojure-mode/clojure-test-mode.el
 
 (autoload 'clojure-test-mode "clojure-mode/clojure-test-mode" "\
@@ -81,7 +81,7 @@ with a \"test.\" bit on it." (let ((ns (clojure-find-package))) (when (and ns (s
 ;;;***
 
 ;;;### (autoloads (clojurescript-mode) "clojure-mode/clojurescript-mode"
-;;;;;;  "clojure-mode/clojurescript-mode.el" (20487 31570))
+;;;;;;  "clojure-mode/clojurescript-mode.el" (20527 21105))
 ;;; Generated autoloads from clojure-mode/clojurescript-mode.el
 
 (autoload 'clojurescript-mode "clojure-mode/clojurescript-mode" "\
@@ -95,7 +95,7 @@ Major mode for ClojureScript
 
 ;;;### (autoloads (color-theme-solarized-light color-theme-solarized-dark
 ;;;;;;  color-theme-solarized) "color-theme-solarized/color-theme-solarized"
-;;;;;;  "color-theme-solarized/color-theme-solarized.el" (20325 24345))
+;;;;;;  "color-theme-solarized/color-theme-solarized.el" (20527 21105))
 ;;; Generated autoloads from color-theme-solarized/color-theme-solarized.el
 
 (autoload 'color-theme-solarized "color-theme-solarized/color-theme-solarized" "\
@@ -120,8 +120,8 @@ Ported to Emacs by Greg Pfeil, http://ethanschoonover.com/solarized.
 ;;;;;;  color-theme-compare color-theme-make-snapshot color-theme-analyze-defun
 ;;;;;;  color-theme-print color-theme-install-at-point-for-current-frame
 ;;;;;;  color-theme-install-at-mouse color-theme-describe color-theme-select)
-;;;;;;  "color-theme/color-theme" "color-theme/color-theme.el" (17529
-;;;;;;  41105))
+;;;;;;  "color-theme/color-theme" "color-theme/color-theme.el" (20527
+;;;;;;  21105))
 ;;; Generated autoloads from color-theme/color-theme.el
 
 (autoload 'color-theme-select "color-theme/color-theme" "\
@@ -314,7 +314,7 @@ Initialize the color theme package by loading color-theme-libraries.
 ;;;;;;  diredp-dired-for-files-other-window diredp-dired-for-files
 ;;;;;;  diredp-dired-files-other-window diredp-dired-files diredp-w32-local-drives
 ;;;;;;  diredp-prompt-for-bookmark-prefix-flag diff-switches) "dired+/dired+"
-;;;;;;  "dired+/dired+.el" (20522 8010))
+;;;;;;  "dired+/dired+.el" (20527 23465))
 ;;; Generated autoloads from dired+/dired+.el
 
 (defvar diff-switches "-c" "\
@@ -1742,7 +1742,7 @@ Send a bug report about a Dired+ problem.
 ;;;***
 
 ;;;### (autoloads (g-app-view g-app-publish) "g-client/g-app" "g-client/g-app.el"
-;;;;;;  (20311 29240))
+;;;;;;  (20527 21105))
 ;;; Generated autoloads from g-client/g-app.el
 
 (autoload 'g-app-publish "g-client/g-app" "\
@@ -1758,7 +1758,7 @@ View feed using auth credentials in auth-handle.
 ;;;***
 
 ;;;### (autoloads (g-auth-lifetime) "g-client/g-auth" "g-client/g-auth.el"
-;;;;;;  (20379 32099))
+;;;;;;  (20527 21105))
 ;;; Generated autoloads from g-client/g-auth.el
 
 (defvar g-auth-lifetime "4 hours" "\
@@ -1771,7 +1771,7 @@ Auth lifetime.")
 ;;;### (autoloads (gblogger-sign-in gblogger-sign-out gblogger-add-label
 ;;;;;;  gblogger-delete-entry gblogger-new-entry gblogger-edit-entry
 ;;;;;;  gblogger-atom-display gblogger-blog) "g-client/gblogger"
-;;;;;;  "g-client/gblogger.el" (20314 10482))
+;;;;;;  "g-client/gblogger.el" (20527 21105))
 ;;; Generated autoloads from g-client/gblogger.el
 
 (autoload 'gblogger-blog "g-client/gblogger" "\
@@ -1822,7 +1822,7 @@ Resets client so you can start with a different userid.
 ;;;;;;  gcal-show-event gcal-view gcal-calendar-agenda-days gcal-reject-event
 ;;;;;;  gcal-delete-event gcal-quickadd-event gcal-add-event gcal-user-email
 ;;;;;;  gcal-default-user-email) "g-client/gcal" "g-client/gcal.el"
-;;;;;;  (20311 29240))
+;;;;;;  (20527 21105))
 ;;; Generated autoloads from g-client/gcal.el
 
 (defvar gcal-default-user-email nil "\
@@ -1891,7 +1891,7 @@ Sign in, useful when changing to a different user profile.
 ;;;***
 
 ;;;### (autoloads (gcontacts-create gcontacts-initialize) "g-client/gcontacts"
-;;;;;;  "g-client/gcontacts.el" (20311 29240))
+;;;;;;  "g-client/gcontacts.el" (20527 21105))
 ;;; Generated autoloads from g-client/gcontacts.el
 
 (autoload 'gcontacts-initialize "g-client/gcontacts" "\
@@ -1908,7 +1908,7 @@ Create a new contact as specified.
 
 ;;;### (autoloads (gdocs-sign-in gdocs-sign-out gdocs-view-item gdocs-delete-item
 ;;;;;;  gdocs-add-collaborator gdocs-publish gdocs-doclist) "g-client/gdocs"
-;;;;;;  "g-client/gdocs.el" (20495 14245))
+;;;;;;  "g-client/gdocs.el" (20527 21105))
 ;;; Generated autoloads from g-client/gdocs.el
 
 (autoload 'gdocs-doclist "g-client/gdocs" "\
@@ -1952,7 +1952,7 @@ Resets client so you can start with a different userid.
 
 ;;;### (autoloads (gfeeds-lookup-and-view gfeeds-view gfeeds-titles
 ;;;;;;  gfeeds-freshness) "g-client/gfeeds" "g-client/gfeeds.el"
-;;;;;;  (20311 29240))
+;;;;;;  (20527 21105))
 ;;; Generated autoloads from g-client/gfeeds.el
 
 (defsubst gfeeds-feed (feed-url) "\
@@ -1989,7 +1989,7 @@ Lookup feed URL for a site and browse result.
 
 ;;;### (autoloads (gfinance-sign-in gfinance-sign-out gfinance-display-feed
 ;;;;;;  gfinance-portfolios) "g-client/gfinance" "g-client/gfinance.el"
-;;;;;;  (20311 29240))
+;;;;;;  (20527 21105))
 ;;; Generated autoloads from g-client/gfinance.el
 
 (autoload 'gfinance-portfolios "g-client/gfinance" "\
@@ -2015,7 +2015,7 @@ Resets client so you can start with a different userid.
 ;;;***
 
 ;;;### (autoloads (ghealth-sign-in ghealth-sign-out) "g-client/ghealth"
-;;;;;;  "g-client/ghealth.el" (20311 29240))
+;;;;;;  "g-client/ghealth.el" (20527 21105))
 ;;; Generated autoloads from g-client/ghealth.el
 
 (autoload 'ghealth-sign-out "g-client/ghealth" "\
@@ -2035,7 +2035,7 @@ Resets client so you can start with a different userid.
 ;;;;;;  gphoto-album-create gphoto-user-tagsearch gphoto-user-search
 ;;;;;;  gphoto-recent gphoto-community-search gphoto-download gphoto-view
 ;;;;;;  gphoto-tags gphoto-albums gphoto-feeds) "g-client/gphoto"
-;;;;;;  "g-client/gphoto.el" (20311 29240))
+;;;;;;  "g-client/gphoto.el" (20527 21105))
 ;;; Generated autoloads from g-client/gphoto.el
 
 (autoload 'gphoto-feeds "g-client/gphoto" "\
@@ -2129,7 +2129,7 @@ The retrieved entry is placed in a buffer ready for editing.
 ;;;;;;  greader-title-feed greader-unsubscribe-feed greader-subscribe-feed
 ;;;;;;  greader-opml greader-feed-list greader-subscriptions greader-subscription-list
 ;;;;;;  greader-preferences greader-reading-list) "g-client/greader"
-;;;;;;  "g-client/greader.el" (20490 16891))
+;;;;;;  "g-client/greader.el" (20527 21105))
 ;;; Generated autoloads from g-client/greader.el
 
 (autoload 'greader-reading-list "g-client/greader" "\
@@ -2234,7 +2234,7 @@ Reauthenticate current user.
 ;;;***
 
 ;;;### (autoloads (gsheet-sign-in gsheet-sign-out gsheet-sheets gsheet-fetch)
-;;;;;;  "g-client/gsheet" "g-client/gsheet.el" (20311 29240))
+;;;;;;  "g-client/gsheet" "g-client/gsheet.el" (20527 21105))
 ;;; Generated autoloads from g-client/gsheet.el
 
 (autoload 'gsheet-fetch "g-client/gsheet" "\
@@ -2260,7 +2260,7 @@ Resets client so you can start with a different userid.
 ;;;***
 
 ;;;### (autoloads (gskeleton-sign-in gskeleton-sign-out) "g-client/gskeleton"
-;;;;;;  "g-client/gskeleton.el" (20311 29240))
+;;;;;;  "g-client/gskeleton.el" (20527 21105))
 ;;; Generated autoloads from g-client/gskeleton.el
 
 (autoload 'gskeleton-sign-out "g-client/gskeleton" "\
@@ -2279,7 +2279,7 @@ Resets client so you can start with a different userid.
 ;;;;;;  gtube-video-playlist gtube-video-by-category-and-tag gtube-video-by-tag
 ;;;;;;  gtube-video-details gtube-user-friends gtube-user-favorites
 ;;;;;;  gtube-user-profile) "g-client/gtube" "g-client/gtube.el"
-;;;;;;  (20311 29240))
+;;;;;;  (20527 21105))
 ;;; Generated autoloads from g-client/gtube.el
 
 (autoload 'gtube-user-profile "g-client/gtube" "\
@@ -2345,7 +2345,7 @@ Retrieved featured video list.
 
 ;;;### (autoloads (gweb-my-address gweb-maps-reverse-geocode gweb-maps-geocode
 ;;;;;;  gweb-google-at-point) "g-client/gweb" "g-client/gweb.el"
-;;;;;;  (20407 15943))
+;;;;;;  (20527 21105))
 ;;; Generated autoloads from g-client/gweb.el
 
 (defsubst gweb-google-autocomplete-with-corpus (corpus) "\
@@ -2382,7 +2382,7 @@ Location address. Setting this updates gweb-my-location coordinates  via geocodi
 ;;;***
 
 ;;;### (autoloads (js2-mode) "js2-mode/js2-mode" "js2-mode/js2-mode.el"
-;;;;;;  (20354 40415))
+;;;;;;  (20527 21105))
 ;;; Generated autoloads from js2-mode/js2-mode.el
  (add-to-list 'auto-mode-alist '("\\.js$" . js2-mode))
 
@@ -2393,8 +2393,8 @@ Major mode for editing JavaScript code.
 
 ;;;***
 
-;;;### (autoloads (magit-status) "magit/magit" "magit/magit.el" (20522
-;;;;;;  8016))
+;;;### (autoloads (magit-status) "magit/magit" "magit/magit.el" (20527
+;;;;;;  21105))
 ;;; Generated autoloads from magit/magit.el
 
 (autoload 'magit-status "magit/magit" "\
@@ -2412,7 +2412,7 @@ user input.
 ;;;***
 
 ;;;### (autoloads (turn-on-magit-stgit magit-stgit-mode) "magit/magit-stgit"
-;;;;;;  "magit/magit-stgit.el" (20330 38125))
+;;;;;;  "magit/magit-stgit.el" (20527 21105))
 ;;; Generated autoloads from magit/magit-stgit.el
 
 (autoload 'magit-stgit-mode "magit/magit-stgit" "\
@@ -2428,7 +2428,7 @@ Unconditionally turn on `magit-stgit-mode'.
 ;;;***
 
 ;;;### (autoloads (turn-on-magit-svn magit-svn-mode) "magit/magit-svn"
-;;;;;;  "magit/magit-svn.el" (20330 38125))
+;;;;;;  "magit/magit-svn.el" (20527 21105))
 ;;; Generated autoloads from magit/magit-svn.el
 
 (autoload 'magit-svn-mode "magit/magit-svn" "\
@@ -2444,7 +2444,7 @@ Unconditionally turn on `magit-svn-mode'.
 ;;;***
 
 ;;;### (autoloads (turn-on-magit-topgit magit-topgit-mode) "magit/magit-topgit"
-;;;;;;  "magit/magit-topgit.el" (20330 38125))
+;;;;;;  "magit/magit-topgit.el" (20527 21105))
 ;;; Generated autoloads from magit/magit-topgit.el
 
 (autoload 'magit-topgit-mode "magit/magit-topgit" "\
@@ -2460,7 +2460,7 @@ Unconditionally turn on `magit-topgit-mode'.
 ;;;***
 
 ;;;### (autoloads (rebase-mode) "magit/rebase-mode" "magit/rebase-mode.el"
-;;;;;;  (20330 38125))
+;;;;;;  (20527 21105))
 ;;; Generated autoloads from magit/rebase-mode.el
 
 (autoload 'rebase-mode "magit/rebase-mode" "\
@@ -2480,7 +2480,7 @@ running 'man git-rebase' at the command line) for details.
 ;;;### (autoloads (list-packages describe-package package-initialize
 ;;;;;;  package-refresh-contents package-install-file package-install-from-buffer
 ;;;;;;  package-install package-enable-at-startup) "package24/package"
-;;;;;;  "package24/package.el" (20522 8024))
+;;;;;;  "package24/package.el" (20527 21105))
 ;;; Generated autoloads from package24/package.el
 
 (defvar package-enable-at-startup t "\
@@ -2551,7 +2551,7 @@ The list is displayed in a buffer named `*Packages*'.
 ;;;***
 
 ;;;### (autoloads (paredit-mode) "paredit/paredit" "paredit/paredit.el"
-;;;;;;  (20522 8008))
+;;;;;;  (20527 21105))
 ;;; Generated autoloads from paredit/paredit.el
 
 (autoload 'paredit-mode "paredit/paredit" "\
@@ -2568,7 +2568,7 @@ Paredit behaves badly if parentheses are imbalanced, so exercise
 ;;;***
 
 ;;;### (autoloads (common-lisp-indent-function) "slime/contrib/slime-cl-indent"
-;;;;;;  "slime/contrib/slime-cl-indent.el" (20444 44415))
+;;;;;;  "slime/contrib/slime-cl-indent.el" (20527 21105))
 ;;; Generated autoloads from slime/contrib/slime-cl-indent.el
 
 (autoload 'common-lisp-indent-function "slime/contrib/slime-cl-indent" "\
@@ -2649,257 +2649,8 @@ For example, the function `case' has an indent property
 
 ;;;***
 
-;;;### (autoloads (sr-term-cd-program sr-term-cd-newterm sr-term-cd
-;;;;;;  sr-term sunrise-cd sr-dired sunrise sr-virtual-mode sr-mode)
-;;;;;;  "sunrise-commander/sunrise-commander" "sunrise-commander/sunrise-commander.el"
-;;;;;;  (20522 8259))
-;;; Generated autoloads from sunrise-commander/sunrise-commander.el
-
-(autoload 'sr-mode "sunrise-commander/sunrise-commander" "\
-Two-pane file manager for Emacs based on Dired and inspired by MC.
-The following keybindings are available:
-
-        /, j .......... go to directory
-        p, n .......... move cursor up/down
-        M-p, M-n ...... move cursor up/down in passive pane
-        ^, J .......... go to parent directory
-        M-^, M-J ...... go to parent directory in passive pane
-        Tab ........... switch to other pane
-        C-Tab.......... switch to viewer window
-        C-c Tab ....... switch to viewer window (console compatible)
-        RET, f ........ visit selected file/directory
-        M-RET, M-f .... visit selected file/directory in passive pane
-        C-c RET ....... visit selected in passive pane (console compatible)
-        b ............. visit selected file/directory in default browser
-        F ............. visit all marked files, each in its own window
-        C-u F ......... visit all marked files in the background
-        o,v ........... quick visit selected file (scroll with C-M-v, C-M-S-v)
-        C-u o, C-u v .. kill quick-visited buffer (restores normal scrolling)
-        X ............. execute selected file
-        C-u X.......... execute selected file with arguments
-
-        + ............. create new directory
-        M-+ ........... create new empty file(s)
-        C ............. copy marked (or current) files and directories
-        R ............. rename marked (or current) files and directories
-        D ............. delete marked (or current) files and directories
-        S ............. soft-link selected file/directory to passive pane
-        Y ............. do relative soft-link of selected file in passive pane
-        H ............. hard-link selected file to passive pane
-        K ............. clone selected files and directories into passive pane
-        M-C ........... copy (using traditional dired-do-copy)
-        M-R ........... rename (using traditional dired-do-rename)
-        M-D ........... delete (using traditional dired-do-delete)
-        M-S............ soft-link (using traditional dired-do-symlink)
-        M-Y............ do relative soft-link (traditional dired-do-relsymlink)
-        M-H............ hard-link selected file/directory (dired-do-hardlink)
-        A ............. search marked files for regular expression
-        Q ............. perform query-replace-regexp on marked files
-        C-c s ......... start a \"sticky\" interactive search in the current pane
-
-        M-a ........... move to beginning of current directory
-        M-e ........... move to end of current directory
-        M-y ........... go to previous directory in history
-        M-u ........... go to next directory in history
-        C-M-y ......... go to previous directory in history on passive pane
-        C-M-u ......... go to next directory in history on passive pane
-
-        g, C-c C-c .... refresh pane
-        s ............. sort entries (by name, number, size, time or extension)
-        r ............. reverse the order of entries in the active pane (sticky)
-        C-o ........... show/hide hidden files (requires dired-omit-mode)
-        C-Backspace ... hide/show file attributes in pane
-        C-c Backspace . hide/show file attributes in pane (console compatible)
-        y ............. show file type / size of selected files and directories.
-        M-l ........... truncate/continue long lines in pane
-        C-c v ......... put current panel in VIRTUAL mode
-        C-c C-v ....... create new pure VIRTUAL buffer
-        C-c C-w ....... browse directory tree using w3m
-
-        M-t ........... transpose panes
-        M-o ........... synchronize panes
-        C-c C-s ....... change panes layout (vertical/horizontal/top-only)
-        [ ............. enlarges the right pane by 5 columns
-        ] ............. enlarges the left pane by 5 columns
-        } ............. enlarges the panes vertically by 1 row
-        C-} ........... enlarges the panes vertically as much as it can
-        C-c } ......... enlarges the panes vertically as much as it can
-        { ............. shrinks the panes vertically by 1 row
-        C-{ ........... shrinks the panes vertically as much as it can
-        C-c { ......... shrinks the panes vertically as much as it can
-        \\ ............. restores the size of all windows back to «normal»
-        C-c C-z ....... enable/disable synchronized navigation
-
-        C-= ........... smart compare files (ediff)
-        C-c = ......... smart compare files (console compatible)
-        = ............. fast smart compare files (plain diff)
-        C-M-= ......... compare panes
-        C-x = ......... compare panes (console compatible)
-
-        C-c C-f ....... execute Find-dired in Sunrise VIRTUAL mode
-        C-c C-n ....... execute find-Name-dired in Sunrise VIRTUAL mode
-        C-c C-g ....... execute find-Grep-dired in Sunrise VIRTUAL mode
-        C-u C-c C-g ... execute find-Grep-dired with additional grep options
-        C-c C-l ....... execute Locate in Sunrise VIRTUAL mode
-        C-c C-r ....... browse list of Recently visited files (requires recentf)
-        C-c C-c ....... [after find, locate or recent] dismiss virtual buffer
-        C-c / ......... narrow the contents of current pane using fuzzy matching
-        C-c b ......... partial Branch view of selected items in current pane
-        C-c p ......... Prune paths matching regular expression from current pane
-        ; ............. follow file (go to same directory as selected file)
-        M-; ........... follow file in passive pane
-        C-M-o ......... follow a projection of current directory in passive pane
-
-        C-> ........... save named checkpoint (a.k.a. \"bookmark panes\")
-        C-c > ......... save named checkpoint (console compatible)
-        C-.    ........ restore named checkpoint
-        C-c .  ........ restore named checkpoint
-
-        C-x C-q ....... put pane in Editable Dired mode (commit with C-c C-c)
-        @! ............ fast backup files (not dirs!), each to [filename].bak
-
-        C-c t ......... open new terminal or switch to already open one
-        C-c T ......... open terminal AND/OR change directory to current
-        C-c C-t ....... open always a new terminal in current directory
-        C-c M-t ....... open a new terminal using an alternative shell program
-        q, C-x k ...... quit Sunrise Commander, restore previous window setup
-        M-q ........... quit Sunrise Commander, don't restore previous windows
-
-Additionally, the following traditional commander-style keybindings are provided
-\(these may be disabled by customizing the `sr-use-commander-keys' option):
-
-        F2 ............ go to directory
-        F3 ............ quick visit selected file
-        F4 ............ visit selected file
-        F5 ............ copy marked (or current) files and directories
-        F6 ............ rename marked (or current) files and directories
-        F7 ............ create new directory
-        F8 ............ delete marked (or current) files and directories
-        F10 ........... quit Sunrise Commander
-        C-F3 .......... sort contents of current pane by name
-        C-F4 .......... sort contents of current pane by extension
-        C-F5 .......... sort contents of current pane by time
-        C-F6 .......... sort contents of current pane by size
-        C-F7 .......... sort contents of current pane numerically
-        S-F7 .......... soft-link selected file/directory to passive pane
-        Insert ........ mark file
-        C-PgUp ........ go to parent directory
-
-Any other dired keybinding (not overridden by any of the above) can be used in
-Sunrise, like G for changing group, M for changing mode and so on.
-
-Some more bindings are available in terminals opened using any of the Sunrise
-functions (i.e. one of: C-c t, C-c T, C-c C-t, C-c M-t):
-
-        C-c Tab ....... switch focus to the active pane
-        C-c t ......... cycle through all currently open terminals
-        C-c T ......... cd to the directory in the active pane
-        C-c C-t ....... open new terminal, cd to directory in the active pane
-        C-c ; ......... follow the current directory in the active pane
-        C-c { ......... shrink the panes vertically as much as possible
-        C-c } ......... enlarge the panes vertically as much as possible
-        C-c \\ ......... restore the size of all windows back to «normal»
-        C-c C-j ....... put terminal in line mode
-        C-c C-k ....... put terminal back in char mode
-
-The following bindings are available only in line mode (eshell is considered to
-be *always* in line mode):
-
-        M-<up>, M-P ... move cursor up in the active pane
-        M-<down>, M-N . move cursor down in the active pane
-        M-Return ...... visit selected file/directory in the active pane
-        M-J ........... go to parent directory in the active pane
-        M-G ........... refresh active pane
-        M-Tab ......... switch to passive pane (without leaving the terminal)
-        M-M ........... mark selected file/directory in the active pane
-        M-Backspace ... unmark previous file/directory in the active pane
-        M-U ........... remove all marks from the active pane
-        C-Tab ......... switch focus to the active pane
-
-In a terminal in line mode the following substitutions are also performed
-automatically:
-
-       %f - expands to the currently selected file in the left pane
-       %F - expands to the currently selected file in the right pane
-       %m - expands to the list of paths of all marked files in the left pane
-       %M - expands to the list of paths of all marked files in the right pane
-       %n - expands to the list of names of all marked files in the left pane
-       %N - expands to the list of names of all marked files in the right pane
-       %d - expands to the current directory in the left pane
-       %D - expands to the current directory in the right pane
-       %a - expands to the list of paths of all marked files in the active pane
-       %A - expands to the current directory in the active pane
-       %p - expands to the list of paths of all marked files in the passive pane
-       %P - expands to the current directory in the passive pane
-       %% - inserts a single % sign.
-
-\(fn)" t nil)
-
-(autoload 'sr-virtual-mode "sunrise-commander/sunrise-commander" "\
-Sunrise Commander Virtual Mode. Useful for reusing find and locate results.
-
-\(fn)" t nil)
-
-(autoload 'sunrise "sunrise-commander/sunrise-commander" "\
-Toggle the Sunrise Commander file manager.
-If LEFT-DIRECTORY is given, the left window will display that
-directory (same for RIGHT-DIRECTORY). Specifying nil for any of
-these values uses the default, ie. $HOME.
-
-\(fn &optional LEFT-DIRECTORY RIGHT-DIRECTORY FILENAME)" t nil)
-
-(autoload 'sr-dired "sunrise-commander/sunrise-commander" "\
-Visit the given target (file or directory) in `sr-mode'.
-
-\(fn &optional TARGET SWITCHES)" t nil)
-
-(autoload 'sunrise-cd "sunrise-commander/sunrise-commander" "\
-Toggle the Sunrise Commander FM keeping the current file in focus.
-If Sunrise is off, enable it and focus the file displayed in the current buffer.
-If Sunrise is on, disable it and switch to the buffer currently displayed in the
-viewer window.
-
-\(fn)" t nil)
- (autoload 'sr-checkpoint-handler "sunrise-commander" "" t)
-
-(autoload 'sr-term "sunrise-commander/sunrise-commander" "\
-Run terminal in a new buffer or switch to an existing one.
-If the optional argument CD is non-nil, directory is changed to
-the current one in the active pane. A non-nil NEWTERM argument
-forces the creation of a new terminal. If PROGRAM is provided
-and exists in `exec-path', then it will be used instead of the
-default `sr-terminal-program'.
-
-\(fn &optional CD NEWTERM PROGRAM)" t nil)
-
-(autoload 'sr-term-cd "sunrise-commander/sunrise-commander" "\
-Run terminal in a new buffer or switch to an existing one.
-cd's to the current directory of the active pane.
-
-\(fn)" t nil)
-
-(autoload 'sr-term-cd-newterm "sunrise-commander/sunrise-commander" "\
-Open a NEW terminal (don't switch to an existing one).
-cd's to the current directory of the active pane.
-
-\(fn)" t nil)
-
-(autoload 'sr-term-cd-program "sunrise-commander/sunrise-commander" "\
-Open a NEW terminal using PROGRAM as the shell.
-
-\(fn &optional PROGRAM)" t nil)
-
-;;;***
-
-;;;### (autoloads nil "sunrise-x-loop/sunrise-x-loop" "sunrise-x-loop/sunrise-x-loop.el"
-;;;;;;  (20522 9211))
-;;; Generated autoloads from sunrise-x-loop/sunrise-x-loop.el
- (eval-after-load 'sunrise-commander '(sr-extend-with 'sunrise-x-loop))
-
-;;;***
-
 ;;;### (autoloads (twit) "twittering-mode/twittering-mode" "twittering-mode/twittering-mode.el"
-;;;;;;  (20495 14246))
+;;;;;;  (20527 21105))
 ;;; Generated autoloads from twittering-mode/twittering-mode.el
 
 (autoload 'twit "twittering-mode/twittering-mode" "\
@@ -2910,7 +2661,7 @@ Start twittering-mode.
 ;;;***
 
 ;;;### (autoloads (global-undo-tree-mode undo-tree-mode) "undo-tree/undo-tree"
-;;;;;;  "undo-tree/undo-tree.el" (20495 14252))
+;;;;;;  "undo-tree/undo-tree.el" (20527 21105))
 ;;; Generated autoloads from undo-tree/undo-tree.el
 
 (autoload 'undo-tree-mode "undo-tree/undo-tree" "\
@@ -2958,7 +2709,7 @@ See `undo-tree-mode' for more information on Undo-Tree mode.
 
 ;;;### (autoloads (wikipedia-draft-buffer wikipedia-draft-page wikipedia-draft
 ;;;;;;  wikipedia-mode) "wikipedia-mode/wikipedia-mode" "wikipedia-mode/wikipedia-mode.el"
-;;;;;;  (20522 8010))
+;;;;;;  (20527 21105))
 ;;; Generated autoloads from wikipedia-mode/wikipedia-mode.el
 
 (autoload 'wikipedia-mode "wikipedia-mode/wikipedia-mode" "\
@@ -3060,32 +2811,8 @@ wikipedia-draft-data-file.
 
 ;;;***
 
-;;;### (autoloads nil nil ("calfw/calfw-cal.el" "calfw/calfw-howm.el"
-;;;;;;  "calfw/calfw-ical.el" "calfw/calfw-org.el" "calfw/calfw.el"
-;;;;;;  "color-theme-solarized/color-theme-solarized-pkg.el" "color-theme/color-theme-autoloads.el"
-;;;;;;  "el-get/el-get-install.el" "el-get/el-get.el" "g-client/g-autogen.el"
-;;;;;;  "g-client/g-load-path.el" "g-client/g.el" "g-client/gnotebook.el"
-;;;;;;  "g-client/gwis.el" "g-client/indent-files.el" "g-client/org2blogger.el"
-;;;;;;  "magit/magit-pkg.el" "org-fstree/org-fstree.el" "slime/contrib/bridge.el"
-;;;;;;  "slime/contrib/inferior-slime.el" "slime/contrib/slime-asdf.el"
-;;;;;;  "slime/contrib/slime-autodoc.el" "slime/contrib/slime-banner.el"
-;;;;;;  "slime/contrib/slime-c-p-c.el" "slime/contrib/slime-clipboard.el"
-;;;;;;  "slime/contrib/slime-compiler-notes-tree.el" "slime/contrib/slime-editing-commands.el"
-;;;;;;  "slime/contrib/slime-enclosing-context.el" "slime/contrib/slime-fancy-inspector.el"
-;;;;;;  "slime/contrib/slime-fancy.el" "slime/contrib/slime-fontifying-fu.el"
-;;;;;;  "slime/contrib/slime-fuzzy.el" "slime/contrib/slime-highlight-edits.el"
-;;;;;;  "slime/contrib/slime-hyperdoc.el" "slime/contrib/slime-indentation.el"
-;;;;;;  "slime/contrib/slime-mdot-fu.el" "slime/contrib/slime-media.el"
-;;;;;;  "slime/contrib/slime-motd.el" "slime/contrib/slime-mrepl.el"
-;;;;;;  "slime/contrib/slime-package-fu.el" "slime/contrib/slime-parse.el"
-;;;;;;  "slime/contrib/slime-presentation-streams.el" "slime/contrib/slime-presentations.el"
-;;;;;;  "slime/contrib/slime-references.el" "slime/contrib/slime-repl.el"
-;;;;;;  "slime/contrib/slime-sbcl-exts.el" "slime/contrib/slime-scheme.el"
-;;;;;;  "slime/contrib/slime-scratch.el" "slime/contrib/slime-snapshot.el"
-;;;;;;  "slime/contrib/slime-sprof.el" "slime/contrib/slime-tramp.el"
-;;;;;;  "slime/contrib/slime-typeout-frame.el" "slime/contrib/slime-xref-browser.el"
-;;;;;;  "slime/hyperspec.el" "slime/slime-autoloads.el" "twittering-mode/test.el")
-;;;;;;  (20522 9212 502352))
+;;;### (autoloads nil nil ("el-get/el-get-install.el" "el-get/el-get.el")
+;;;;;;  (20527 23465 953230))
 
 ;;;***
 
