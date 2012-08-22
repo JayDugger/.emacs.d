@@ -6,6 +6,7 @@
  '(case-fold-search nil)
  '(column-number-mode t)
  '(custom-safe-themes (quote ("1440d751f5ef51f9245f8910113daee99848e2c0" "e254937cba0f82c2d9eb3189a60748df9e486522" "7fe1e3de3e04afc43f9a3d3a8d38cd0a0efd9d4c" default)))
+ '(org-agenda-files (quote ("/home/duggerj/doc/Dropbox/org/")))
  '(org-babel-load-languages (quote ((emacs-lisp . t) (sh . t) (R . t) (perl . t) (python . t))))
  '(org-src-fontify-natively t)
  '(package-archives (quote (("ELPA" . "http://tromey.com/elpa/") ("gnu" . "http://elpa.gnu.org/packages/") ("marmalade" . "http://marmalade-repo.org/packages/"))))
@@ -21,10 +22,10 @@
 
 ;;(require 'org-install)
 ;;(add-to-list 'auto-mode-alist '("\\.org\\'" . org-mode))
-;; (global-set-key "\c-cl" 'org-store-link)
-;; (global-set-key "\c-cc" 'org-capture)
-;; (global-set-key "\c-ca" 'org-agenda)
-;; (global-set-key "\c-cb" 'org-iswitchb)
+ (global-set-key "\C-cl" 'org-store-link)
+ (global-set-key "\C-cc" 'org-capture)
+ (global-set-key "\C-ca" 'org-agenda)
+ (global-set-key "\C-cb" 'org-iswitchb)
 
 (put 'downcase-region 'disabled nil)
 
