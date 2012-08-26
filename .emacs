@@ -10,6 +10,7 @@
  '(org-babel-load-languages (quote ((emacs-lisp . t) (sh . t) (R . t) (perl . t) (python . t))))
  '(org-log-done (quote time))
  '(org-src-fontify-natively t)
+ '(org-todo-keywords (quote ((sequence "TODO" "DONE" "DECLINED"))))
  '(package-archives (quote (("ELPA" . "http://tromey.com/elpa/") ("gnu" . "http://elpa.gnu.org/packages/") ("marmalade" . "http://marmalade-repo.org/packages/"))))
  '(scroll-bar-mode (quote right))
  '(show-paren-mode t)

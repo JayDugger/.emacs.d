@@ -4,7 +4,7 @@
 
 
 ;;;### (autoloads (artbollocks-mode) "artbollocks-mode/artbollocks-mode"
-;;;;;;  "artbollocks-mode/artbollocks-mode.el" (20527 21105))
+;;;;;;  "artbollocks-mode/artbollocks-mode.el" (20538 4447))
 ;;; Generated autoloads from artbollocks-mode/artbollocks-mode.el
 
 (autoload 'artbollocks-mode "artbollocks-mode/artbollocks-mode" "\
@@ -314,7 +314,7 @@ Initialize the color theme package by loading color-theme-libraries.
 ;;;;;;  diredp-dired-for-files-other-window diredp-dired-for-files
 ;;;;;;  diredp-dired-files-other-window diredp-dired-files diredp-w32-local-drives
 ;;;;;;  diredp-prompt-for-bookmark-prefix-flag diff-switches) "dired+/dired+"
-;;;;;;  "dired+/dired+.el" (20527 23465))
+;;;;;;  "dired+/dired+.el" (20538 4455))
 ;;; Generated autoloads from dired+/dired+.el
 
 (defvar diff-switches "-c" "\
@@ -1741,646 +1741,6 @@ Send a bug report about a Dired+ problem.
 
 ;;;***
 
-;;;### (autoloads (g-app-view g-app-publish) "g-client/g-app" "g-client/g-app.el"
-;;;;;;  (20527 21105))
-;;; Generated autoloads from g-client/g-app.el
-
-(autoload 'g-app-publish "g-client/g-app" "\
-Publish current entry.
-
-\(fn)" t nil)
-
-(autoload 'g-app-view "g-client/g-app" "\
-View feed using auth credentials in auth-handle.
-
-\(fn AUTH-HANDLE FEED-URL)" t nil)
-
-;;;***
-
-;;;### (autoloads (g-auth-lifetime) "g-client/g-auth" "g-client/g-auth.el"
-;;;;;;  (20527 21105))
-;;; Generated autoloads from g-client/g-auth.el
-
-(defvar g-auth-lifetime "4 hours" "\
-Auth lifetime.")
-
-(custom-autoload 'g-auth-lifetime "g-client/g-auth" nil)
-
-;;;***
-
-;;;### (autoloads (gblogger-sign-in gblogger-sign-out gblogger-add-label
-;;;;;;  gblogger-delete-entry gblogger-new-entry gblogger-edit-entry
-;;;;;;  gblogger-atom-display gblogger-blog) "g-client/gblogger"
-;;;;;;  "g-client/gblogger.el" (20527 21105))
-;;; Generated autoloads from g-client/gblogger.el
-
-(autoload 'gblogger-blog "g-client/gblogger" "\
-Retrieve and display feed of feeds after authenticating.
-
-\(fn)" t nil)
-
-(autoload 'gblogger-atom-display "g-client/gblogger" "\
-Retrieve and display specified feed after authenticating.
-
-\(fn FEED-URL)" t nil)
-
-(autoload 'gblogger-edit-entry "g-client/gblogger" "\
-Retrieve entry and prepare it for editting.
-The retrieved entry is placed in a buffer ready for editing.
-`url' is the URL of the entry.
-
-\(fn URL)" t nil)
-
-(autoload 'gblogger-new-entry "g-client/gblogger" "\
-Create a new Blog post.
-
-\(fn URL &optional TITLE TEXT)" t nil)
-
-(autoload 'gblogger-delete-entry "g-client/gblogger" "\
-Delete item at specified edit URL.
-
-\(fn EDIT-URL)" t nil)
-
-(autoload 'gblogger-add-label "g-client/gblogger" "\
-Adds labels to gblogger entry being editted.
-
-\(fn LABEL)" t nil)
-
-(autoload 'gblogger-sign-out "g-client/gblogger" "\
-Resets client so you can start with a different userid.
-
-\(fn)" t nil)
-
-(autoload 'gblogger-sign-in "g-client/gblogger" "\
-Resets client so you can start with a different userid.
-
-\(fn)" t nil)
-
-;;;***
-
-;;;### (autoloads (gcal-sign-in gcal-sign-out gcal-emacs-calendar-setup
-;;;;;;  gcal-show-event gcal-view gcal-calendar-agenda-days gcal-reject-event
-;;;;;;  gcal-delete-event gcal-quickadd-event gcal-add-event gcal-user-email
-;;;;;;  gcal-default-user-email) "g-client/gcal" "g-client/gcal.el"
-;;;;;;  (20527 21105))
-;;; Generated autoloads from g-client/gcal.el
-
-(defvar gcal-default-user-email nil "\
-Default user id for Calendar.")
-
-(custom-autoload 'gcal-default-user-email "g-client/gcal" t)
-
-(defvar gcal-user-email nil "\
-Mail address that identifies calendar user.")
-
-(custom-autoload 'gcal-user-email "g-client/gcal" t)
-
-(autoload 'gcal-add-event "g-client/gcal" "\
-Add a calendar event.
-
-\(fn)" t nil)
-
-(autoload 'gcal-quickadd-event "g-client/gcal" "\
-Add a calendar event.
-Specify the event in plain English.
-
-\(fn EVENT-DESC)" t nil)
-
-(autoload 'gcal-delete-event "g-client/gcal" "\
-Delete a calendar event.
-
-\(fn EVENT-URI)" t nil)
-
-(autoload 'gcal-reject-event "g-client/gcal" "\
-Reject (RSVP)  a calendar event.
-
-\(fn EVENT-URI)" t nil)
-
-(defvar gcal-calendar-agenda-days 5 "\
-Number of days for which we show an agenda by default.")
-
-(custom-autoload 'gcal-calendar-agenda-days "g-client/gcal" t)
-
-(autoload 'gcal-view "g-client/gcal" "\
-Retrieve and display resource after authenticating.
-
-\(fn RESOURCE)" t nil)
-
-(autoload 'gcal-show-event "g-client/gcal" "\
-Show event at URL.
-
-\(fn URL)" t nil)
-
-(define-prefix-command 'gcal-calendar-prefix-map)
-
-(autoload 'gcal-emacs-calendar-setup "g-client/gcal" "\
-Setup GCal keybindings in Emacs calendar.
-
-\(fn)" nil nil)
-
-(autoload 'gcal-sign-out "g-client/gcal" "\
-Resets client so you can start with a different userid.
-
-\(fn)" t nil)
-
-(autoload 'gcal-sign-in "g-client/gcal" "\
-Sign in, useful when changing to a different user profile.
-
-\(fn)" t nil)
-
-;;;***
-
-;;;### (autoloads (gcontacts-create gcontacts-initialize) "g-client/gcontacts"
-;;;;;;  "g-client/gcontacts.el" (20527 21105))
-;;; Generated autoloads from g-client/gcontacts.el
-
-(autoload 'gcontacts-initialize "g-client/gcontacts" "\
-Initialize GContacts process handle.
-
-\(fn USERNAME)" t nil)
-
-(autoload 'gcontacts-create "g-client/gcontacts" "\
-Create a new contact as specified.
-
-\(fn NAME EMAIL MOBILE)" t nil)
-
-;;;***
-
-;;;### (autoloads (gdocs-sign-in gdocs-sign-out gdocs-view-item gdocs-delete-item
-;;;;;;  gdocs-add-collaborator gdocs-publish gdocs-doclist) "g-client/gdocs"
-;;;;;;  "g-client/gdocs.el" (20527 21105))
-;;; Generated autoloads from g-client/gdocs.el
-
-(autoload 'gdocs-doclist "g-client/gdocs" "\
-Retrieve and display feed of feeds after authenticating.
-Interactive prefix arg prompts for a query string.
-
-\(fn &optional QUERY)" t nil)
-
-(autoload 'gdocs-publish "g-client/gdocs" "\
-Export from given content type to Google Docs.
-
-\(fn CONTENT-TYPE)" t nil)
-
-(autoload 'gdocs-add-collaborator "g-client/gdocs" "\
-Add collaborator to ACL at acl-url.
-You can find the acl-url through the DocList.
-
-\(fn EMAIL ACL-URL)" t nil)
-
-(autoload 'gdocs-delete-item "g-client/gdocs" "\
-Delete specified item.
-
-\(fn URL)" t nil)
-
-(autoload 'gdocs-view-item "g-client/gdocs" "\
-View specified item.
-
-\(fn URL)" t nil)
-
-(autoload 'gdocs-sign-out "g-client/gdocs" "\
-Resets client so you can start with a different userid.
-
-\(fn)" t nil)
-
-(autoload 'gdocs-sign-in "g-client/gdocs" "\
-Resets client so you can start with a different userid.
-
-\(fn)" t nil)
-
-;;;***
-
-;;;### (autoloads (gfeeds-lookup-and-view gfeeds-view gfeeds-titles
-;;;;;;  gfeeds-freshness) "g-client/gfeeds" "g-client/gfeeds.el"
-;;;;;;  (20527 21105))
-;;; Generated autoloads from g-client/gfeeds.el
-
-(defsubst gfeeds-feed (feed-url) "\
-Return feed structure." (declare (special gfeeds-feeds-url gfeeds-referer)) (let ((result nil)) (g-using-scratch (call-process g-curl-program nil t nil "-s" "-e" gfeeds-referer (format gfeeds-feeds-url (g-url-encode feed-url))) (goto-char (point-min)) (setq result (json-read)) (when (= 200 (g-json-get (quote responseStatus) result)) (g-json-get (quote feed) (g-json-get (quote responseData) result))))))
-
-(defsubst gfeeds-lookup (url) "\
-Lookup feed for a given Web page." (declare (special gfeeds-lookup-url gfeeds-referer)) (let ((result nil)) (g-using-scratch (call-process g-curl-program nil t nil "-s" "-e" gfeeds-referer (format gfeeds-lookup-url (g-url-encode url))) (goto-char (point-min)) (setq result (json-read)) (when (= 200 (g-json-get (quote responseStatus) result)) (g-json-get (quote url) (g-json-get (quote responseData) result))))))
-
-(defsubst gfeeds-find (query) "\
-Find feeds matching a query." (declare (special gfeeds-find-url gfeeds-referer)) (let ((result nil)) (g-using-scratch (call-process g-curl-program nil t nil "-s" "-e" gfeeds-referer (format gfeeds-find-url (g-url-encode query))) (goto-char (point-min)) (setq result (json-read)) (when (= 200 (g-json-get (quote responseStatus) result)) (g-json-get (quote entries) (g-json-get (quote responseData) result))))))
-
-(defvar gfeeds-freshness "1 hour" "\
-Freshness used to decide if we return titles.")
-
-(custom-autoload 'gfeeds-freshness "g-client/gfeeds" nil)
-
-(autoload 'gfeeds-titles "g-client/gfeeds" "\
-Return list of titles from feed at feed-url.
-
-\(fn FEED-URL)" nil nil)
-
-(autoload 'gfeeds-view "g-client/gfeeds" "\
-Display Feed in a browser.
-Interactive prefix arg causes the feed url to be looked up given a Web site.
-
-\(fn URL &optional LOOKUP)" t nil)
-
-(autoload 'gfeeds-lookup-and-view "g-client/gfeeds" "\
-Lookup feed URL for a site and browse result.
-
-\(fn SITE)" t nil)
-
-;;;***
-
-;;;### (autoloads (gfinance-sign-in gfinance-sign-out gfinance-display-feed
-;;;;;;  gfinance-portfolios) "g-client/gfinance" "g-client/gfinance.el"
-;;;;;;  (20527 21105))
-;;; Generated autoloads from g-client/gfinance.el
-
-(autoload 'gfinance-portfolios "g-client/gfinance" "\
-Retrieve and display feed of feeds after authenticating.
-
-\(fn)" t nil)
-
-(autoload 'gfinance-display-feed "g-client/gfinance" "\
-Retrieve and display feedat feed-url  after authenticating.
-
-\(fn FEED-URL)" t nil)
-
-(autoload 'gfinance-sign-out "g-client/gfinance" "\
-Resets client so you can start with a different userid.
-
-\(fn)" t nil)
-
-(autoload 'gfinance-sign-in "g-client/gfinance" "\
-Resets client so you can start with a different userid.
-
-\(fn)" t nil)
-
-;;;***
-
-;;;### (autoloads (ghealth-sign-in ghealth-sign-out) "g-client/ghealth"
-;;;;;;  "g-client/ghealth.el" (20527 21105))
-;;; Generated autoloads from g-client/ghealth.el
-
-(autoload 'ghealth-sign-out "g-client/ghealth" "\
-Resets client so you can start with a different userid.
-
-\(fn)" t nil)
-
-(autoload 'ghealth-sign-in "g-client/ghealth" "\
-Resets client so you can start with a different userid.
-
-\(fn)" t nil)
-
-;;;***
-
-;;;### (autoloads (gphoto-edit-entry gphoto-sign-in gphoto-sign-out
-;;;;;;  gphoto-comment-or-tag gphoto-directory-add-photos gphoto-photo-add
-;;;;;;  gphoto-album-create gphoto-user-tagsearch gphoto-user-search
-;;;;;;  gphoto-recent gphoto-community-search gphoto-download gphoto-view
-;;;;;;  gphoto-tags gphoto-albums gphoto-feeds) "g-client/gphoto"
-;;;;;;  "g-client/gphoto.el" (20527 21105))
-;;; Generated autoloads from g-client/gphoto.el
-
-(autoload 'gphoto-feeds "g-client/gphoto" "\
-Retrieve and display feed of albums or tags after authenticating.
-
-\(fn KIND USER)" t nil)
-
-(autoload 'gphoto-albums "g-client/gphoto" "\
-Display feed of albums.
-Interactive prefix arg prompts for userid whose albums we request.
-
-\(fn &optional PROMPT)" t nil)
-
-(autoload 'gphoto-tags "g-client/gphoto" "\
-View feed of tags.
-
-\(fn)" t nil)
-
-(autoload 'gphoto-view "g-client/gphoto" "\
-Retrieve and display resource after authenticating.
-
-\(fn RESOURCE)" t nil)
-
-(autoload 'gphoto-download "g-client/gphoto" "\
-Download resource after authenticating.
-
-\(fn RESOURCE)" t nil)
-
-(autoload 'gphoto-community-search "g-client/gphoto" "\
-Search all public photos.
-
-\(fn QUERY)" t nil)
-
-(autoload 'gphoto-recent "g-client/gphoto" "\
-Retrieve feed of recently uploaded photos or comments.
-
-\(fn USER KIND)" t nil)
-
-(autoload 'gphoto-user-search "g-client/gphoto" "\
-Retrieve feed of recently uploaded comments for  specified user.
-
-\(fn USER QUERY)" t nil)
-
-(autoload 'gphoto-user-tagsearch "g-client/gphoto" "\
-Retrieve feed o matches comments for  specified user.
-
-\(fn USER TAG)" t nil)
-
-(autoload 'gphoto-album-create "g-client/gphoto" "\
-Create a new GPhoto album.
-
-\(fn)" t nil)
-
-(autoload 'gphoto-photo-add "g-client/gphoto" "\
-Add a photo to an existing album.
-
-\(fn ALBUM-NAME PHOTO)" t nil)
-
-(autoload 'gphoto-directory-add-photos "g-client/gphoto" "\
-Add all jpeg files in a directory to specified album.
-
-\(fn DIRECTORY ALBUM-NAME)" t nil)
-
-(autoload 'gphoto-comment-or-tag "g-client/gphoto" "\
-Add comments or tags  to an existing photo.
-
-\(fn TYPE RESOURCE)" t nil)
-
-(autoload 'gphoto-sign-out "g-client/gphoto" "\
-Resets client so you can start with a different userid.
-
-\(fn)" t nil)
-
-(autoload 'gphoto-sign-in "g-client/gphoto" "\
-Resets client so you can start with a different userid.
-
-\(fn)" t nil)
-
-(autoload 'gphoto-edit-entry "g-client/gphoto" "\
-Retrieve metadata for entry and prepare it for editting.
-The retrieved entry is placed in a buffer ready for editing.
-`url' is the URL of the entry.
-
-\(fn URL)" t nil)
-
-;;;***
-
-;;;### (autoloads (greader-re-authenticate greader-sign-in greader-sign-out
-;;;;;;  greader-search greader-find-feeds greader-star greader-add-label
-;;;;;;  greader-update-subscription greader-untag-feed greader-tag-feed
-;;;;;;  greader-title-feed greader-unsubscribe-feed greader-subscribe-feed
-;;;;;;  greader-opml greader-feed-list greader-subscriptions greader-subscription-list
-;;;;;;  greader-preferences greader-reading-list) "g-client/greader"
-;;;;;;  "g-client/greader.el" (20527 21105))
-;;; Generated autoloads from g-client/greader.el
-
-(autoload 'greader-reading-list "g-client/greader" "\
-Ensure our cookies are live, and get the reading list.
-Optional interactive prefix `state' prompts for state to retrieve
-
-e.g., starred.
-
-\(fn &optional STATE)" t nil)
-
-(autoload 'greader-preferences "g-client/greader" "\
-Ensure our cookies are live, and get all preferences for this
-user.
-
-\(fn)" t nil)
-
-(autoload 'greader-subscription-list "g-client/greader" "\
-Return list of subscribed urls.
-
-\(fn)" nil nil)
-
-(autoload 'greader-subscriptions "g-client/greader" "\
-Return list of subscribed feeds.
-
-\(fn)" nil nil)
-
-(autoload 'greader-feed-list "g-client/greader" "\
-Retrieve list of subscribed feeds.
-
-\(fn)" t nil)
-
-(autoload 'greader-opml "g-client/greader" "\
-Retrieve OPML representation of our subscription list.
-
-\(fn)" t nil)
-
-(autoload 'greader-subscribe-feed "g-client/greader" "\
-Subscribe to specified feed.
-
-\(fn FEED-URL)" t nil)
-
-(autoload 'greader-unsubscribe-feed "g-client/greader" "\
-UnSubscribe from specified feed.
-
-\(fn FEED-URL)" t nil)
-
-(autoload 'greader-title-feed "g-client/greader" "\
-Title  specified feed.
-
-\(fn FEED-URL)" t nil)
-
-(autoload 'greader-tag-feed "g-client/greader" "\
-Tag  specified feed.
-
-\(fn FEED-URL)" t nil)
-
-(autoload 'greader-untag-feed "g-client/greader" "\
-Remove Tag from specified feed.
-
-\(fn FEED-URL)" t nil)
-
-(autoload 'greader-update-subscription "g-client/greader" "\
-Perform specified subscribe, unsubscribe, or edit action.
-
-\(fn FEED-URL ACTION)" nil nil)
-
-(autoload 'greader-add-label "g-client/greader" "\
-Add label to this item.
-
-\(fn ITEM-URL LABEL)" t nil)
-
-(autoload 'greader-star "g-client/greader" "\
-Star this item.
-
-\(fn ITEM-URL)" t nil)
-
-(autoload 'greader-find-feeds "g-client/greader" "\
-Find feeds matching query.
-
-\(fn QUERY)" t nil)
-
-(autoload 'greader-search "g-client/greader" "\
-GReader search.
-
-\(fn QUERY)" t nil)
-
-(autoload 'greader-sign-out "g-client/greader" "\
-Resets client so you can start with a different userid.
-
-\(fn)" t nil)
-
-(autoload 'greader-sign-in "g-client/greader" "\
-Resets client so you can start with a different userid.
-
-\(fn)" t nil)
-
-(autoload 'greader-re-authenticate "g-client/greader" "\
-Reauthenticate current user.
-
-\(fn)" t nil)
-
-;;;***
-
-;;;### (autoloads (gsheet-sign-in gsheet-sign-out gsheet-sheets gsheet-fetch)
-;;;;;;  "g-client/gsheet" "g-client/gsheet.el" (20527 21105))
-;;; Generated autoloads from g-client/gsheet.el
-
-(autoload 'gsheet-fetch "g-client/gsheet" "\
-Fetch specified sheet.
-
-\(fn SHEET-URL)" t nil)
-
-(autoload 'gsheet-sheets "g-client/gsheet" "\
-Retrieve and display feed of feeds after authenticating.
-
-\(fn)" t nil)
-
-(autoload 'gsheet-sign-out "g-client/gsheet" "\
-Resets client so you can start with a different userid.
-
-\(fn)" t nil)
-
-(autoload 'gsheet-sign-in "g-client/gsheet" "\
-Resets client so you can start with a different userid.
-
-\(fn)" t nil)
-
-;;;***
-
-;;;### (autoloads (gskeleton-sign-in gskeleton-sign-out) "g-client/gskeleton"
-;;;;;;  "g-client/gskeleton.el" (20527 21105))
-;;; Generated autoloads from g-client/gskeleton.el
-
-(autoload 'gskeleton-sign-out "g-client/gskeleton" "\
-Resets client so you can start with a different userid.
-
-\(fn)" t nil)
-
-(autoload 'gskeleton-sign-in "g-client/gskeleton" "\
-Resets client so you can start with a different userid.
-
-\(fn)" t nil)
-
-;;;***
-
-;;;### (autoloads (gtube-video-featured gtube-video-by-user gtube-video-popular
-;;;;;;  gtube-video-playlist gtube-video-by-category-and-tag gtube-video-by-tag
-;;;;;;  gtube-video-details gtube-user-friends gtube-user-favorites
-;;;;;;  gtube-user-profile) "g-client/gtube" "g-client/gtube.el"
-;;;;;;  (20527 21105))
-;;; Generated autoloads from g-client/gtube.el
-
-(autoload 'gtube-user-profile "g-client/gtube" "\
-Retrieve user profile.
-
-\(fn &optional USER)" t nil)
-
-(autoload 'gtube-user-favorites "g-client/gtube" "\
-Retrieve user favorites.
-
-\(fn &optional USER)" t nil)
-
-(autoload 'gtube-user-friends "g-client/gtube" "\
-Retrieve user profile.
-
-\(fn &optional USER)" t nil)
-
-(autoload 'gtube-video-details "g-client/gtube" "\
-Display details of specified video.
-
-\(fn VIDEO-ID)" t nil)
-
-(autoload 'gtube-video-by-tag "g-client/gtube" "\
-Retrieve content having specified tag.
-optional args page and count specify position in result-set and
-  number of results to retrieve.
-
-\(fn TAG &optional PAGE COUNT)" t nil)
-
-(autoload 'gtube-video-by-category-and-tag "g-client/gtube" "\
-Retrieve content from specified category having specified tag.
-optional args page and count specify position in result-set and
-  number of results to retrieve.
-
-\(fn CATEGORY TAG &optional PAGE COUNT)" t nil)
-
-(autoload 'gtube-video-playlist "g-client/gtube" "\
-Retrieve content in specified playlist.
-optional args page and count specify position in result-set and
-  number of results to retrieve.
-
-\(fn PLAYLIST-ID &optional PAGE COUNT)" t nil)
-
-(autoload 'gtube-video-popular "g-client/gtube" "\
-Retrieve popular content for specified time-range.
-  Time-range is one of day, week, month, or all.
-
-\(fn TIME-RANGE)" t nil)
-
-(autoload 'gtube-video-by-user "g-client/gtube" "\
-Retrieve content from specified user.
-optional args page and count specify position in result-set and
-  number of results to retrieve.
-
-\(fn USER &optional PAGE COUNT)" t nil)
-
-(autoload 'gtube-video-featured "g-client/gtube" "\
-Retrieved featured video list.
-
-\(fn)" t nil)
-
-;;;***
-
-;;;### (autoloads (gweb-my-address gweb-maps-reverse-geocode gweb-maps-geocode
-;;;;;;  gweb-google-at-point) "g-client/gweb" "g-client/gweb.el"
-;;;;;;  (20527 21105))
-;;; Generated autoloads from g-client/gweb.el
-
-(defsubst gweb-google-autocomplete-with-corpus (corpus) "\
-Read user input using Google Suggest for auto-completion.
-Uses specified corpus for prompting and suggest selection." (let* ((completer (intern (format "gweb-%s-suggest-completer" corpus))) (minibuffer-completing-file-name t) (completion-ignore-case t) (word (thing-at-point (quote word))) (query nil)) (unless (fboundp completer) (error "No  suggest handler for corpus %s" corpus)) (setq query (completing-read corpus completer nil nil word (quote gweb-history))) (pushnew query gweb-history) (g-url-encode query)))
-
-(autoload 'gweb-google-at-point "g-client/gweb" "\
-Google for term at point, and display top result succinctly.
-Attach URL at point so we can follow it later --- subsequent invocations of this command simply follow that URL.
-Optional interactive prefix arg refresh forces this cached URL to be refreshed.
-
-\(fn SEARCH-TERM &optional REFRESH)" t nil)
-
-(autoload 'gweb-maps-geocode "g-client/gweb" "\
-Geocode given address.
-Optional argument `raw-p' returns complete JSON  object.
-
-\(fn ADDRESS &optional RAW-P)" nil nil)
-
-(autoload 'gweb-maps-reverse-geocode "g-client/gweb" "\
-Reverse geocode lat-long.
-Optional argument `raw-p' returns raw JSON  object.
-
-\(fn LAT-LONG &optional RAW-P)" nil nil)
-
-(defvar gweb-my-location nil "\
-Geo coordinates --- automatically set by reverse geocoding gweb-my-address")
-
-(defvar gweb-my-address nil "\
-Location address. Setting this updates gweb-my-location coordinates  via geocoding.")
-
-(custom-autoload 'gweb-my-address "g-client/gweb" nil)
-
-;;;***
-
 ;;;### (autoloads (js2-mode) "js2-mode/js2-mode" "js2-mode/js2-mode.el"
 ;;;;;;  (20527 21105))
 ;;; Generated autoloads from js2-mode/js2-mode.el
@@ -2480,7 +1840,7 @@ running 'man git-rebase' at the command line) for details.
 ;;;### (autoloads (list-packages describe-package package-initialize
 ;;;;;;  package-refresh-contents package-install-file package-install-from-buffer
 ;;;;;;  package-install package-enable-at-startup) "package24/package"
-;;;;;;  "package24/package.el" (20527 21105))
+;;;;;;  "package24/package.el" (20538 4448))
 ;;; Generated autoloads from package24/package.el
 
 (defvar package-enable-at-startup t "\
@@ -2551,7 +1911,7 @@ The list is displayed in a buffer named `*Packages*'.
 ;;;***
 
 ;;;### (autoloads (paredit-mode) "paredit/paredit" "paredit/paredit.el"
-;;;;;;  (20527 21105))
+;;;;;;  (20538 4447))
 ;;; Generated autoloads from paredit/paredit.el
 
 (autoload 'paredit-mode "paredit/paredit" "\
@@ -2568,7 +1928,7 @@ Paredit behaves badly if parentheses are imbalanced, so exercise
 ;;;***
 
 ;;;### (autoloads (common-lisp-indent-function) "slime/contrib/slime-cl-indent"
-;;;;;;  "slime/contrib/slime-cl-indent.el" (20527 21105))
+;;;;;;  "slime/contrib/slime-cl-indent.el" (20538 4555))
 ;;; Generated autoloads from slime/contrib/slime-cl-indent.el
 
 (autoload 'common-lisp-indent-function "slime/contrib/slime-cl-indent" "\
@@ -2709,7 +2069,7 @@ See `undo-tree-mode' for more information on Undo-Tree mode.
 
 ;;;### (autoloads (wikipedia-draft-buffer wikipedia-draft-page wikipedia-draft
 ;;;;;;  wikipedia-mode) "wikipedia-mode/wikipedia-mode" "wikipedia-mode/wikipedia-mode.el"
-;;;;;;  (20527 21105))
+;;;;;;  (20538 4448))
 ;;; Generated autoloads from wikipedia-mode/wikipedia-mode.el
 
 (autoload 'wikipedia-mode "wikipedia-mode/wikipedia-mode" "\
@@ -2811,8 +2171,27 @@ wikipedia-draft-data-file.
 
 ;;;***
 
-;;;### (autoloads nil nil ("el-get/el-get-install.el" "el-get/el-get.el")
-;;;;;;  (20527 23465 953230))
+;;;### (autoloads nil nil ("el-get/el-get-install.el" "el-get/el-get.el"
+;;;;;;  "slime/contrib/bridge.el" "slime/contrib/inferior-slime.el"
+;;;;;;  "slime/contrib/slime-asdf.el" "slime/contrib/slime-autodoc.el"
+;;;;;;  "slime/contrib/slime-banner.el" "slime/contrib/slime-c-p-c.el"
+;;;;;;  "slime/contrib/slime-clipboard.el" "slime/contrib/slime-compiler-notes-tree.el"
+;;;;;;  "slime/contrib/slime-editing-commands.el" "slime/contrib/slime-enclosing-context.el"
+;;;;;;  "slime/contrib/slime-fancy-inspector.el" "slime/contrib/slime-fancy.el"
+;;;;;;  "slime/contrib/slime-fontifying-fu.el" "slime/contrib/slime-fuzzy.el"
+;;;;;;  "slime/contrib/slime-highlight-edits.el" "slime/contrib/slime-hyperdoc.el"
+;;;;;;  "slime/contrib/slime-indentation.el" "slime/contrib/slime-mdot-fu.el"
+;;;;;;  "slime/contrib/slime-media.el" "slime/contrib/slime-motd.el"
+;;;;;;  "slime/contrib/slime-mrepl.el" "slime/contrib/slime-package-fu.el"
+;;;;;;  "slime/contrib/slime-parse.el" "slime/contrib/slime-presentation-streams.el"
+;;;;;;  "slime/contrib/slime-presentations.el" "slime/contrib/slime-references.el"
+;;;;;;  "slime/contrib/slime-repl.el" "slime/contrib/slime-sbcl-exts.el"
+;;;;;;  "slime/contrib/slime-scheme.el" "slime/contrib/slime-scratch.el"
+;;;;;;  "slime/contrib/slime-snapshot.el" "slime/contrib/slime-sprof.el"
+;;;;;;  "slime/contrib/slime-tramp.el" "slime/contrib/slime-typeout-frame.el"
+;;;;;;  "slime/contrib/slime-xref-browser.el" "slime/hyperspec.el"
+;;;;;;  "slime/slime-autoloads.el" "slime/slime.el") (20538 4563
+;;;;;;  106074))
 
 ;;;***
 
