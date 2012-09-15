@@ -23,7 +23,6 @@
 ** PLAN LOSES TO REALITY
 
    On <2012-09-15 Sat>, the PPA from which I installed Emacs-snapshot stopped supporting Ubuntu 11.04. I recompiled Emacs from source code, decided to drop el-get in favor of straightforward package management, and restarted with Emacs Reboot.
-
    
 * SUMMARY
 
@@ -69,10 +68,14 @@ sudo apt-get install libcanberra-gtk3-dev
    original file to a single central directory at ~/.emacs.d/backups.
    - DECLINED
      Creating a central back-up directory doesn't offer my any advantages.
-** TODO [[http://avdi.org/devblog/2011/09/19/emacs-reboot-6-marmalade-magit/][Emacs Reboot #6: Marmalade, Magit]]
+** DONE [[http://avdi.org/devblog/2011/09/19/emacs-reboot-6-marmalade-magit/][Emacs Reboot #6: Marmalade, Magit]]
    I use the Maramalade package archive to install the latest and
    greatest Magit-mode for managing Git repositories.
    - ACCEPTED
+*** DONE Check jsmill's emacs for which package repositories it uses.
+**** DONE Find out what variable controls package repositories.
+     (package-archives)
+**** DONE Add marmalade (marmalade-repo.org/packages/) to (package-archives)
 ** TODO Emacs Reboot #7: Ido
 ** TODO Emacs Reboot #8: Gists
 ** TODO Emacs Reboot #9: Blogging
