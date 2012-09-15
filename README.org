@@ -19,6 +19,11 @@
    3) Emacs24 Starter Kit
    4) Xah Lee's Emacs Tutorial and his Ergoemacs
    5) Kurt Schwehr's Research Tools
+
+** PLAN LOSES TO REALITY
+
+   On <2012-09-15 Sat>, the PPA from which I installed Emacs-snapshot stopped supporting Ubuntu 11.04. I recompiled Emacs from source code, decided to drop el-get in favor of straightforward package management, and restarted with Emacs Reboot.
+
    
 * SUMMARY
 
