@@ -6,6 +6,7 @@
  '(ido-mode (quote both) nil (ido))
  '(org-babel-load-languages (quote ((emacs-lisp . t) (sh . t))))
  '(package-archives (quote (("marmalade" . "http://marmalade-repo.org/packages/") ("gnu" . "http://elpa.gnu.org/packages/"))))
+ '(scroll-bar-mode nil)
  '(server-mode t)
  '(tool-bar-mode nil))
 (custom-set-faces

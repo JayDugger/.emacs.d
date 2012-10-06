@@ -2,7 +2,12 @@
 ;;; This format is meant to be slightly human-readable;
 ;;; nevertheless, you probably don't want to edit it.
 ;;; -*- End Of Bookmark File Format Version Stamp -*-
-(("org"
+(("Template--Daily Record"
+ (filename . "~/doc/Dropbox/org/jwd - [Templates] - Daily Record Template - (2012).org")
+ (front-context-string . "#+STARTUP: showa")
+ (rear-context-string)
+ (position . 1))
+("org"
  (filename . "~/doc/Dropbox/org/")
  (front-context-string . "20101129 Daily R")
  (rear-context-string . "010-11-29 10:29 ")
