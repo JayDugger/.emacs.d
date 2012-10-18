@@ -7,7 +7,7 @@
  '(menu-bar-mode nil)
  '(org-agenda-files (quote ("/home/duggerj/doc/Dropbox/org/")))
  '(org-babel-load-languages (quote ((emacs-lisp . t) (sh . t))))
- '(package-archives (quote (("marmalade" . "http://marmalade-repo.org/packages/") ("gnu" . "http://elpa.gnu.org/packages/"))))
+ '(package-archives (quote (("marmalade" . "http://marmalade-repo.org/packages/") ("gnu" . "http://elpa.gnu.org/packages/") ("MELPA" . "http://melpa.milkbox.net/packages/"))))
  '(scroll-bar-mode nil)
  '(server-mode t)
  '(tool-bar-mode nil))
