@@ -51,7 +51,7 @@
 		     [(20120929 2154)
 		      nil "Find the last visible point in a window [source: github]" single])
  (wiki-nav .
-	   [(20121018 1209)
+	   [(20121005 1254)
 	    ((button-lock
 	      (0 9 6))
 	     (nav-flash
@@ -965,7 +965,7 @@
 		       [(20111011 1446)
 			nil "Display many latex symbols as their unicode counterparts [source: hg]" single])
  (kv .
-     [(20121018 429)
+     [(20121012 1334)
       nil "key/value data structure functions [source: github]" single])
  (killer .
 	 [(20120808 1322)
@@ -1063,7 +1063,7 @@
 		    (1 40)))
 		  "Serve buffers live over HTTP [source: github]" tar])
  (ignoramus .
-	    [(20121018 1204)
+	    [(20121011 1857)
 	     nil "Ignore backups, build files, et al. [source: github]" single])
  (iedit .
 	[(20121016 1819)
@@ -1082,7 +1082,7 @@
 		      [(20120920 1848)
 		       nil "highlight the word the point is on [source: github]" single])
  (icicles .
-	  [(20121019 18)
+	  [(20121017 2115)
 	   nil "Minibuffer input completion and cycling. [source: wiki]" tar])
  (ibuffer-vc .
 	     [(20120922 1120)
@@ -1170,7 +1170,7 @@
 	    (20120509)))
 	  "helm-sources and some utilities for GNU R. [source: github]" single])
  (helm .
-       [(20121018 2101)
+       [(20121018 846)
 	nil "Helm is an Emacs incremental and narrowing framework [source: github]" tar])
  (header2 .
 	  [(20120823 1956)
@@ -1203,7 +1203,7 @@
 		    [(20120821 1835)
 		     nil "Mode for the dot-language used by graphviz (att). [source: github]" single])
  (graphene .
-	   [(20121018 918)
+	   [(20121017 1938)
 	    ((smart-tab
 	      (20120409))
 	     (auto-complete
@@ -1230,7 +1230,7 @@
 		 [(20110930 1055)
 		  nil "Fetch Google Weather forecasts. [source: git]" tar])
  (google-translate .
-		   [(20121018 923)
+		   [(20121018 44)
 		    nil "Emacs interface to Google Translate [source: github]" single])
  (google-this .
 	      [(20120629 1421)
@@ -1391,13 +1391,13 @@
 			[(20120715 1419)
 			 nil "Graphically indicate the fill column [source: github]" tar])
  (feature-mode .
-	       [(20121018 1033)
+	       [(20121014 1541)
 		nil "Major mode for editing Gherkin (i.e. Cucumber) user stories [source: github]" tar])
  (fakespace .
 	    [(20120817 2006)
 	     nil "fake namespaces with defpackage [source: github]" single])
  (expand-region .
-		[(20121018 629)
+		[(20121016 812)
 		 nil "Increase selected region by semantic units. [source: github]" tar])
  (exec-path-from-shell .
 		       [(20121007 1428)
@@ -1422,7 +1422,7 @@
 	   (0 0 5)))
 	 "Library for working with xml via esxml and sxml [source: github]" single])
  (ess .
-      [(20121018 1746)
+      [(20121006 1207)
        nil "No description available. [source: github]" tar])
  (espuds .
 	 [(20121008 1808)
@@ -1484,9 +1484,6 @@
 	  ((ansi
 	    (0 0 2)))
 	  "Cucumber for Emacs. [source: github]" tar])
- (ecb .
-      [(20100302 1202)
-       nil "a code browser for Emacs [source: github]" tar])
  (ebib .
        [(20121002 2135)
 	nil "a BibTeX database manager [source: github]" tar])
@@ -1751,7 +1748,7 @@
 		      [(20120612 2224)
 		       nil "Auto Completion source for clang for GNU Emacs [source: github]" single])
  (auto-complete .
-		[(20121017 1603)
+		[(20120922 1815)
 		 ((popup
 		   (0 5)))
 		 "Auto Completion for GNU Emacs [source: github]" tar])
