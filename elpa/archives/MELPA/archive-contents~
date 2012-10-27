@@ -44,7 +44,7 @@
 		 [(20120505 1756)
 		  nil "Polish up poor writing on the fly [source: github]" single])
  (wrap-region .
-	      [(20121020 1842)
+	      [(20121007 1702)
 	       nil "Wrap region with stuff. [source: github]" tar])
  (workgroups .
 	     [(20110724 1825)
@@ -59,7 +59,11 @@
 		     [(20121025 923)
 		      nil "Find the last visible point in a window [source: github]" single])
  (wiki-nav .
+<<<<<<< HEAD
 	   [(20121025 1600)
+=======
+	   [(20121005 1254)
+>>>>>>> parent of d2b18ea... ADDED color-theme-solarized
 	    ((button-lock
 	      (0 9 6))
 	     (nav-flash
@@ -69,7 +73,7 @@
 		       [(20110901 930)
 			nil "operate on current line if region undefined [source: github]" single])
  (wgrep .
-	[(20121015 2233)
+	[(20120706 2227)
 	 nil "Writable grep buffer and apply the changes to files [source: github]" tar])
  (websocket .
 	    [(20121013 1846)
@@ -81,7 +85,7 @@
 	  [(20120531 1344)
 	   nil "show wc-like information in status bar [source: wiki]" single])
  (w3m .
-      [(20121018 121)
+      [(20121017 1015)
        nil "an Emacs interface to w3m [source: github]" tar])
  (volatile-highlights .
 		      [(20120215 9)
@@ -150,7 +154,11 @@
 	 [(20120529 1250)
 	  nil "The inverse of fill-paragraph and fill-region [source: github]" single])
  (undo-tree .
+<<<<<<< HEAD
 	    [(20121022 2041)
+=======
+	    [(20121013 40)
+>>>>>>> parent of d2b18ea... ADDED color-theme-solarized
 	     nil "Treat undo history as a tree [source: git]" single])
  (underwater-theme .
 		   [(20120615 1149)
@@ -216,7 +224,7 @@
       [(20120508 1820)
        nil "MS Team Foundation Server commands for Emacs. [source: wiki]" single])
  (textmate-to-yas .
-		  [(20121018 2053)
+		  [(20120918 825)
 		   nil "Import Textmate macros into yasnippet syntax [source: github]" tar])
  (textmate .
 	   [(20110816 1446)
@@ -249,7 +257,11 @@
 	   [(20121022 1257)
 	    nil "emulate surround.vim from Vim [source: github]" single])
  (sunrise-commander .
+<<<<<<< HEAD
 		    [(20121024 2042)
+=======
+		    [(20121014 2254)
+>>>>>>> parent of d2b18ea... ADDED color-theme-solarized
 		     nil "two-pane file manager for Emacs based on Dired and inspired by MC [source: github]" tar])
  (stylus-mode .
 	      [(20120730 1950)
@@ -349,7 +361,7 @@
 		  [(20121005 1456)
 		   nil "A color coded smart mode-line. [source: github]" single])
  (smart-forward .
-		[(20121020 1601)
+		[(20121017 901)
 		 ((expand-region
 		   (0 8 0)))
 		 "Semantic navigatioin [source: github]" single])
@@ -413,7 +425,7 @@
 	    [(20110805 2108)
 	     nil "No description available. [source: github]" single])
  (s .
-    [(20121020 1150)
+    [(20121013 1423)
      nil "The long lost Emacs string manipulation library. [source: github]" single])
  (rvm .
       [(20121003 921)
@@ -533,7 +545,11 @@
 		[(20091217 1955)
 		 nil "major mode for editing protocol buffers. [source: svn]" single])
  (projectile .
+<<<<<<< HEAD
 	     [(20121026 1054)
+=======
+	     [(20121017 20)
+>>>>>>> parent of d2b18ea... ADDED color-theme-solarized
 	      ((s
 		(1 0 0)))
 	      "Manage and navigate projects in Emacs easily [source: github]" single])
@@ -684,7 +700,11 @@
 	 [(20120902 2159)
 	  nil "Popup Window Manager. [source: github]" single])
  (popup .
+<<<<<<< HEAD
 	[(20121020 1203)
+=======
+	[(20120724 1053)
+>>>>>>> parent of d2b18ea... ADDED color-theme-solarized
 	 nil "Visual Popup User Interface [source: github]" single])
  (pony-mode .
 	    [(20120914 1627)
@@ -822,7 +842,7 @@
 		     [(20121011 2145)
 		      nil "Tiny functionality enhancements for evaluating sexps. [source: github]" single])
  (nrepl .
-	[(20121021 1014)
+	[(20121015 1947)
 	 ((clojure-mode
 	   (1 11)))
 	 "Client for Clojure nREPL [source: github]" single])
@@ -830,7 +850,11 @@
 	     [(20111201 1111)
 	      nil "major mode for editing nginx config files [source: github]" single])
  (nav-flash .
+<<<<<<< HEAD
 	    [(20121025 1048)
+=======
+	    [(20120929 2153)
+>>>>>>> parent of d2b18ea... ADDED color-theme-solarized
 	     nil "Briefly highlight the current line [source: github]" single])
  (nav .
       [(20120507 7)
@@ -845,7 +869,11 @@
 		[(20110927 1253)
 		 nil "A major mode for editing Mustache files. [source: github]" single])
  (multiple-cursors .
+<<<<<<< HEAD
 		   [(20121026 2251)
+=======
+		   [(20121012 1707)
+>>>>>>> parent of d2b18ea... ADDED color-theme-solarized
 		    nil "Multiple cursors for Emacs. [source: github]" tar])
  (multifiles .
 	     [(20120926 1435)
@@ -1014,7 +1042,7 @@
 		       [(20111011 1446)
 			nil "Display many latex symbols as their unicode counterparts [source: hg]" single])
  (kv .
-     [(20121018 429)
+     [(20121012 1334)
       nil "key/value data structure functions [source: github]" single])
  (killer .
 	 [(20120808 1322)
@@ -1115,10 +1143,17 @@
 		    (1 40)))
 		  "Serve buffers live over HTTP [source: github]" tar])
  (ignoramus .
+<<<<<<< HEAD
 	    [(20121025 1055)
 	     nil "Ignore backups, build files, et al. [source: github]" single])
  (iedit .
 	[(20121022 619)
+=======
+	    [(20121011 1857)
+	     nil "Ignore backups, build files, et al. [source: github]" single])
+ (iedit .
+	[(20121016 1819)
+>>>>>>> parent of d2b18ea... ADDED color-theme-solarized
 	 nil "Edit multiple regions in the same way simultaneously. [source: github]" tar])
  (ido-ubiquitous .
 		 [(20120907 2141)
@@ -1133,11 +1168,12 @@
  (idle-highlight-mode .
 		      [(20120920 1848)
 		       nil "highlight the word the point is on [source: github]" single])
- (identica-mode .
-		[(20120831 1806)
-		 nil "Major mode API client for status.net open microblogging [source: github]" tar])
  (icicles .
+<<<<<<< HEAD
 	  [(20121027 25)
+=======
+	  [(20121017 2115)
+>>>>>>> parent of d2b18ea... ADDED color-theme-solarized
 	   nil "Minibuffer input completion and cycling. [source: wiki]" tar])
  (ibuffer-vc .
 	     [(20120922 1120)
@@ -1181,11 +1217,6 @@
  (hide-comnt .
 	     [(20121006 1645)
 	      nil "Hide/show comments in code. [source: wiki]" single])
- (helm-themes .
-	      [(20121020 2316)
-	       ((helm
-		 (1 0)))
-	       "Color theme selection with helm interface [source: github]" single])
  (helm-projectile .
 		  [(20121025 1627)
 		   ((helm
@@ -1230,7 +1261,11 @@
 	    (20120509)))
 	  "helm-sources and some utilities for GNU R. [source: github]" single])
  (helm .
+<<<<<<< HEAD
        [(20121027 641)
+=======
+       [(20121018 846)
+>>>>>>> parent of d2b18ea... ADDED color-theme-solarized
 	nil "Helm is an Emacs incremental and narrowing framework [source: github]" tar])
  (header2 .
 	  [(20120823 1956)
@@ -1268,11 +1303,16 @@
 		    [(20120821 1835)
 		     nil "Mode for the dot-language used by graphviz (att). [source: github]" single])
  (graphene .
+<<<<<<< HEAD
 	   [(20121022 957)
 	    ((auto-complete
+=======
+	   [(20121017 1938)
+	    ((smart-tab
+	      (20120409))
+	     (auto-complete
+>>>>>>> parent of d2b18ea... ADDED color-theme-solarized
 	      (20120909))
-	     (ac-dabbrev
-	      (20091116))
 	     (autopair
 	      (20120818))
 	     (multi-web-mode
@@ -1295,7 +1335,7 @@
 		 [(20110930 1055)
 		  nil "Fetch Google Weather forecasts. [source: git]" tar])
  (google-translate .
-		   [(20121018 923)
+		   [(20121018 44)
 		    nil "Emacs interface to Google Translate [source: github]" single])
  (google-this .
 	      [(20120629 1421)
@@ -1437,9 +1477,15 @@
  (flymake-coffee .
 		 [(20120319 1559)
 		  nil "Flymake support for coffee script [source: github]" single])
+<<<<<<< HEAD
  (flycheck .
 	   [(20121024 1439)
 	    nil "Flymake reloaded with useful checkers [source: github]" single])
+=======
+ (flymake-checkers .
+		   [(20121015 1742)
+		    nil "Flymake reloaded with useful checkers [source: github]" single])
+>>>>>>> parent of d2b18ea... ADDED color-theme-solarized
  (flex-isearch .
 	       [(20120606 1317)
 		nil "Flex matching (like ido) in isearch. [source: hg]" single])
@@ -1471,13 +1517,17 @@
 	 [(20120601 1515)
 	  nil "Annoy people with big, ascii art text [source: hg]" single])
  (feature-mode .
-	       [(20121018 1033)
+	       [(20121014 1541)
 		nil "Major mode for editing Gherkin (i.e. Cucumber) user stories [source: github]" tar])
  (fakespace .
 	    [(20120817 2006)
 	     nil "fake namespaces with defpackage [source: github]" single])
  (expand-region .
+<<<<<<< HEAD
 		[(20121025 1136)
+=======
+		[(20121016 812)
+>>>>>>> parent of d2b18ea... ADDED color-theme-solarized
 		 nil "Increase selected region by semantic units. [source: github]" tar])
  (exec-path-from-shell .
 		       [(20121026 1037)
@@ -1497,15 +1547,19 @@
 	      [(20090327 1737)
 	       nil "Set tags table(s) based on current file [source: wiki]" single])
  (esxml .
+<<<<<<< HEAD
 	[(20121024 1611)
+=======
+	[(20121007 500)
+>>>>>>> parent of d2b18ea... ADDED color-theme-solarized
 	 ((kv
 	   (0 0 5)))
 	 "Library for working with xml via esxml and sxml [source: github]" single])
  (ess .
-      [(20121020 118)
+      [(20121006 1207)
        nil "No description available. [source: github]" tar])
  (espuds .
-	 [(20121020 1836)
+	 [(20121008 1808)
 	  nil "Ecukes step definitions [source: github]" tar])
  (escreen .
 	  [(20091203 1913)
@@ -1574,11 +1628,8 @@
 	  ((ansi
 	    (0 0 2)))
 	  "Cucumber for Emacs. [source: github]" tar])
- (ecb .
-      [(20120612 1129)
-       nil "a code browser for Emacs [source: github]" tar])
  (ebib .
-       [(20121019 1229)
+       [(20121002 2135)
 	nil "a BibTeX database manager [source: github]" tar])
  (e2wm-bookmark .
 		[(20120812 1550)
@@ -1836,9 +1887,12 @@
  (bbdb .
        [(20120923 1954)
 	nil "No description available. [source: git]" tar])
+<<<<<<< HEAD
  (bash-completion .
 		  [(20111120 1539)
 		   nil "BASH completion for the shell buffer [source: github]" tar])
+=======
+>>>>>>> parent of d2b18ea... ADDED color-theme-solarized
  (backup-walker .
 		[(20120625 1244)
 		 nil "quickly traverse all backups of a file [source: github]" single])
@@ -1867,7 +1921,11 @@
 		      [(20120612 2224)
 		       nil "Auto Completion source for clang for GNU Emacs [source: github]" single])
  (auto-complete .
+<<<<<<< HEAD
 		[(20121022 2254)
+=======
+		[(20120922 1815)
+>>>>>>> parent of d2b18ea... ADDED color-theme-solarized
 		 ((popup
 		   (0 5)))
 		 "Auto Completion for GNU Emacs [source: github]" tar])
@@ -1925,7 +1983,11 @@
 	   [(20120812 1517)
 	    nil "An auto-complete source using slime completions [source: github]" single])
  (ac-nrepl .
+<<<<<<< HEAD
 	   [(20121026 1034)
+=======
+	   [(20121017 2155)
+>>>>>>> parent of d2b18ea... ADDED color-theme-solarized
 	    ((nrepl
 	      (0 1))
 	     (auto-complete
