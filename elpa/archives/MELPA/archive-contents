@@ -1230,7 +1230,7 @@
 	    (20120509)))
 	  "helm-sources and some utilities for GNU R. [source: github]" single])
  (helm .
-       [(20121023 1208)
+       [(20121027 641)
 	nil "Helm is an Emacs incremental and narrowing framework [source: github]" tar])
  (header2 .
 	  [(20120823 1956)
@@ -1743,7 +1743,7 @@
 	       [(20120811 2127)
 		nil "multi-buffer occur (grep) mode [source: github]" single])
  (coffee-mode .
-	      [(20121013 856)
+	      [(20121026 2211)
 	       nil "Major mode to edit CoffeeScript files in Emacs [source: github]" single])
  (cm-mode .
 	  [(20120814 1203)
