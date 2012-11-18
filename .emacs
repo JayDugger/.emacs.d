@@ -11,7 +11,7 @@
  '(org-log-done (quote time))
  '(org-src-fontify-natively t)
  '(org-todo-keywords (quote ((sequence "TODO" "DONE" "DECLINED"))))
- '(package-archives (quote (("ELPA" . "http://tromey.com/elpa/") ("gnu" . "http://elpa.gnu.org/packages/") ("marmalade" . "http://marmalade-repo.org/packages/"))))
+ '(package-archives (quote (("MELPA" . "http://melpa.milkbox.net/packages/") ("gnu" . "http://elpa.gnu.org/packages/") ("marmalade" . "http://marmalade-repo.org/packages/"))))
  '(scroll-bar-mode (quote right))
  '(show-paren-mode t)
  '(speedbar-frame-parameters (quote ((minibuffer) (width . 20) (border-width . 0) (menu-bar-lines . 0) (tool-bar-lines . 0) (unsplittable . t) (set-background-color "black"))))
@@ -55,7 +55,7 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((t (:family "Inconsolata" :foundry "unknown" :slant normal :weight normal :height 120 :width normal)))))
+ '(default ((t (:family "DejaVu Sans Mono" :foundry "unknown" :slant normal :weight normal :height 98 :width normal)))))
 
 ;; 20120224--jwd
 ;; el-get setup from 
