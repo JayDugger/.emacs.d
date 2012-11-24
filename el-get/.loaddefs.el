@@ -4,7 +4,7 @@
 
 
 ;;;### (autoloads (artbollocks-mode) "artbollocks-mode/artbollocks-mode"
-;;;;;;  "artbollocks-mode/artbollocks-mode.el" (20647 7740))
+;;;;;;  "artbollocks-mode/artbollocks-mode.el" (20656 37160))
 ;;; Generated autoloads from artbollocks-mode/artbollocks-mode.el
 
 (autoload 'artbollocks-mode "artbollocks-mode/artbollocks-mode" "\
@@ -157,23 +157,11 @@ For example, the function `case' has an indent property
 
 ;;;***
 
-;;;### (autoloads (twit) "twittering-mode/twittering-mode" "twittering-mode/twittering-mode.el"
-;;;;;;  (20647 7741))
-;;; Generated autoloads from twittering-mode/twittering-mode.el
-
-(autoload 'twit "twittering-mode/twittering-mode" "\
-Start twittering-mode.
-
-\(fn)" t nil)
-
-;;;***
-
 ;;;### (autoloads nil nil ("el-get/el-get-autoloads.el" "el-get/el-get-build.el"
 ;;;;;;  "el-get/el-get-byte-compile.el" "el-get/el-get-core.el" "el-get/el-get-custom.el"
 ;;;;;;  "el-get/el-get-dependencies.el" "el-get/el-get-install.el"
 ;;;;;;  "el-get/el-get-methods.el" "el-get/el-get-notify.el" "el-get/el-get-recipes.el"
-;;;;;;  "el-get/el-get-status.el" "twittering-mode/test.el") (20648
-;;;;;;  32713 56555))
+;;;;;;  "el-get/el-get-status.el") (20656 37161 508755))
 
 ;;;***
 
