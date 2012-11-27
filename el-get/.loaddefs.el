@@ -157,11 +157,12 @@ For example, the function `case' has an indent property
 
 ;;;***
 
-;;;### (autoloads nil nil ("el-get/el-get-autoloads.el" "el-get/el-get-build.el"
-;;;;;;  "el-get/el-get-byte-compile.el" "el-get/el-get-core.el" "el-get/el-get-custom.el"
-;;;;;;  "el-get/el-get-dependencies.el" "el-get/el-get-install.el"
-;;;;;;  "el-get/el-get-methods.el" "el-get/el-get-notify.el" "el-get/el-get-recipes.el"
-;;;;;;  "el-get/el-get-status.el") (20656 37161 508755))
+;;;### (autoloads nil nil ("edit-server/edit-server.el" "el-get/el-get-autoloads.el"
+;;;;;;  "el-get/el-get-build.el" "el-get/el-get-byte-compile.el"
+;;;;;;  "el-get/el-get-core.el" "el-get/el-get-custom.el" "el-get/el-get-dependencies.el"
+;;;;;;  "el-get/el-get-install.el" "el-get/el-get-methods.el" "el-get/el-get-notify.el"
+;;;;;;  "el-get/el-get-recipes.el" "el-get/el-get-status.el") (20660
+;;;;;;  8588 609784))
 
 ;;;***
 

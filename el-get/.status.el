@@ -9,6 +9,8 @@
  (color-theme-solarized status "removed" recipe nil)
  (color-theme-zenburn status "removed" recipe nil)
  (dired+ status "removed" recipe nil)
+ (edit-server status "installed" recipe
+	      (:name edit-server :description "Emacs edit-server. This provides an edit server to respond to requests from the Chrome Emacs Chrome plugin." :type http :url "http://github.com/stsquad/emacs_chrome/raw/master/servers/edit-server.el"))
  (el-get status "installed" recipe
 	 (:name el-get :website "https://github.com/dimitri/el-get#readme" :description "Manage the external elisp bits and pieces you depend upon." :type github :branch "4.stable" :pkgname "dimitri/el-get" :features el-get :info "." :load "el-get.el"))
  (g-client status "removed" recipe nil)
