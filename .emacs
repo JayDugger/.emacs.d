@@ -30,8 +30,8 @@
  (global-set-key "\C-cc" 'org-capture)
  (global-set-key "\C-ca" 'org-agenda)
  (global-set-key "\C-cb" 'org-iswitchb)
- (global-set-key "\C-c L" 'org-insert-link-global)
- (global-set-key "\C-c o" 'org-open-at-point-global)
+ (global-set-key "\C-cL" 'org-insert-link-global)
+ (global-set-key "\C-co" 'org-open-at-point-global)
 
 (put 'downcase-region 'disabled nil)
 
