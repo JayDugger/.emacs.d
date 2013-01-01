@@ -8,6 +8,7 @@
  '(custom-safe-themes (quote ("1440d751f5ef51f9245f8910113daee99848e2c0" "e254937cba0f82c2d9eb3189a60748df9e486522" "7fe1e3de3e04afc43f9a3d3a8d38cd0a0efd9d4c" default)))
  '(menu-bar-mode nil)
  '(org-agenda-files (quote ("/home/duggerj/doc/Dropbox/org/")))
+ '(org-archive-location "~/Dropbox/org/datetree.org::datetree/* From %s")
  '(org-babel-load-languages (quote ((emacs-lisp . t) (sh . t) (R . t) (perl . t) (python . t))))
  '(org-log-done (quote time))
  '(org-mobile-directory "~/Dropbox/org")
@@ -35,7 +36,7 @@
  (global-set-key "\C-co" 'org-open-at-point-global)
 
 (put 'downcase-region 'disabled nil)
-xs
+
 ;; 20120103--JWD
 ;; START emacs server
 
