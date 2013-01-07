@@ -30,6 +30,6 @@
 (".emacs.d"
  (filename . "~/.emacs.d/")
  (front-context-string . "auto-save-list\n ")
- (rear-context-string . "012-06-25 20:03 ")
- (position . 248))
+ (rear-context-string . "96 Jan  1 01:10 ")
+ (position . 240))
 )
