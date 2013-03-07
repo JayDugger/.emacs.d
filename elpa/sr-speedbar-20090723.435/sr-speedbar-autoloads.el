@@ -4,7 +4,7 @@
 
 
 ;;;### (autoloads nil nil ("sr-speedbar-pkg.el" "sr-speedbar.el")
-;;;;;;  (20738 55215 871194))
+;;;;;;  (20762 33383 407860))
 
 ;;;***
 
