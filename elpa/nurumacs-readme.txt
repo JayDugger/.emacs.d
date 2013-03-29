@@ -7,7 +7,7 @@ you, evaluate
 
   (setq nurumacs-map nil)
 
-Command "nurumacs-map-toggle" will toggle minimap immediately, even if
+Command "nurumacs-map-toggle" will toggle minimap immediately, even when
 "nurumacs-map" is nil.
 
 When you load this library, "auto-hscroll-mode" is automatically disabled,
