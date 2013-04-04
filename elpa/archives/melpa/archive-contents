@@ -859,6 +859,9 @@
  (project-local-variables .
 			  [(20080502 1652)
 			   nil "Set project-local variables from a file. [source: wiki]" single])
+ (project-buffers .
+		  [(20130330 1825)
+		   nil "Functions to manage per-project buffers [source: github]" single])
  (proc-net .
 	   [(20130322 12)
 	    nil "network process tools [source: github]" single])
@@ -992,7 +995,7 @@
 	      [(20130319 40)
 	       nil "Minor mode for interacting with Pandoc [source: github]" tar])
  (pallet .
-	 [(20130325 2302)
+	 [(20130330 2128)
 	  ((carton
 	    (0 1 1)))
 	  "A package manager for Emacs, using Carton. [source: github]" tar])
@@ -1136,7 +1139,7 @@
 		     [(20130220 2142)
 		      nil "Tiny functionality enhancements for evaluating sexps. [source: github]" single])
  (nrepl .
-	[(20130313 2127)
+	[(20130330 1126)
 	 ((clojure-mode
 	   (2 0 0)))
 	 "Client for Clojure nREPL [source: github]" single])
@@ -1419,6 +1422,9 @@
  (latex-pretty-symbols .
 		       [(20111011 1446)
 			nil "Display many latex symbols as their unicode counterparts [source: hg]" single])
+ (latest-clojars .
+		 [(20130330 1112)
+		  nil "Clojure dependency resolver [source: github]" single])
  (lang-refactor-perl .
 		     [(20130224 2353)
 		      nil "Simple refactorings, primarily for Perl [source: github]" single])
@@ -1550,7 +1556,7 @@
 	[(20130102 1159)
 	 nil "An interactive tail mode [source: github]" single])
  (isearch+ .
-	   [(20130329 2225)
+	   [(20130330 1817)
 	    nil "Extensions to `isearch.el'. [source: wiki]" single])
  (ir_black-theme .
 		 [(20120503 1930)
@@ -1845,7 +1851,7 @@
 	       (0 3 0)))
 	     "Guide the following key bindings automatically and dynamically [source: github]" single])
  (gruber-darker-theme .
-		      [(20130327 1622)
+		      [(20130330 1838)
 		       nil "Gruber Darker color theme for Emacs 24. [source: github]" single])
  (groovy-mode .
 	      [(20120510 1755)
@@ -1915,7 +1921,7 @@
 	  [(20120620 34)
 	   nil "Paste to play.golang.org [source: github]" single])
  (go-mode .
-	  [(20130325 858)
+	  [(20130330 954)
 	   nil "Major mode for the Go programming language [source: hg]" tar])
  (go-autocomplete .
 		  [(20130328 938)
@@ -1944,9 +1950,9 @@
 		 [(20130227 1617)
 		  nil "Major mode for editing .gitconfig files [source: github]" single])
  (git-gutter-fringe .
-		    [(20130321 2051)
+		    [(20130330 1146)
 		     ((git-gutter
-		       (0 35))
+		       (0 38))
 		      (fringe-helper
 		       (0 1 1)))
 		     "Fringe version of git-gutter.el [source: github]" single])
@@ -2019,7 +2025,7 @@
 	   [(20130326 36)
 	    nil "a front-end for ack [source: github]" tar])
  (fsharp-mode .
-	      [(20130311 2240)
+	      [(20130331 11)
 	       ((popup
 		 (0 5))
 		(pos-tip
@@ -2228,7 +2234,7 @@
 		       [(20121108 945)
 			nil "Make Emacs use the $PATH set up by the user's shell [source: github]" single])
  (evil-paredit .
-	       [(20130205 1053)
+	       [(20130330 156)
 		((evil
 		  (0 0 0))
 		 (paredit
@@ -2394,7 +2400,7 @@
 	     [(20121121 1747)
 	      nil "Handy functions for inspecting and comparing package archives [source: github]" single])
  (elmine .
-	 [(20121209 2247)
+	 [(20130330 2100)
 	  nil "Redmine API access via elisp. [source: github]" single])
  (elixir-mode .
 	      [(20121125 2251)
@@ -2658,7 +2664,7 @@
 	      [(20120204 1826)
 	       nil "C# mode derived mode [source: wiki]" single])
  (cryptol-mode .
-	       [(20130328 2142)
+	       [(20130330 1722)
 		nil "Cryptol major mode for Emacs [source: github]" single])
  (crosshairs .
 	     [(20121228 2115)
@@ -2840,7 +2846,7 @@
 	   [(20081011 2126)
 	    nil "Quote text with a semi-box. [source: github]" single])
  (bookmark+ .
-	    [(20130317 1522)
+	    [(20130330 405)
 	     nil "Bookmark+: extensions to standard library `bookmark.el'. [source: wiki]" tar])
  (bm .
      [(20130226 1440)
@@ -2926,7 +2932,7 @@
 		      [(20120612 2224)
 		       nil "Auto Completion source for clang for GNU Emacs [source: github]" single])
  (auto-complete .
-		[(20130324 1306)
+		[(20130330 1836)
 		 ((popup
 		   (0 5 0)))
 		 "Auto Completion for GNU Emacs [source: github]" tar])
