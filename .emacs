@@ -7,6 +7,7 @@
  '(column-number-mode t)
  '(custom-safe-themes (quote ("1440d751f5ef51f9245f8910113daee99848e2c0" "e254937cba0f82c2d9eb3189a60748df9e486522" "7fe1e3de3e04afc43f9a3d3a8d38cd0a0efd9d4c" default)))
  '(electric-pair-mode t)
+ '(global-hl-line-mode t)
  '(ido-mode (quote both) nil (ido))
  '(inhibit-startup-screen t)
  '(menu-bar-mode nil)
