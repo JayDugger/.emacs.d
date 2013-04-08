@@ -47,6 +47,9 @@
  (eldoc-eval .
 	     [(0 1)
 	      nil "Enable eldoc support when minibuffer is in use." single])
+ (enwc .
+       [(1 0)
+	nil "The Emacs Network Client" tar])
  (epoch-view .
 	     [(0 0 1)
 	      nil "Minor mode to visualize epoch timestamps" single])
