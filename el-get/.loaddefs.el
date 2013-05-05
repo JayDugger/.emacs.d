@@ -4,7 +4,7 @@
 
 
 ;;;### (autoloads (artbollocks-mode) "artbollocks-mode/artbollocks-mode"
-;;;;;;  "artbollocks-mode/artbollocks-mode.el" (20662 52864))
+;;;;;;  "artbollocks-mode/artbollocks-mode.el" (20870 24535))
 ;;; Generated autoloads from artbollocks-mode/artbollocks-mode.el
 
 (autoload 'artbollocks-mode "artbollocks-mode/artbollocks-mode" "\
@@ -16,7 +16,7 @@ highlight passive voice, weasel words and artbollocks in text, provide useful te
 
 ;;;### (autoloads (el-get-checksum el-get-make-recipes el-get-cd
 ;;;;;;  el-get-self-update el-get-update-all el-get-version) "el-get/el-get"
-;;;;;;  "el-get/el-get.el" (20662 52876))
+;;;;;;  "el-get/el-get.el" (20870 24988))
 ;;; Generated autoloads from el-get/el-get.el
 
 (autoload 'el-get-version "el-get/el-get" "\
@@ -53,7 +53,7 @@ Compute the checksum of the given package, and put it in the kill-ring
 ;;;***
 
 ;;;### (autoloads (el-get-list-packages) "el-get/el-get-list-packages"
-;;;;;;  "el-get/el-get-list-packages.el" (20662 52876))
+;;;;;;  "el-get/el-get-list-packages.el" (20870 24988))
 ;;; Generated autoloads from el-get/el-get-list-packages.el
 
 (autoload 'el-get-list-packages "el-get/el-get-list-packages" "\
@@ -64,7 +64,7 @@ Display a list of packages.
 ;;;***
 
 ;;;### (autoloads (js2-mode) "js2-mode/js2-mode" "js2-mode/js2-mode.el"
-;;;;;;  (20662 52864))
+;;;;;;  (20870 24535))
 ;;; Generated autoloads from js2-mode/js2-mode.el
  (add-to-list 'auto-mode-alist '("\\.js$" . js2-mode))
 
@@ -76,7 +76,7 @@ Major mode for editing JavaScript code.
 ;;;***
 
 ;;;### (autoloads (common-lisp-indent-function) "slime/contrib/slime-cl-indent"
-;;;;;;  "slime/contrib/slime-cl-indent.el" (20662 52864))
+;;;;;;  "slime/contrib/slime-cl-indent.el" (20870 24535))
 ;;; Generated autoloads from slime/contrib/slime-cl-indent.el
 
 (autoload 'common-lisp-indent-function "slime/contrib/slime-cl-indent" "\
@@ -161,7 +161,7 @@ For example, the function `case' has an indent property
 ;;;;;;  "el-get/el-get-byte-compile.el" "el-get/el-get-core.el" "el-get/el-get-custom.el"
 ;;;;;;  "el-get/el-get-dependencies.el" "el-get/el-get-install.el"
 ;;;;;;  "el-get/el-get-methods.el" "el-get/el-get-notify.el" "el-get/el-get-recipes.el"
-;;;;;;  "el-get/el-get-status.el") (20662 52880 998807))
+;;;;;;  "el-get/el-get-status.el") (20870 24991 894334))
 
 ;;;***
 
