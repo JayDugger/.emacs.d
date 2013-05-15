@@ -5,7 +5,8 @@
  ;; If there is more than one, they won't work right.
  '(case-fold-search nil)
  '(column-number-mode t)
- '(custom-safe-themes (quote ("1440d751f5ef51f9245f8910113daee99848e2c0" "e254937cba0f82c2d9eb3189a60748df9e486522" "7fe1e3de3e04afc43f9a3d3a8d38cd0a0efd9d4c" default)))
+ '(custom-enabled-themes (quote (sanityinc-tomorrow-blue)))
+ '(custom-safe-themes (quote ("82d2cac368ccdec2fcc7573f24c3f79654b78bf133096f9b40c20d97ec1d8016" "1440d751f5ef51f9245f8910113daee99848e2c0" "e254937cba0f82c2d9eb3189a60748df9e486522" "7fe1e3de3e04afc43f9a3d3a8d38cd0a0efd9d4c" default)))
  '(electric-pair-mode t)
  '(global-hl-line-mode t)
  '(ido-mode (quote both) nil (ido))
