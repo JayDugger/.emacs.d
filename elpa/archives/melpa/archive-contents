@@ -24,7 +24,7 @@
 		 [(20111231 345)
 		  nil "Unfold CSS-selector-like expressions to markup [github]" single])
  (zenburn-theme .
-		[(20130521 1915)
+		[(20130523 1753)
 		 nil "A low contrast color theme for Emacs. [github]" single])
  (zen-and-art-theme .
 		    [(20120622 937)
@@ -625,7 +625,7 @@
 		  (24 1)))
 		"a dark colorful theme for Emacs24. [github]" single])
  (solarized-theme .
-		  [(20130521 1657)
+		  [(20130523 1736)
 		   nil "The Solarized color theme, ported to Emacs. [github]" tar])
  (snippet .
 	  [(20130210 1815)
@@ -666,7 +666,7 @@
 		 [(20051013 1756)
 		  nil "Beautify the operators in codes [wiki]" single])
  (smart-mode-line .
-		  [(20130513 1341)
+		  [(20130524 1558)
 		   nil "A color coded smart mode-line. [github]" single])
  (smart-forward .
 		[(20130205 1352)
@@ -1038,7 +1038,7 @@
 		[(20130521 932)
 		 nil "Project oriented automatic builder and error highlighter, flymake for projects [github]" tar])
  (projectile .
-	     [(20130520 1447)
+	     [(20130524 26)
 	      ((s
 		(1 0 0))
 	       (dash
@@ -1104,7 +1104,7 @@
 		  [(20130319 2233)
 		   nil "Interact with Pivotal Tracker through its API [github]" single])
  (php-mode .
-	   [(20130520 2047)
+	   [(20130524 1458)
 	    nil "Major mode for editing PHP code [github]" tar])
  (php-eldoc .
 	    [(20130328 1526)
@@ -1642,7 +1642,7 @@
 			       [(20130518 0)
 				nil "Advice for magit-log-edit-commit [github]" single])
  (magit .
-	[(20130523 125)
+	[(20130524 1906)
 	 ((cl-lib
 	   (0 2)))
 	 "Control Git from Emacs. [github]" tar])
@@ -1726,7 +1726,7 @@
 	 [(20120728 1413)
 	  nil "Interactively updating text [wiki]" single])
  (litable .
-	  [(20130508 919)
+	  [(20130525 136)
 	   ((dash
 	     (1 1 0)))
 	   "dynamic evaluation replacement with emacs [github]" single])
@@ -1742,6 +1742,9 @@
  (linum-relative .
 		 [(20130427 2245)
 		  nil "display relative line number in emacs. [github]" single])
+ (linphone .
+	   [(20130524 1306)
+	    nil "Emacs interface to Linphone [github]" tar])
  (lib-requires .
 	       [(20121228 1946)
 		nil "Commands to list Emacs Lisp library dependencies. [wiki]" single])
@@ -1769,7 +1772,7 @@
 	   [(20100119 2148)
 	    nil "Add legalese to your program files [wiki]" single])
  (ldg-mode .
-	   [(20130522 2117)
+	   [(20130523 2105)
 	    nil "Helper code for use with the \"ledger\" command-line tool [github]" tar])
  (lcs .
       [(20121201 1455)
@@ -1893,7 +1896,7 @@
 		[(20121004 1726)
 		 nil "Watch continuous integration build status [github]" single])
  (jedi .
-       [(20130522 34)
+       [(20130522 112)
 	((epc
 	  (0 1 0))
 	 (auto-complete
@@ -2091,7 +2094,7 @@
      [(20130515 1418)
       nil "The missing hash table library for Emacs [github]" single])
  (hlinum .
-	 [(20130520 1810)
+	 [(20130524 2100)
 	  nil "Extension for linum.el to highlight current line number [hg]" single])
  (hl-todo .
 	  [(20130504 359)
@@ -2123,7 +2126,7 @@
 		   [(20130401 1733)
 		    nil "automatic and manual symbol highlighting [github]" tar])
  (highlight-parentheses .
-			[(20130323 4)
+			[(20130523 1752)
 			 nil "highlight surrounding parentheses [github]" tar])
  (highlight-indentation .
 			[(20130106 41)
@@ -2184,7 +2187,7 @@
 	      [(20130402 2201)
 	       nil "list git files. [github]" single])
  (helm-gtags .
-	     [(20130328 1123)
+	     [(20130524 1913)
 	      ((helm
 		(1 0)))
 	      "GNU GLOBAL helm interface [github]" single])
@@ -2357,7 +2360,7 @@
 	  [(20120620 34)
 	   nil "Paste to play.golang.org [github]" single])
  (go-mode .
-	  [(20130514 2023)
+	  [(20130523 1019)
 	   nil "Major mode for the Go programming language [hg]" tar])
  (go-autocomplete .
 		  [(20130415 954)
@@ -2396,7 +2399,7 @@
 		       (0 1 1)))
 		     "Fringe version of git-gutter.el [github]" single])
  (git-gutter .
-	     [(20130427 1535)
+	     [(20130525 45)
 	      nil "Port of Sublime Text plugin GitGutter [github]" single])
  (git-dwim .
 	   [(20130130 2150)
@@ -2476,6 +2479,9 @@
  (furl .
        [(20110112 1707)
 	nil "Friendly URL retrieval [hg]" single])
+ (fullscreen-mode .
+		  [(20130524 956)
+		   nil "fullscreen window support for Emacs [github]" single])
  (full-ack .
 	   [(20130423 2204)
 	    nil "a front-end for ack [github]" tar])
@@ -2640,7 +2646,7 @@
 			      (1 2)))
 			    "Change mode line color with Flycheck status [github]" single])
  (flycheck .
-	   [(20130521 1524)
+	   [(20130524 1804)
 	    ((s
 	      (1 3 1))
 	     (dash
@@ -2750,7 +2756,7 @@
 		 (0)))
 	       "let there be <leader> [github]" single])
  (evil .
-       [(20130522 2031)
+       [(20130524 2215)
 	((undo-tree
 	  (0 5 1)))
 	"Extensible Vi layer for Emacs. [git]" tar])
@@ -3135,7 +3141,7 @@
 	   [(20130509 1355)
 	    nil "Disassemble C/C++ code under cursor in Emacs [github]" single])
  (direx .
-	[(20130202 25)
+	[(20130523 1724)
 	 nil "Simple Directory Explorer [github]" tar])
  (dired-single .
 	       [(20130207 2150)
@@ -3563,7 +3569,7 @@
 			 [(20130429 2026)
 			  nil "Visually makes non-current buffers less prominent [github]" single])
  (auto-dictionary .
-		  [(20130326 2256)
+		  [(20130524 2259)
 		   nil "automatic dictionary switcher for flyspell [github]" tar])
  (auto-complete-clang-async .
 			    [(20130215 1406)
@@ -3616,7 +3622,7 @@
 	   [(20130323 1652)
 	    nil "open anything / QuickSilver-like candidate-selection framework [git]" tar])
  (anti-zenburn-theme .
-		     [(20130522 2359)
+		     [(20130523 2347)
 		      nil "Low-contrast Zenburn-inverted theme [github]" single])
  (ansi .
        [(20121008 1920)
