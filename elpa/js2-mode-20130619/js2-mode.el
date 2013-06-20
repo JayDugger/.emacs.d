@@ -7,7 +7,7 @@
 ;;         Dmitry Gutov <dgutov@yandex.ru>
 ;; URL:  https://github.com/mooz/js2-mode/
 ;;       http://code.google.com/p/js2-mode/
-;; Version: 20130608
+;; Version: 20130619
 ;; Keywords: languages, javascript
 ;; Package-Requires: ((emacs "24.1"))
 
@@ -10562,8 +10562,9 @@ This ensures that the counts and `next-error' are correct."
 (defun js2-echo-error (old-point new-point)
   "Called by point-motion hooks."
   (let ((msg (get-text-property new-point 'help-echo)))
-    (when (and (stringp msg) (or (not (current-message))
-                                 (string= (current-message) "Quit")))
+    (when (and (stringp msg)
+               (not (active-minibuffer-window))
+               (not (current-message)))
       (message msg))))
 
 (defalias #'js2-echo-help #'js2-echo-error)
@@ -11138,6 +11139,8 @@ RESET means start over from the beginning."
           (if (zerop (decf count))
               (setq continue nil)))
         (setq errs (cdr errs)))
+      ;; Clear for `js2-echo-error'.
+      (message nil)
       (if err
           (goto-char (second err))
         ;; Wrap around to first error.
@@ -11301,6 +11304,89 @@ it marks the next defun after the ones already marked."
          (beg (js2-node-abs-pos fn)))
     (unless (js2-ast-root-p fn)
       (narrow-to-region beg (+ beg (js2-node-len fn))))))
+
+;;;; ChangeLog:
+
+;; 2013-06-19  Dmitry Gutov  <dgutov@yandex.ru>
+;; 
+;; 	js2-mode: Merge from upstream
+;; 	
+;; 	Git commit 714dca50644c75884d9d90f10328c7a12e02cdcc
+;; 
+;; 2013-06-08  Dmitry Gutov  <dgutov@yandex.ru>
+;; 
+;; 	js2-mode: Merge from upstream
+;; 	
+;; 	Git commit 1c53de75e0acd19d61ad45a91b32c183948e5128
+;; 
+;; 2013-05-10  Dmitry Gutov  <dgutov@yandex.ru>
+;; 
+;; 	js2-mode: Fix a typo
+;; 	
+;; 	Git commit c50f3d1d9db63bcbea3f02036ee17ab0d7511be0
+;; 
+;; 2013-05-10  Dmitry Gutov  <dgutov@yandex.ru>
+;; 
+;; 	js2-mode: Merge from upstream
+;; 	
+;; 	* js2-imenu-extras: New file.
+;; 	
+;; 	Git commit 3c69aea0c267e7bbadd5e35eb6cab54764c9d91c
+;; 
+;; 2013-03-07  Dmitry Gutov  <dgutov@yandex.ru>
+;; 
+;; 	js2-mode: Merge from upstream (js2-multiline-decl-indentation)
+;; 
+;; 2013-02-28  Dmitry Gutov  <dgutov@yandex.ru>
+;; 
+;; 	js2-mode: Merge from upstream
+;; 
+;; 2013-02-19  Dmitry Gutov  <dgutov@yandex.ru>
+;; 
+;; 	js2-mode: Use \\' instead of $
+;; 
+;; 2013-02-19  Dmitry Gutov  <dgutov@yandex.ru>
+;; 
+;; 	Merge from upstream
+;; 
+;; 2013-02-17  Dmitry Gutov  <dgutov@yandex.ru>
+;; 
+;; 	Merge from upstream
+;; 
+;; 2012-12-26  Dmitry Gutov  <dgutov@yandex.ru>
+;; 
+;; 	* js2-mode: same for Returns -> Return
+;; 
+;; 2012-12-26  Dmitry Gutov  <dgutov@yandex.ru>
+;; 
+;; 	Re-apply the Toggles -> Toggle wording change
+;; 
+;; 2012-12-25  Dmitry Gutov  <dgutov@yandex.ru>
+;; 
+;; 	* js2-mode: merge from upstream
+;; 	
+;; 	Lots of small changes, too many to enumerate.
+;; 
+;; 2012-10-31  Stefan Monnier  <monnier@iro.umontreal.ca>
+;; 
+;; 	* admin/update-archive.sh: Keep old packages.
+;; 
+;; 2011-07-01  Chong Yidong  <cyd@stupidchicken.com>
+;; 
+;; 	Reorganize repository layout, allowing site installation.
+;; 	
+;; 	A Makefile with "site", "archive" and "archive-full" rules can now be
+;; 	used for site-installation, partial archive deployment, and full
+;; 	archive deployment respectively.
+;; 	
+;; 	Rewrite the admin/archive-contents.el script to handle these changes.
+;; 
+;; 2011-07-01  Chong Yidong  <cyd@stupidchicken.com>
+;; 
+;; 	Give every package its own directory in packages/
+;; 	including single-file packages.
+;; 
+
 
 (provide 'js2-mode)
 

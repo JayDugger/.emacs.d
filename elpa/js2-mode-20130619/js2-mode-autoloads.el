@@ -3,24 +3,8 @@
 ;;; Code:
 
 
-;;;### (autoloads (js2-imenu-extras-mode js2-imenu-extras-setup)
-;;;;;;  "js2-imenu-extras" "js2-imenu-extras.el" (20921 14619))
-;;; Generated autoloads from js2-imenu-extras.el
-
-(autoload 'js2-imenu-extras-setup "js2-imenu-extras" "\
-
-
-\(fn)" nil nil)
-
-(autoload 'js2-imenu-extras-mode "js2-imenu-extras" "\
-Toggle Imenu support for frameworks and structural patterns.
-
-\(fn &optional ARG)" t nil)
-
-;;;***
-
 ;;;### (autoloads (js2-mode js2-minor-mode) "js2-mode" "js2-mode.el"
-;;;;;;  (20921 14619))
+;;;;;;  (20930 24737))
 ;;; Generated autoloads from js2-mode.el
 
 (autoload 'js2-minor-mode "js2-mode" "\
@@ -38,7 +22,7 @@ Major mode for editing JavaScript code.
 
 ;;;***
 
-;;;### (autoloads nil nil ("js2-mode-pkg.el") (20921 14620 7939))
+;;;### (autoloads nil nil ("js2-mode-pkg.el") (20930 24737 355604))
 
 ;;;***
 
