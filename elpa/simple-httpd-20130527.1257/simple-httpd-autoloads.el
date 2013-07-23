@@ -4,7 +4,7 @@
 
 
 ;;;### (autoloads (httpd-stop httpd-start) "simple-httpd" "simple-httpd.el"
-;;;;;;  (20924 3714))
+;;;;;;  (20975 4053))
 ;;; Generated autoloads from simple-httpd.el
 
 (autoload 'httpd-start "simple-httpd" "\
@@ -22,7 +22,7 @@ otherwise do nothing.
 
 ;;;***
 
-;;;### (autoloads nil nil ("simple-httpd-pkg.el") (20924 3715 130807))
+;;;### (autoloads nil nil ("simple-httpd-pkg.el") (20975 4053 305550))
 
 ;;;***
 

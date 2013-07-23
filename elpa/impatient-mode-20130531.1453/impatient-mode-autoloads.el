@@ -4,7 +4,7 @@
 
 
 ;;;### (autoloads (impatient-mode) "impatient-mode" "impatient-mode.el"
-;;;;;;  (20924 4350))
+;;;;;;  (20970 7410))
 ;;; Generated autoloads from impatient-mode.el
 
 (autoload 'impatient-mode "impatient-mode" "\
@@ -14,7 +14,7 @@ Serves the buffer live over HTTP.
 
 ;;;***
 
-;;;### (autoloads nil nil ("impatient-mode-pkg.el") (20924 4350 775548))
+;;;### (autoloads nil nil ("impatient-mode-pkg.el") (20970 7410 424157))
 
 ;;;***
 
