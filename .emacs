@@ -14,7 +14,7 @@
  '(inhibit-startup-screen t)
  '(menu-bar-mode nil)
  '(org-agenda-files (quote ("/home/jwdugger/Dropbox/doc/reflexive/org/" "/home/jwdugger/Dropbox/doc/work/")))
- '(org-archive-location "~/Dropbox/org/datetree.org::datetree/* From %s")
+ '(org-archive-location "~/Dropbox/doc/reflexive/org/datetree.org::datetree/* From %s")
  '(org-babel-load-languages (quote ((emacs-lisp . t) (sh . t) (R . t) (perl . t) (python . t))))
  '(org-completion-use-ido t)
  '(org-default-notes-file "~/Dropbox/org/notes.org")
@@ -29,7 +29,6 @@
  '(speedbar-frame-parameters (quote ((minibuffer) (width . 20) (border-width . 0) (menu-bar-lines . 0) (tool-bar-lines . 0) (unsplittable . t) (set-background-color "black"))))
  '(text-mode-hook (quote (turn-on-artbollocks-mode (lambda nil (auto-fill-mode 1)))))
  '(tool-bar-mode nil)
- '(transient-mark-mode (quote (only . t)))
  '(uniquify-buffer-name- style nil nil (uniquify)))
  
 ;; 20110208--JWD
@@ -67,7 +66,7 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((((class color) (min-colors 89)) (:foreground "#657b83" :background "#fdf6e3" :family "Inconsolata" :foundry "unknown" :slant normal :weight normal :height 128 :width normal)))))
+ '(default ((((class color) (min-colors 89)) (:foreground "#657b83" :background "#fdf6e3" :family "Inconsolata" :foundry "unknown" :slant normal :weight normal :height 113 :width normal)))))
 
 ;; 20120224--jwd
 ;; el-get setup from 
@@ -100,3 +99,8 @@
   (when (require 'edit-server nil t)
     (setq edit-server-new-frame nil)
     (edit-server-start))
+
+;; Load el4r, which loads Xiki
+;;(add-to-list 'load-path "/var/lib/gems/1.9.1/gems/trogdoro-el4r-1.0.9/data/emacs/site-lisp/")
+;;(require 'el4r)
+;;(el4r-boot)

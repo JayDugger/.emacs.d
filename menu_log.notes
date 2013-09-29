@@ -1,0 +1,39 @@
+- web/start
+- dir/
+- web/docs
+- mysql/dbs
+- dbs/
+- mysql/setup/start
+- animals/
+- animals/pets
+- animals/pets/dogs
+- animals/pets/dogs/labs
+- animals/pets/dogs/pit bulls
+- animals/pets/cats
+- animals/pets/cats/siamese
+- animals/pets/cats/persian
+- animals/bugs
+- animals/bugs/bees
+- all/
+- create menus manually/
+- editor setup/
+- emacs setup/
+- emacs setup/check for app
+- emacs setup/update emacs conf
+- emacs setup/update el4rrc
+- emacs setup/update initrb
+- create menus manually/
+- create menus manually/
+- create menus manually/txt file
+- foo/
+- create menus manually/ruby file
+- sample menus/
+- welcome/
+- sample menus/
+- sample menus/more
+- sample menus/more/index files
+- sample menus/text file
+- sample menus/code
+- sample menus/code/items with nested code
+- sample menus/> Menu doesn't exist yet
+- sample menus/> Menu doesn't exist yet/> Make this into a menu?
