@@ -22,7 +22,7 @@
  '(org-mobile-directory "~/Dropbox/org")
  '(org-src-fontify-natively t)
  '(org-todo-keywords (quote ((sequence "TODO(t!)" "HOLD(h@)" "|" "DECLINED(d@)" "DONE(f@)"))))
- '(package-archives (quote (("ELPA" . "http://tromey.com/elpa/") ("gnu" . "http://elpa.gnu.org/packages/") ("marmalade" . "http://marmalade-repo.org/packages/") ("melpa" . "http://melpa.milkbox.net/packages/"))))
+ '(package-archives (quote (("ELPA" . "http://tromey.com/elpa/") ("gnu" . "http://elpa.gnu.org/packages/") ("marmalade" . "http://marmalade-repo.org/packages/") ("MELPA" . "http://melpa.milkbox.net/packages/"))))
  '(reb-re-syntax (quote string))
  '(scroll-bar-mode nil)
  '(show-paren-mode t)
