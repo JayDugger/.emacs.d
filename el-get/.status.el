@@ -13,6 +13,8 @@
 	      (:name edit-server :description "Emacs edit-server. This provides an edit server to respond to requests from the Chrome Emacs Chrome plugin." :type http :url "http://github.com/stsquad/emacs_chrome/raw/master/servers/edit-server.el"))
  (el-get status "installed" recipe
 	 (:name el-get :website "https://github.com/dimitri/el-get#readme" :description "Manage the external elisp bits and pieces you depend upon." :type github :branch "4.stable" :pkgname "dimitri/el-get" :features el-get :info "." :load "el-get.el"))
+ (epubmode status "installed" recipe
+	   (:name epubmode :auto-generated t :type emacswiki :description "Minor mode for reading epub e-books in Emacs" :website "https://raw.github.com/emacsmirror/emacswiki.org/master/epubmode.el"))
  (g-client status "removed" recipe nil)
  (js2-mode status "installed" recipe
 	   (:name js2-mode :website "https://github.com/mooz/js2-mode#readme" :description "An improved JavaScript editing mode" :type github :pkgname "mooz/js2-mode" :prepare
