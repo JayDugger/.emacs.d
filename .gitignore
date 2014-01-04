@@ -21,3 +21,5 @@ url/cookies*
 /#README.org#
 /elpa/haskell-mode-20130819.1523/haskell-cabal.el
 /elpa/deft-0.3/deft-autoloads.el
+/elpa/djvu-0.5/djvu-autoloads.el
+/elpa/djvu-0.5/djvu-pkg.el
