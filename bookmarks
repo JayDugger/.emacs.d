@@ -2,22 +2,7 @@
 ;;; This format is meant to be slightly human-readable;
 ;;; nevertheless, you probably don't want to edit it.
 ;;; -*- End Of Bookmark File Format Version Stamp -*-
-(("org-refile-last-stored"
- (filename . "/home/duggerj/doc/Dropbox/org/Dugger, Jay - scratch.16 - (20120124).org")
- (front-context-string . "** DONE usual im")
- (rear-context-string . " 2) TPB\n  3) D\n\n")
- (position . 876))
-("Daily Record Template"
- (filename . "~/Dropbox/org/jwd - [Templates] - Daily Record Template - (2012).org")
- (front-context-string . "#+STARTUP: showa")
- (rear-context-string)
- (position . 1))
-("Dropbox/org"
- (filename . "~/doc/Dropbox/org/")
- (front-context-string . "Dugger, Jay - sc")
- (rear-context-string . "012-04-26 06:16 ")
- (position . 4548))
-("mess"
+(("mess"
  (filename . "~/tmp/mess/")
  (front-context-string . "070d25dd-0573-4a")
  (rear-context-string . "012-06-29 10:08 ")
