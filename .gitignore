@@ -1,22 +1,8 @@
+*~
 #*#
-.#README.org
-auto-save-list/.saves-11632-jsmill~
-auto-save-list/
-elpa/archives/gnu/*~
-elpa/magit-1.0.0/*~
+.#
 session.*
 eshell/history
-*~
-
-
-/el-get/.loaddefs.el~
-/elpa/clojure-mode-1.11.5/clojure-mode-autoloads.el~
-/elpa/archives/marmalade/archive-contents~
-/elpa/color-theme-6.6.1/color-theme-autoloads.el~
-/elpa/ipython-2927/ipython-autoloads.el~
-/elpa/magit-1.1.1/magit-autoloads.el~
-/el-get/dired+/dired+.el
 url/cookies*
 /url/#cookies#
-/#README.org#
 
