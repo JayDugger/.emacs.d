@@ -5,3 +5,4 @@ session.*
 eshell/history
 url/cookies*
 /url/#cookies#
+image-dired/*
