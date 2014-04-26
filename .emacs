@@ -26,7 +26,7 @@
  '(org-mobile-inbox-for-pull "~/Dropbox/doc/reflexive/org/from-mobile.org")
  '(org-src-fontify-natively t)
  '(org-todo-keywords (quote ((sequence "TODO(t!)" "HOLD(h@)" "|" "DECLINED(d@)" "DONE(f@)"))))
- '(package-archives (quote (("org " . "http://orgmode.org/elpa/") ("ELPA" . "http://tromey.com/elpa/") ("gnu" . "http://elpa.gnu.org/packages/") ("marmalade" . "http://marmalade-repo.org/packages/"))))
+ '(package-archives (quote (("ELPA" . "http://tromey.com/elpa/") ("gnu" . "http://elpa.gnu.org/packages/") ("marmalade" . "http://marmalade-repo.org/packages/") ("org" . "http://orgmode.org/elpa/") ("melpa" . "http://melpa.milkbox.net/packages/"))))
  '(reb-re-syntax (quote string))
  '(scroll-bar-mode nil)
  '(show-paren-mode t)
