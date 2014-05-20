@@ -11,6 +11,11 @@
  '(custom-safe-themes
    (quote
     ("06f0b439b62164c6f8f84fdda32b62fb50b6d00e8b01c2208e55543a6337433a" "4cf3221feff536e2b3385209e9b9dc4c2e0818a69a1cdb4b522756bcdf4e00a4" "4aee8551b53a43a883cb0b7f3255d6859d766b6c5e14bcb01bed572fcbef4328" "82d2cac368ccdec2fcc7573f24c3f79654b78bf133096f9b40c20d97ec1d8016" "1440d751f5ef51f9245f8910113daee99848e2c0" "e254937cba0f82c2d9eb3189a60748df9e486522" "7fe1e3de3e04afc43f9a3d3a8d38cd0a0efd9d4c" default)))
+ '(deft-archive-directory "~/Dropbox/doc/reflexive/deft/")
+ '(deft-directory "~/Dropbox/doc/reflexive/deft/")
+ '(deft-extension "org")
+ '(deft-text-mode (quote org-mode))
+ '(deft-use-filename-as-title t)
  '(electric-pair-mode t)
  '(global-auto-revert-mode t)
  '(global-hl-line-mode t)
