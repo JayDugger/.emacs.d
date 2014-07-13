@@ -50,7 +50,6 @@
     (("ELPA" . "http://tromey.com/elpa/")
      ("gnu" . "http://elpa.gnu.org/packages/")
      ("marmalade" . "http://marmalade-repo.org/packages/")
-     ("org" . "http://orgmode.org/elpa/")
      ("melpa" . "http://melpa.milkbox.net/packages/"))))
  '(reb-re-syntax (quote string))
  '(scroll-bar-mode nil)
