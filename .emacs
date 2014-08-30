@@ -39,6 +39,7 @@
  '(org-default-notes-file "~/Dropbox/org/notes.org")
  '(org-directory "/home/jwdugger/Dropbox/doc/reflexive/org")
  '(org-log-done (quote time))
+ '(org-log-into-drawer t)
  '(org-mobile-directory "~/Dropbox/doc/reflexive/mobileorg/")
  '(org-mobile-inbox-for-pull "~/Dropbox/doc/reflexive/org/from-mobile.org")
  '(org-src-fontify-natively t)
