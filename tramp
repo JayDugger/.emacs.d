@@ -1,4 +1,4 @@
-;; -*- emacs-lisp -*- <13/11/30 13:38:47 /home/jwdugger/.emacs.d/tramp>
+;; -*- emacs-lisp -*- <14/09/06 02:52:10 /home/jwdugger/.emacs.d/tramp>
 ;; Tramp connection history.  Don't change this file.
 ;; You can delete it, forcing Tramp to reapply the checks.
 
@@ -16,5 +16,15 @@
   ("stat" "\\stat")
   ("gid-integer" 0)
   ("readlink" "\\readlink"))
- (["scpc" nil "ssh" nil]
-  nil))
+ (["sudo" "root" "localhost" nil nil]
+  ("uname" "Linux 3.11.0-26-generic")
+  ("test" "test")
+  ("remote-path"
+   ("/bin" "/usr/bin" "/sbin" "/usr/sbin" "/usr/local/bin" "/usr/local/sbin"))
+  ("remote-shell" "/bin/sh")
+  ("busybox" nil)
+  ("file-exists" "test -e")
+  ("readlink" "\\readlink")
+  ("stat" "\\stat")
+  ("id" "/usr/bin/id")
+  ("gid-integer" 0)))
