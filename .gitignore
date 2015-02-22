@@ -5,6 +5,7 @@ session.*
 eshell/history
 url/cookies*
 /url/#cookies#
+url/cache/*
 image-dired/*
 /elpa/archives/org /archive-contents
 /elpa/dash-20140407.253/
