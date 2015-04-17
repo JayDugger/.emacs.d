@@ -2,7 +2,22 @@
 ;;; This format is meant to be slightly human-readable;
 ;;; nevertheless, you probably don't want to edit it.
 ;;; -*- End Of Bookmark File Format Version Stamp -*-
-(("mess"
+(("org-refile-last-stored"
+ (filename . "~/Dropbox/doc/reflexive/org/jwd - Library Tuesday - (20121231).org")
+ (front-context-string . "** TODO [#C] Wri")
+ (rear-context-string . "m Maintenance\n\n\n")
+ (position . 9133))
+("org"
+ (filename . "~/Dropbox/doc/reflexive/org/")
+ (front-context-string . "jwd - jsmill ZFS")
+ (rear-context-string . "66 Sep  6 02:52 ")
+ (position . 15595))
+("Downloads"
+ (filename . "~/Downloads/")
+ (front-context-string . "back-ups\n  drwxr")
+ (rear-context-string . "96 Feb 23 12:25 ")
+ (position . 309))
+("mess"
  (filename . "~/tmp/mess/")
  (front-context-string . "070d25dd-0573-4a")
  (rear-context-string . "012-06-29 10:08 ")
