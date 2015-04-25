@@ -55,13 +55,12 @@
     ((sequence "TODO(t!)" "HOLD(h@)" "|" "DECLINED(d@)" "DONE(f@)"))))
  '(package-archives
    (quote
-    (("ELPA" . "http://tromey.com/elpa/")
+    (("melpa" . "http://melpa.org/packages/")
      ("gnu" . "http://elpa.gnu.org/packages/")
-     ("marmalade" . "http://marmalade-repo.org/packages/")
-     ("melpa-stable" . "http://stable.melpa.org/packages/"))))
+     ("marmalade" . "http://marmalade-repo.org/packages/"))))
  '(package-selected-packages
    (quote
-    (impatient-mode melpa-repository xahk-mode undo-tree sr-speedbar solarized-theme python-mode pymacs paredit ox-tiddly org2blog org-drill-table nurumacs minimap markdown-mode magit javascript ipython ioccur ido-vertical-mode httpd htmlize git-rebase-mode git-commit-mode eprime-mode elfeed edit-server-htmlize djvu dired-details+ dired+ deft csv-mode css-mode color-theme-solarized color-theme-sanityinc-tomorrow color-theme-sanityinc-solarized color-theme-github bash-completion auto-complete)))
+    (Save-visited-files impatient-mode melpa-repository xahk-mode undo-tree sr-speedbar solarized-theme python-mode pymacs paredit ox-tiddly org2blog org-drill-table nurumacs minimap markdown-mode magit javascript ipython ioccur ido-vertical-mode httpd htmlize git-rebase-mode git-commit-mode eprime-mode elfeed edit-server-htmlize djvu dired-details+ dired+ deft csv-mode css-mode color-theme-solarized color-theme-sanityinc-tomorrow color-theme-sanityinc-solarized color-theme-github bash-completion auto-complete)))
  '(reb-re-syntax (quote string))
  '(scroll-bar-mode nil)
  '(show-paren-mode t)
@@ -155,3 +154,7 @@
 ;;(add-to-list 'load-path "/var/lib/gems/1.9.1/gems/trogdoro-el4r-1.0.9/data/emacs/site-lisp/")
 ;;(require 'el4r)
 ;;(el4r-boot)
+
+;; 20140425--jwd
+;; Supress magit 1.4.0 upgrade message
+(setq magit-last-seen-setup-instructions "1.4.0")
