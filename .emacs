@@ -118,23 +118,6 @@
 ;;  ;; If there is more than one, they won't work right.
 ;;  '(default ((((class color) (min-colors 89)) (:foreground "#657b83" :background "#fdf6e3" :family "Inconsolata" :foundry "unknown" :slant normal :weight normal :height 120 :width normal)))))
 
-;; ;; 20120224--jwd
-;; ;; el-get setup from 
-;; (add-to-list 'load-path "~/.emacs.d/el-get/el-get")
-;; (unless 
-;;     (require 'el-get nil t) 
-;;   (with-current-buffer 
-;;       (url-retrieve-synchronously "https://raw.github.com/dimitri/el-get/master/el-get-install.el") 
-;;     (end-of-buffer) 
-;;     (eval-print-last-sexp))) 
-;; (el-get 'sync)
-
-;; ;; 20120227--jwd
-;; ;; ADDED all three Emacs24 package archives from http://emacs-fu.blogspot.com/2011/11/package-management-revisited.html
-;; (setq package-archives '(("ELPA" . "http://tromey.com/elpa/") 
-;;                           ("gnu" . "http://elpa.gnu.org/packages/")
-;;                           ("marmalade" . "http://marmalade-repo.org/packages/")))
-
 ;; (put 'upcase-region 'disabled nil)
 
 ;; ;; 20130306--jwd
@@ -145,17 +128,3 @@
 ;;   (when (require 'edit-server nil t)
 ;;     (setq edit-server-new-frame nil)
 ;;     (edit-server-start))
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(package-selected-packages
-   (quote
-    (xahk-mode undo-tree sr-speedbar solarized-theme python-mode pymacs paredit ox-tiddly org2blog org-drill-table nurumacs minimap markdown-mode magit javascript ipython ioccur ido-vertical-mode httpd htmlize eprime-mode elfeed edit-server-htmlize djvu dired-details+ dired+ deft csv-mode css-mode color-theme-solarized color-theme-sanityinc-tomorrow color-theme-sanityinc-solarized color-theme-github bash-completion auto-complete))))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
