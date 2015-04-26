@@ -96,17 +96,6 @@
 
 ;; (put 'downcase-region 'disabled nil)
 
-
-;; ;; ;; 20120103--jwd
-;; ;; ;; MobileOrg setup from http://mobileorg.ncogni.to/doc/getting-started/using-dropbox/
-
-;; ;; ;; Set to the location of your Org files on your local system
-;; ;; ;; (setq org-directory "~/org")
-;; ;; ;; Set to the name of the file where new notes will be stored
-;; ;; ;;(setq org-mobile-inbox-for-pull "~/doc/org/flagged.org")
-;; ;; ;; Set to <your Dropbox root directory>/MobileOrg.
-;; ;; (setq org-mobile-directory "~/Dropbox/org")
-
 ;; (custom-set-faces
 ;;  ;; custom-set-faces was added by Custom.
 ;;  ;; If you edit it by hand, you could mess it up, so be careful.
