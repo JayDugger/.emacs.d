@@ -86,15 +86,15 @@
 
 ;; (add-to-list 'load-path "~/.emacs.d/elpa/org-20121210")
 
-;; ;;(add-to-list 'auto-mode-alist '("\\.org\\'" . org-mode))
-;;  (global-set-key "\C-cl" 'org-store-link)
-;;  (global-set-key "\C-cc" 'org-capture)
-;;  (global-set-key "\C-ca" 'org-agenda)
-;;  (global-set-key "\C-cb" 'org-iswitchb)
-;;  (global-set-key "\C-cL" 'org-insert-link-global)
-;;  (global-set-key "\C-co" 'org-open-at-point-global)
+(add-to-list 'auto-mode-alist '("\\.org\\'" . org-mode))
+  (global-set-key "\C-cl" 'org-store-link)
+  (global-set-key "\C-cc" 'org-capture)
+  (global-set-key "\C-ca" 'org-agenda)
+  (global-set-key "\C-cb" 'org-iswitchb)
+  (global-set-key "\C-cL" 'org-insert-link-global)
+  (global-set-key "\C-co" 'org-open-at-point-global)
 
-;; (put 'downcase-region 'disabled nil)
+(put 'downcase-region 'disabled nil)
 
 ;; (custom-set-faces
 ;;  ;; custom-set-faces was added by Custom.
@@ -103,7 +103,7 @@
 ;;  ;; If there is more than one, they won't work right.
 ;;  '(default ((((class color) (min-colors 89)) (:foreground "#657b83" :background "#fdf6e3" :family "Inconsolata" :foundry "unknown" :slant normal :weight normal :height 120 :width normal)))))
 
-;; (put 'upcase-region 'disabled nil)
+(put 'upcase-region 'disabled nil)
 
 ;; ;; 20130306--jwd
 ;; ;; Set up an edit server for requests from Chrome's Edit With Emacs plugin.
