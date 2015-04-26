@@ -149,8 +149,3 @@
 ;;   (when (require 'edit-server nil t)
 ;;     (setq edit-server-new-frame nil)
 ;;     (edit-server-start))
-
-;; ;; Load el4r, which loads Xiki
-;; ;;(add-to-list 'load-path "/var/lib/gems/1.9.1/gems/trogdoro-el4r-1.0.9/data/emacs/site-lisp/")
-;; ;;(require 'el4r)
-;; ;;(el4r-boot)
