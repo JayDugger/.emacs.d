@@ -96,10 +96,6 @@
 
 ;; (put 'downcase-region 'disabled nil)
 
-;; ;; 20120103--JWD
-;; ;; START emacs server
-
-;; (server-start)
 
 ;; ;; ;; 20120103--jwd
 ;; ;; ;; MobileOrg setup from http://mobileorg.ncogni.to/doc/getting-started/using-dropbox/
