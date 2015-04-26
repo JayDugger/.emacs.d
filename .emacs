@@ -11,7 +11,6 @@
  ;; If there is more than one, they won't work right.
  '(ansi-color-faces-vector
    [default bold shadow italic underline bold bold-italic bold])
- '(artbollocks nil)
  '(case-fold-search nil)
  '(column-number-mode t)
  '(custom-enabled-themes (quote (sanityinc-solarized-light)))
@@ -40,15 +39,10 @@
  '(org-directory "/home/jwdugger/Dropbox/doc/reflexive/org")
  '(org-log-done (quote time))
  '(org-log-into-drawer t)
- '(org-mobile-directory "~/Dropbox/doc/reflexive/mobileorg/")
- '(org-mobile-inbox-for-pull "~/Dropbox/doc/reflexive/org/from-mobile.org")
  '(org-src-fontify-natively t)
  '(org-todo-keywords
    (quote
     ((sequence "TODO(t!)" "HOLD(h@)" "|" "DECLINED(d@)" "DONE(f@)"))))
- '(package-selected-packages
-   (quote
-    (xahk-mode undo-tree sr-speedbar solarized-theme python-mode pymacs paredit ox-tiddly org2blog org-drill-table nurumacs minimap markdown-mode magit javascript ipython ioccur ido-vertical-mode httpd htmlize eprime-mode elfeed edit-server-htmlize djvu dired-details+ dired+ deft csv-mode css-mode color-theme-solarized color-theme-sanityinc-tomorrow color-theme-sanityinc-solarized color-theme-github bash-completion auto-complete)))
  '(reb-re-syntax (quote string))
  '(scroll-bar-mode nil)
  '(show-paren-mode t)
