@@ -40,16 +40,15 @@
  '(org-directory "/home/jwdugger/Dropbox/doc/reflexive/org")
  '(org-log-done (quote time))
  '(org-log-into-drawer t)
+ '(org-mobile-directory "~/Dropbox/doc/reflexive/mobileorg/")
+ '(org-mobile-inbox-for-pull "~/Dropbox/doc/reflexive/org/from-mobile.org")
  '(org-src-fontify-natively t)
  '(org-todo-keywords
    (quote
     ((sequence "TODO(t!)" "HOLD(h@)" "|" "DECLINED(d@)" "DONE(f@)"))))
-;;  '(package-archives
-;;    (quote
-;;     (("melpa" . "http://melpa.org/packages/")
-;;      ("gnu" . "http://elpa.gnu.org/packages/")
-;;      ("marmalade" . "http://marmalade-repo.org/packages/"))))
-
+ '(package-selected-packages
+   (quote
+    (xahk-mode undo-tree sr-speedbar solarized-theme python-mode pymacs paredit ox-tiddly org2blog org-drill-table nurumacs minimap markdown-mode magit javascript ipython ioccur ido-vertical-mode httpd htmlize eprime-mode elfeed edit-server-htmlize djvu dired-details+ dired+ deft csv-mode css-mode color-theme-solarized color-theme-sanityinc-tomorrow color-theme-sanityinc-solarized color-theme-github bash-completion auto-complete)))
  '(reb-re-syntax (quote string))
  '(scroll-bar-mode nil)
  '(show-paren-mode t)
@@ -102,3 +101,9 @@
 ;;   (when (require 'edit-server nil t)
 ;;     (setq edit-server-new-frame nil)
 ;;     (edit-server-start))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
