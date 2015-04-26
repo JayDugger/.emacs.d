@@ -137,10 +137,6 @@
 
 ;; (put 'upcase-region 'disabled nil)
 
-;; ;; 201204080--jwd
-;; ;; (require 'org-fstree)
-;; (put 'narrow-to-region 'disabled nil)
-
 ;; ;; 20130306--jwd
 ;; ;; Set up an edit server for requests from Chrome's Edit With Emacs plugin.
 ;; ;; To open pages for editing in new buffers in your existing Emacs
