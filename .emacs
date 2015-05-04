@@ -63,11 +63,11 @@
      (tool-bar-lines . 0)
      (unsplittable . t)
      (set-background-color "black"))))
- '(text-mode-hook
-   (quote
-    (turn-on-artbollocks-mode
-     (lambda nil
-       (auto-fill-mode 1)))))
+ ;; '(text-mode-hook
+ ;;   (quote
+ ;;    (turn-on-artbollocks-mode
+ ;;     (lambda nil
+ ;;       (auto-fill-mode 1)))))
  '(tool-bar-mode nil)
  '(uniquify-buffer-name- style nil nil (uniquify)))
  
