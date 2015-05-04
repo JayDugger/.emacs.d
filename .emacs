@@ -109,3 +109,6 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  )
+
+;; Don't show magit-1.4.0's warning
+(setq magit-last-seen-setup-instructions "1.4.0")
