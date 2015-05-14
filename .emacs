@@ -40,6 +40,7 @@
  '(org-directory "/home/jwdugger/Dropbox/doc/reflexive/org")
  '(org-log-done (quote time))
  '(org-log-into-drawer t)
+ '(org-refile-targets (quote ((org-agenda-files :maxlevel . 3))))
  '(org-src-fontify-natively t)
  '(org-todo-keywords
    (quote
