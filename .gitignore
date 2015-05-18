@@ -1,19 +1,39 @@
+# -*- mode: gitignore; -*-
 *~
-*#*#
-.#
+\#*\#
+/.emacs.desktop
+/.emacs.desktop.lock
+*.elc
+auto-save-list
+tramp
+.\#*
+
+# Org-mode
+.org-id-locations
+*_archive
+
+# flymake-mode
+*_flymake.*
+
+# eshell files
+/eshell/history
+/eshell/lastdir
+
+# elpa packages
+/elpa/
+
+# reftex files
+*.rel
+
+# AUCTeX auto folder
+/auto/
+
+# cask packages
+.cask/
+
+# private
 session.*
 eshell/history
 url/cookies*
 /url/#cookies#
 image-dired/*
-/elpa/archives/org /archive-contents
-/elpa/dash-20140407.253/
-/eshell/lastdir
-/elpa/gnupg/
-/elpa/org-20141124/
-/elpa/org-20141124.signed
-/elpa/ahungry-theme-readme.txt
-/elpa/auto-overlays-readme.txt
-/elpa/company-statistics-readme.txt
-/elpa/shellfm-readme.txt
-/.#README.org
