@@ -1,4 +1,4 @@
-;; -*- emacs-lisp -*- <14/09/06 02:52:10 /home/jwdugger/.emacs.d/tramp>
+;; -*- emacs-lisp -*- <15/05/31 07:27:32 /home/jwdugger/.emacs.d/tramp>
 ;; Tramp connection history.  Don't change this file.
 ;; You can delete it, forcing Tramp to reapply the checks.
 
@@ -27,4 +27,24 @@
   ("readlink" "\\readlink")
   ("stat" "\\stat")
   ("id" "/usr/bin/id")
-  ("gid-integer" 0)))
+  ("gid-integer" 0))
+ (["sudo" "root" "jsmill" nil nil]
+  ("locale" "LC_ALL=en_US.utf8")
+  ("uname" "Linux 3.16.0-38-generic")
+  ("test" "test")
+  ("remote-path"
+   ("/bin" "/usr/bin" "/sbin" "/usr/sbin" "/usr/local/bin" "/usr/local/sbin"))
+  ("remote-shell" "/bin/sh")
+  ("~root" "/root")
+  ("stat" "\\stat")
+  ("file-exists" "test -e")
+  ("ls" "/bin/ls --color=never")
+  ("ls-quoting-style" t)
+  ("id" "/usr/bin/id")
+  ("uid-integer" 0)
+  ("gid-integer" 0)
+  ("gid-string" "root")
+  ("readlink" "\\readlink")
+  ("tmpdir" "/sudo:root@jsmill:/tmp")
+  ("touch-t" t)
+  ("touch" "\\touch")))
