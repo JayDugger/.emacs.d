@@ -1362,7 +1362,7 @@
 	   [(0 0 1)
 	    nil "get stuff from pinboard" single])
  (picpocket .
-	    [(13)
+	    [(14)
 	     nil "Image viewer" single])
  (pickup .
 	 [(0 0 3)
@@ -3259,7 +3259,7 @@
        (2 2 0)))
      "Modern API for working with files and directories" single])
  (eyebrowse .
-	    [(0 4 5)
+	    [(0 5 1)
 	     ((dash
 	       (2 7 0)))
 	     "Easy window config switching" single])
