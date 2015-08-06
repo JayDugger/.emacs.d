@@ -121,3 +121,4 @@
 
 ;; Don't show magit-1.4.0's warning
 (setq magit-last-seen-setup-instructions "1.4.0")
+(put 'narrow-to-region 'disabled nil)
