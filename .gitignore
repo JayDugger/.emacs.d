@@ -38,3 +38,7 @@ url/cookies*
 /url/#cookies#
 image-dired/*
 /ido.last
+/network-security.data
+url/
+elpa/archives/
+elpa/archives/gnu/

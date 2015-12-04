@@ -8,10 +8,10 @@
  (rear-context-string . "12 Jul 11 02:46 ")
  (position . 246))
 ("org-refile-last-stored"
- (filename . "~/Dropbox/doc/reflexive/org/jwd - List of To-Read Lists - (2012-2013).org")
- (front-context-string . "*** Walwsey, G -")
- (rear-context-string . "ursday:gaming:\n\n")
- (position . 1657))
+ (filename . "~/Dropbox/doc/reflexive/org/jwd - Comics Wednesday - (20130102).org")
+ (front-context-string . "** TODO [#C] MOV")
+ (rear-context-string . "	   :noexport:\n\n")
+ (position . 748))
 ("Dropbox-reflexive-org-data"
  (filename . "~/Dropbox/doc/reflexive/org/data/")
  (front-context-string)
