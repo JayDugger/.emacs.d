@@ -41,4 +41,8 @@ image-dired/*
 /network-security.data
 url/
 elpa/archives/
+
 elpa/archives/gnu/
+elpa/archives/marmalade/
+elpa/archives/melpa/
+elpa/archives/org/
