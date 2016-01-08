@@ -2,7 +2,12 @@
 ;;; This format is meant to be slightly human-readable;
 ;;; nevertheless, you probably don't want to edit it.
 ;;; -*- End Of Bookmark File Format Version Stamp -*-
-(("Downloads"
+(("src"
+ (filename . "~/src/")
+ (front-context-string . "anki\n  drwxr-xr-")
+ (rear-context-string . "96 Sep 22 08:49 ")
+ (position . 239))
+("Downloads"
  (filename . "~/Downloads/")
  (front-context-string . "audio\n  drwxrwxr")
  (rear-context-string . "12 Jul 11 02:46 ")
