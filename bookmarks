@@ -2,7 +2,12 @@
 ;;; This format is meant to be slightly human-readable;
 ;;; nevertheless, you probably don't want to edit it.
 ;;; -*- End Of Bookmark File Format Version Stamp -*-
-(("src"
+(("Wikipedia"
+ (filename . "~/Dropbox/doc/reflexive/org/jwd - personal - List of Taxonomies - (20160327).org")
+ (front-context-string . "** Wikipedia				")
+ (rear-context-string . "   :taxonomy:\n\n\n")
+ (position . 1248))
+("src"
  (filename . "~/src/")
  (front-context-string . "anki\n  drwxr-xr-")
  (rear-context-string . "96 Sep 22 08:49 ")
@@ -13,10 +18,10 @@
  (rear-context-string . "12 Jul 11 02:46 ")
  (position . 246))
 ("org-refile-last-stored"
- (filename . "~/Dropbox/doc/reflexive/org/jwd - Comics Wednesday - (20130102).org")
- (front-context-string . "** TODO usual im")
- (rear-context-string . "\n   :END:      \n")
- (position . 1772))
+ (filename . "~/Dropbox/doc/reflexive/org/jwd - 2015.KDEN_01 - Vacation Journal - (20150628).org")
+ (front-context-string . "** Deck for Auto")
+ (rear-context-string . "AngeloTsakiris\n\n")
+ (position . 7826))
 ("Dropbox-reflexive-org-data"
  (filename . "~/Dropbox/doc/reflexive/org/data/")
  (front-context-string)

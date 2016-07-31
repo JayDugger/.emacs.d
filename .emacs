@@ -39,7 +39,7 @@
  '(menu-bar-mode nil)
  '(org-agenda-files
    (quote
-    ("/home/jwdugger/Dropbox/doc/reflexive/org/jwd - Video Monday - (20121231).org" "~/Dropbox/doc/reflexive/org/jwd - Larchmont House - (2016).org" "~/Dropbox/doc/reflexive/org/jwd - Amazon Saturday - (2015).org" "~/Dropbox/doc/reflexive/org/jwd - Leo Tutorial - (20150529).org" "~/Dropbox/doc/reflexive/org/jwd - 2015.KDEN_01 - Vacation Journal - (20150628).org" "~/Dropbox/doc/reflexive/org/jwd - Codecademy - (201408220050).org" "~/Dropbox/doc/reflexive/org/jwd - [Khan Academy] - Math Exercises - (20130804).org" "~/Dropbox/doc/reflexive/org/jwd - [scratch] - (20150511).org" "/home/jwdugger/Dropbox/doc/reflexive/org/datetree.org" "/home/jwdugger/Dropbox/doc/reflexive/org/jwd - Audio Friday - (2012-2013).org" "/home/jwdugger/Dropbox/doc/reflexive/org/jwd - Comics Wednesday - (20130102).org" "/home/jwdugger/Dropbox/doc/reflexive/org/jwd - Financial Sunday - (2013).org" "/home/jwdugger/Dropbox/doc/reflexive/org/jwd - Gaming Thursday - (20121231).org" "/home/jwdugger/Dropbox/doc/reflexive/org/jwd - Library Tuesday - (20121231).org" "/home/jwdugger/Dropbox/doc/reflexive/org/jwd - List of Larchmont Housework - (20121231).org" "/home/jwdugger/Dropbox/doc/reflexive/org/jwd - List of To-Read Lists - (2012-2013).org" "/home/jwdugger/Dropbox/doc/reflexive/org/jwd - [GLC] - Outline of Gamer Lifestyle Course - (20130720).org" "/home/jwdugger/Dropbox/doc/reflexive/org/jwd - scratch - (20131004).org" "/home/jwdugger/Dropbox/doc/reflexive/org/jwd - scratch - (20140109).org" "/home/jwdugger/Dropbox/doc/reflexive/org/jwd - scratch.01 - (20121116).org" "/home/jwdugger/Dropbox/doc/reflexive/org/jwd - scratch.01 - (20131221).org" "/home/jwdugger/Dropbox/doc/reflexive/org/jwd - scratch.01 - (20140101).org" "/home/jwdugger/Dropbox/doc/reflexive/org/notes.org" "~/Dropbox/doc/reflexive/org/jwd - DG KS Backerkit Notes - (20151204).org" "~/Dropbox/doc/reflexive/org/jwd - Dividend Investing Reading List - (20151117).org")))
+    ("~/Dropbox/doc/reflexive/org/jwd - personal - List of Taxonomies - (20160327).org" "~/Dropbox/doc/reflexive/org/jwd - personal - Journal - (2016).org" "/home/jwdugger/Dropbox/doc/reflexive/org/jwd - Video Monday - (20121231).org" "~/Dropbox/doc/reflexive/org/jwd - Larchmont House - (2016).org" "~/Dropbox/doc/reflexive/org/jwd - Amazon Saturday - (2015).org" "~/Dropbox/doc/reflexive/org/jwd - Leo Tutorial - (20150529).org" "~/Dropbox/doc/reflexive/org/jwd - 2015.KDEN_01 - Vacation Journal - (20150628).org" "~/Dropbox/doc/reflexive/org/jwd - Codecademy - (201408220050).org" "~/Dropbox/doc/reflexive/org/jwd - [Khan Academy] - Math Exercises - (20130804).org" "~/Dropbox/doc/reflexive/org/jwd - [scratch] - (20150511).org" "/home/jwdugger/Dropbox/doc/reflexive/org/datetree.org" "/home/jwdugger/Dropbox/doc/reflexive/org/jwd - Audio Friday - (2012-2013).org" "/home/jwdugger/Dropbox/doc/reflexive/org/jwd - Comics Wednesday - (20130102).org" "/home/jwdugger/Dropbox/doc/reflexive/org/jwd - Financial Sunday - (2013).org" "/home/jwdugger/Dropbox/doc/reflexive/org/jwd - Gaming Thursday - (20121231).org" "/home/jwdugger/Dropbox/doc/reflexive/org/jwd - Library Tuesday - (20121231).org" "/home/jwdugger/Dropbox/doc/reflexive/org/jwd - List of Larchmont Housework - (20121231).org" "/home/jwdugger/Dropbox/doc/reflexive/org/jwd - [GLC] - Outline of Gamer Lifestyle Course - (20130720).org" "/home/jwdugger/Dropbox/doc/reflexive/org/jwd - scratch - (20131004).org" "/home/jwdugger/Dropbox/doc/reflexive/org/jwd - scratch - (20140109).org" "/home/jwdugger/Dropbox/doc/reflexive/org/jwd - scratch.01 - (20121116).org" "/home/jwdugger/Dropbox/doc/reflexive/org/jwd - scratch.01 - (20131221).org" "/home/jwdugger/Dropbox/doc/reflexive/org/notes.org" "~/Dropbox/doc/reflexive/org/jwd - DG KS Backerkit Notes - (20151204).org" "~/Dropbox/doc/reflexive/org/jwd - Dividend Investing Reading List - (20151117).org")))
  '(org-archive-location
    "~/Dropbox/doc/reflexive/org/datetree.org::datetree/* From %s")
  '(org-archive-save-context-info (quote (time file category todo itags olpath ltags)))
@@ -57,6 +57,7 @@
  '(org-directory "/home/jwdugger/Dropbox/doc/reflexive/org")
  '(org-log-done (quote time))
  '(org-log-into-drawer t)
+ '(org-pretty-entities t)
  '(org-refile-targets (quote ((org-agenda-files :maxlevel . 3))))
  '(org-src-fontify-natively t)
  '(org-todo-keywords
@@ -90,7 +91,8 @@
      (set-background-color "black"))))
  '(tool-bar-mode nil)
  '(uniquify-buffer-name- style nil nil (uniquify))
- '(user-mail-address "jay.dugger@gmail.com"))
+ '(user-mail-address "jay.dugger@gmail.com")
+ '(word-wrap t))
  
 ;; ;; 20110208--JWD
 ;; ;; ACTIVATED org-mode
