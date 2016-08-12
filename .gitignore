@@ -57,3 +57,8 @@ elpa/archives/marmalade/archive-contents
 elpa/archives
 elpa/archives/
 elpa/archives/*
+/history
+elpa/archives/gnu/archive-contents
+elpa/archives/gnu/archive-contents.signed
+elpa/archives/marmalade/archive-contents
+elpa/archives/org/archive-contents
