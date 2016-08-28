@@ -1,11 +1,4 @@
 (1
- (emacs-profiles .
-		 [(20160605 1130)
-		  ((emacs
-		    (24))
-		   (cl-lib
-		    (0 5)))
-		  "Configuration profiles for Emacs" single])
  (zone-nyan .
 	    [(0 2 2)
 	     ((esxml
@@ -1415,7 +1408,7 @@
 	   [(0 0 1)
 	    nil "get stuff from pinboard" single])
  (picpocket .
-	    [(16)
+	    [(22)
 	     nil "Image viewer" single])
  (pickup .
 	 [(0 0 3)
@@ -1679,7 +1672,7 @@
 	       (6 1)))
 	     "basic support for magit links" single])
  (org-journal .
-	      [(1 11 0)
+	      [(1 11 1)
 	       nil "a simple org-mode based journaling mode" single])
  (org-gnome .
 	    [(0 1)
@@ -1901,7 +1894,7 @@
 	       (1 1)))
 	     "Mote minor mode" single])
  (monroe .
-	 [(0 2 0)
+	 [(0 3 1)
 	  nil "Yet another client for nREPL" single])
  (monokai-theme .
 		[(0 0 12)
@@ -2061,7 +2054,7 @@
 	       [(1 0 0)
 		nil "collection of faces for markup language modes" single])
  (markdown-toc .
-	       [(0 1 0)
+	       [(0 1 2)
 		((markdown-mode
 		  (2 1))
 		 (dash
@@ -2485,7 +2478,7 @@
 	  [(2927)
 	   nil "Adds support for IPython to python-mode.el" single])
  (insert-shebang .
-		 [(0 9 4)
+		 [(0 9 5)
 		  nil "Insert shebang line automatically." single])
  (inline-crypt .
 	       [(0 1 4)
@@ -3373,7 +3366,7 @@
        (2 2 0)))
      "Modern API for working with files and directories" single])
  (eyebrowse .
-	    [(0 6 9)
+	    [(0 7 0)
 	     ((dash
 	       (2 7 0))
 	      (emacs
@@ -3772,7 +3765,7 @@
 	       [(0 2 2)
 		nil "Aspell extra dictionary for Drupal" tar])
  (drupal-mode .
-	      [(0 7 0)
+	      [(0 7 1)
 	       ((php-mode
 		 (1 5 0)))
 	       "Advanced minor mode for Drupal development" tar])
@@ -4520,7 +4513,7 @@
 		 (24 1)))
 	       "Ansible documentation Minor Mode" single])
  (annotate .
-	   [(0 4 4)
+	   [(0 4 5)
 	    nil "annotate files without changing them" single])
  (angular-snippets .
 		   [(0 2 3)
