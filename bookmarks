@@ -18,10 +18,10 @@
  (rear-context-string . "12 Jul 11 02:46 ")
  (position . 246))
 ("org-refile-last-stored"
- (filename . "~/Dropbox/doc/reflexive/org/jwd - Larchmont House - (2016).org")
- (front-context-string . "** Raoul adopted")
- (rear-context-string . "16-01-11 Mon>. \n")
- (position . 818))
+ (filename . "~/Dropbox/doc/reflexive/org/jwd - education - Duolingo - (201609061104).org")
+ (front-context-string . "** [[https://www")
+ (rear-context-string . "mary\n\n* IMPORT\n\n")
+ (position . 565))
 ("Dropbox-reflexive-org-data"
  (filename . "~/Dropbox/doc/reflexive/org/data/")
  (front-context-string)
