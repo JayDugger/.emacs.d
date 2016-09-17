@@ -2,7 +2,12 @@
 ;;; This format is meant to be slightly human-readable;
 ;;; nevertheless, you probably don't want to edit it.
 ;;; -*- End Of Bookmark File Format Version Stamp -*-
-(("Wikipedia"
+(("org-capture-last-stored"
+ (filename . "~/Dropbox/org/notes.org")
+ (front-context-string . "** TODO SWITCH R")
+ (rear-context-string)
+ (position . 9))
+("Wikipedia"
  (filename . "~/Dropbox/doc/reflexive/org/jwd - personal - List of Taxonomies - (20160327).org")
  (front-context-string . "** Wikipedia				")
  (rear-context-string . "   :taxonomy:\n\n\n")
