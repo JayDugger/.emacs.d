@@ -2,7 +2,12 @@
 ;;; This format is meant to be slightly human-readable;
 ;;; nevertheless, you probably don't want to edit it.
 ;;; -*- End Of Bookmark File Format Version Stamp -*-
-(("org-capture-last-stored"
+(("Dropbox"
+ (filename . "~/Dropbox/")
+ (front-context-string . "Android intro.pd")
+ (rear-context-string . "07 Jun 11  2010 ")
+ (position . 247))
+("org-capture-last-stored"
  (filename . "~/Dropbox/org/notes.org")
  (front-context-string . "** TODO SWITCH R")
  (rear-context-string)
@@ -34,11 +39,6 @@
  (position . 430))
 ("Dropbox-reflexive-org"
  (filename . "~/Dropbox/doc/reflexive/org/")
- (front-context-string . "  /home/jwdugger")
- (rear-context-string)
- (position . 1))
-("Dropbox-work"
- (filename . "~/Dropbox/doc/work/")
  (front-context-string . "  /home/jwdugger")
  (rear-context-string)
  (position . 1))
