@@ -94,6 +94,7 @@
      (unsplittable . t)
      (set-background-color "black"))))
  '(tool-bar-mode nil)
+ '(undo-outer-limit 13200000)
  '(uniquify-buffer-name- style nil nil (uniquify))
  '(user-mail-address "jay.dugger@gmail.com")
  '(word-wrap t))
