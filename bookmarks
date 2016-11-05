@@ -2,7 +2,12 @@
 ;;; This format is meant to be slightly human-readable;
 ;;; nevertheless, you probably don't want to edit it.
 ;;; -*- End Of Bookmark File Format Version Stamp -*-
-(("Dropbox"
+(("Wikipedia"
+ (filename . "~/Dropbox/doc/reflexive/org/jwd - personal - List of Taxonomies - (20160327).org")
+ (front-context-string . "** Wikipedia				")
+ (rear-context-string)
+ (position . 1345))
+("Dropbox"
  (filename . "~/Dropbox/")
  (front-context-string . "Android intro.pd")
  (rear-context-string . "07 Jun 11  2010 ")
@@ -12,11 +17,6 @@
  (front-context-string . "** TODO SWITCH R")
  (rear-context-string)
  (position . 9))
-("Wikipedia"
- (filename . "~/Dropbox/doc/reflexive/org/jwd - personal - List of Taxonomies - (20160327).org")
- (front-context-string . "** Wikipedia				")
- (rear-context-string . "   :taxonomy:\n\n\n")
- (position . 1248))
 ("src"
  (filename . "~/src/")
  (front-context-string . "anki\n  drwxr-xr-")
