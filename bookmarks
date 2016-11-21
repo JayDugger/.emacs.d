@@ -2,11 +2,11 @@
 ;;; This format is meant to be slightly human-readable;
 ;;; nevertheless, you probably don't want to edit it.
 ;;; -*- End Of Bookmark File Format Version Stamp -*-
-(("Wikipedia"
+(("Taxonomies"
  (filename . "~/Dropbox/doc/reflexive/org/jwd - personal - List of Taxonomies - (20160327).org")
- (front-context-string . "** Wikipedia				")
- (rear-context-string)
- (position . 1345))
+ (front-context-string . "* Taxonomies				")
+ (rear-context-string . "     :export:\n\n\n")
+ (position . 607))
 ("Dropbox"
  (filename . "~/Dropbox/")
  (front-context-string . "Android intro.pd")
