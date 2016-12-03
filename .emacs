@@ -145,3 +145,6 @@
 ;; 20160205--jwd
 ;; Added following line to test whether viewing pdfs will automatically use pdf-tools-mode.
 (pdf-tools-install)
+
+;; Force ereader to load
+(require 'ereader)
