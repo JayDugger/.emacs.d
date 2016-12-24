@@ -75,7 +75,7 @@
      ("gnu" . "http://elpa.gnu.org/packages/"))))
  '(package-selected-packages
    (quote
-    (writegood-mode web-mode ereader php-mode hyperbole beeminder impatient-mode skewer-mode camcorder lorem-ipsum avy-zap avy ox-impress-js ox-reveal inf-ruby haskell-mode ssh org-plus-contrib metaweblog popup xml-rpc xahk-mode undo-tree sr-speedbar solarized-theme s python-mode pymacs paredit ox-tiddly org2blog nurumacs minimap markdown-mode magit javascript ipython ioccur ido-vertical-mode httpd htmlize eprime-mode elfeed edit-server-htmlize djvu dired-details+ dired+ deft csv-mode css-mode color-theme-solarized color-theme-sanityinc-tomorrow color-theme-sanityinc-solarized color-theme-github bash-completion auto-complete)))
+    (google-maps writegood-mode web-mode ereader php-mode hyperbole beeminder impatient-mode skewer-mode camcorder lorem-ipsum avy-zap avy ox-impress-js ox-reveal inf-ruby haskell-mode ssh org-plus-contrib metaweblog popup xml-rpc xahk-mode undo-tree sr-speedbar solarized-theme s python-mode pymacs paredit ox-tiddly org2blog nurumacs minimap markdown-mode magit javascript ipython ioccur ido-vertical-mode httpd htmlize eprime-mode elfeed edit-server-htmlize djvu dired-details+ dired+ deft csv-mode css-mode color-theme-solarized color-theme-sanityinc-tomorrow color-theme-sanityinc-solarized color-theme-github bash-completion auto-complete)))
  '(pdf-view-display-size (quote fit-page))
  '(reb-re-syntax (quote string))
  '(safe-local-variable-values (quote ((org-use-sub-superscripts . {}))))
@@ -148,3 +148,7 @@
 
 ;; Force ereader to load
 (require 'ereader)
+
+;; 20161224--jwd
+;; Installed google-maps.el and added org-location-google-maps
+(require 'org-location-google-maps)
