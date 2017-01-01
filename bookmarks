@@ -28,10 +28,10 @@
  (rear-context-string . "12 Jul 11 02:46 ")
  (position . 246))
 ("org-refile-last-stored"
- (filename . "~/Dropbox/doc/reflexive/org/jwd - education - Duolingo - (201609061104).org")
- (front-context-string . "** [[https://www")
- (rear-context-string . "mary\n\n* IMPORT\n\n")
- (position . 565))
+ (filename . "~/Dropbox/doc/reflexive/org/jwd - personal - Journal - (2016).org")
+ (front-context-string . "** <2011-12-29 T")
+ (rear-context-string . "2011-12-29 Thu>\n")
+ (position . 61000))
 ("Dropbox-reflexive-org-data"
  (filename . "~/Dropbox/doc/reflexive/org/data/")
  (front-context-string)
