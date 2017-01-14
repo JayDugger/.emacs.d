@@ -36,13 +36,14 @@
  '(erc-system-name "foo")
  '(global-auto-revert-mode t)
  '(global-hl-line-mode t)
+ '(global-visual-line-mode t)
  '(ido-mode (quote both) nil (ido))
  '(ido-vertical-mode t)
  '(inhibit-startup-screen t)
  '(menu-bar-mode nil)
  '(org-agenda-files
    (quote
-    ("~/Dropbox/doc/reflexive/org/jwd - education - Khan Academy Exercises - (20130804).org" "~/Dropbox/doc/reflexive/org/jwd - List of To-Read Lists - (2012).org" "~/Dropbox/doc/reflexive/org/jwd - education - Duolingo - (201609061104).org" "/home/jwdugger/Dropbox/doc/reflexive/org/jwd - Audio Friday - (2012-2013).org" "~/Dropbox/doc/reflexive/org/jwd - images - Comics Wednesday - (20130102).org" "~/Dropbox/doc/reflexive/org/jwd - personal - List of Taxonomies - (20160327).org" "~/Dropbox/doc/reflexive/org/jwd - personal - Journal - (2016).org" "/home/jwdugger/Dropbox/doc/reflexive/org/jwd - Video Monday - (20121231).org" "~/Dropbox/doc/reflexive/org/jwd - Larchmont House - (2016).org" "~/Dropbox/doc/reflexive/org/jwd - Amazon Saturday - (2015).org" "~/Dropbox/doc/reflexive/org/jwd - 2015.KDEN_01 - Vacation Journal - (20150628).org" "~/Dropbox/doc/reflexive/org/jwd - Codecademy - (201408220050).org" "~/Dropbox/doc/reflexive/org/jwd - [Khan Academy] - Math Exercises - (20130804).org" "/home/jwdugger/Dropbox/doc/reflexive/org/datetree.org" "/home/jwdugger/Dropbox/doc/reflexive/org/jwd - Financial Sunday - (2013).org" "/home/jwdugger/Dropbox/doc/reflexive/org/jwd - Gaming Thursday - (20121231).org" "/home/jwdugger/Dropbox/doc/reflexive/org/jwd - Library Tuesday - (20121231).org" "/home/jwdugger/Dropbox/doc/reflexive/org/jwd - List of Larchmont Housework - (20121231).org" "/home/jwdugger/Dropbox/doc/reflexive/org/jwd - [GLC] - Outline of Gamer Lifestyle Course - (20130720).org" "/home/jwdugger/Dropbox/doc/reflexive/org/jwd - scratch - (20131004).org" "/home/jwdugger/Dropbox/doc/reflexive/org/jwd - scratch - (20140109).org" "/home/jwdugger/Dropbox/doc/reflexive/org/jwd - scratch.01 - (20121116).org" "/home/jwdugger/Dropbox/doc/reflexive/org/jwd - scratch.01 - (20131221).org")))
+    ("~/Dropbox/doc/reflexive/org/jwd - education - Khan Academy Exercises - (20130804).org" "~/Dropbox/doc/reflexive/org/jwd - List of To-Read Lists - (2012).org" "~/Dropbox/doc/reflexive/org/jwd - education - Duolingo - (201609061104).org" "/home/jwdugger/Dropbox/doc/reflexive/org/jwd - Audio Friday - (2012-2013).org" "~/Dropbox/doc/reflexive/org/jwd - images - Comics Wednesday - (20130102).org" "~/Dropbox/doc/reflexive/org/jwd - personal - List of Taxonomies - (20160327).org" "~/Dropbox/doc/reflexive/org/jwd - personal - Journal - (2016).org" "/home/jwdugger/Dropbox/doc/reflexive/org/jwd - Video Monday - (20121231).org" "~/Dropbox/doc/reflexive/org/jwd - Larchmont House - (2016).org" "~/Dropbox/doc/reflexive/org/jwd - Amazon Saturday - (2015).org" "~/Dropbox/doc/reflexive/org/jwd - 2015.KDEN_01 - Vacation Journal - (20150628).org" "~/Dropbox/doc/reflexive/org/jwd - Codecademy - (201408220050).org" "/home/jwdugger/Dropbox/doc/reflexive/org/datetree.org" "/home/jwdugger/Dropbox/doc/reflexive/org/jwd - Financial Sunday - (2013).org" "/home/jwdugger/Dropbox/doc/reflexive/org/jwd - Gaming Thursday - (20121231).org" "/home/jwdugger/Dropbox/doc/reflexive/org/jwd - Library Tuesday - (20121231).org" "/home/jwdugger/Dropbox/doc/reflexive/org/jwd - List of Larchmont Housework - (20121231).org" "/home/jwdugger/Dropbox/doc/reflexive/org/jwd - [GLC] - Outline of Gamer Lifestyle Course - (20130720).org" "/home/jwdugger/Dropbox/doc/reflexive/org/jwd - scratch - (20131004).org" "/home/jwdugger/Dropbox/doc/reflexive/org/jwd - scratch - (20140109).org" "/home/jwdugger/Dropbox/doc/reflexive/org/jwd - scratch.01 - (20121116).org" "/home/jwdugger/Dropbox/doc/reflexive/org/jwd - scratch.01 - (20131221).org")))
  '(org-archive-location
    "~/Dropbox/doc/reflexive/org/datetree.org::datetree/* From %s")
  '(org-archive-save-context-info (quote (time file category todo itags olpath ltags)))
@@ -75,7 +76,7 @@
      ("gnu" . "http://elpa.gnu.org/packages/"))))
  '(package-selected-packages
    (quote
-    (google-maps writegood-mode web-mode ereader php-mode hyperbole beeminder impatient-mode skewer-mode camcorder lorem-ipsum avy-zap avy ox-impress-js ox-reveal inf-ruby haskell-mode ssh org-plus-contrib metaweblog popup xml-rpc xahk-mode undo-tree sr-speedbar solarized-theme s python-mode pymacs paredit ox-tiddly org2blog nurumacs minimap markdown-mode magit javascript ipython ioccur ido-vertical-mode httpd htmlize eprime-mode elfeed edit-server-htmlize djvu dired-details+ dired+ deft csv-mode css-mode color-theme-solarized color-theme-sanityinc-tomorrow color-theme-sanityinc-solarized color-theme-github bash-completion auto-complete)))
+    (pdf-tools google-maps writegood-mode web-mode ereader php-mode hyperbole beeminder impatient-mode skewer-mode camcorder lorem-ipsum avy-zap avy ox-impress-js ox-reveal inf-ruby haskell-mode ssh org-plus-contrib metaweblog popup xml-rpc xahk-mode undo-tree sr-speedbar solarized-theme s python-mode pymacs paredit ox-tiddly org2blog nurumacs minimap markdown-mode magit javascript ipython ioccur ido-vertical-mode httpd htmlize eprime-mode elfeed edit-server-htmlize djvu dired-details+ dired+ deft csv-mode css-mode color-theme-solarized color-theme-sanityinc-tomorrow color-theme-sanityinc-solarized color-theme-github bash-completion auto-complete)))
  '(pdf-view-display-size (quote fit-page))
  '(reb-re-syntax (quote string))
  '(safe-local-variable-values (quote ((org-use-sub-superscripts . {}))))
@@ -97,6 +98,7 @@
  '(undo-outer-limit 13200000)
  '(uniquify-buffer-name- style nil nil (uniquify))
  '(user-mail-address "jay.dugger@gmail.com")
+ '(warning-suppress-types (quote ((\(undo\ discard-info\)))))
  '(word-wrap t))
  
 ;; ;; 20110208--JWD
