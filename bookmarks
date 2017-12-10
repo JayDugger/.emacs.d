@@ -14,7 +14,7 @@
  (position . 247))
 ("org-capture-last-stored"
  (filename . "~/Dropbox/org/notes.org")
- (front-context-string . "** TODO SWITCH R")
+ (front-context-string)
  (rear-context-string)
  (position . 9))
 ("src"
