@@ -156,3 +156,12 @@
 ;; Installed google-maps.el and added org-location-google-maps
 (require 'org-location-google-maps)
 
+;; 20180320--jwd
+;; configured beeminder.el
+(require 'beeminder)
+(setq beeminder-username "jaydugger")
+(setq beeminer-auth-token "89mzs46pLJhUVsAs6dqp")
+(global-set-key "\C-cba" 'beeminder-add-data)
+(global-set-key "\C-cbw" 'beeminder-whoami)
+(global-set-key "\C-cbg" 'beeminder-my-goals-org)
+(global-set-key "\C-cbr" 'beeminder-refresh-goal)
