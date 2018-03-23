@@ -111,7 +111,7 @@
   (global-set-key "\C-cl" 'org-store-link)
   (global-set-key "\C-cc" 'org-capture)
   (global-set-key "\C-ca" 'org-agenda)
-  (global-set-key "\C-cb" 'org-iswitchb)
+  (global-set-key "\C-ci" 'org-iswitchb)
   (global-set-key "\C-cL" 'org-insert-link-global)
   (global-set-key "\C-co" 'org-open-at-point-global)
 
@@ -131,9 +131,9 @@
 ;; ;; To open pages for editing in new buffers in your existing Emacs
 ;; ;; instance:
 
-;;   (when (require 'edit-server nil t)
-;;     (setq edit-server-new-frame nil)
-;;     (edit-server-start))
+   (when (require 'edit-server nil t)
+     (setq edit-server-new-frame nil)
+     (edit-server-start))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -160,7 +160,7 @@
 ;; configured beeminder.el
 (require 'beeminder)
 (setq beeminder-username "jaydugger")
-(setq beeminer-auth-token "89mzs46pLJhUVsAs6dqp")
+(setq beeminder-auth-token "89mzs46pLJhUVsAs6dqp")
 (global-set-key "\C-cba" 'beeminder-add-data)
 (global-set-key "\C-cbw" 'beeminder-whoami)
 (global-set-key "\C-cbg" 'beeminder-my-goals-org)
