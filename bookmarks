@@ -2,7 +2,17 @@
 ;;; This format is meant to be slightly human-readable;
 ;;; nevertheless, you probably don't want to edit it.
 ;;; -*- End Of Bookmark File Format Version Stamp -*-
-(("Taxonomies"
+(("Anki2"
+ (filename . "~/.local/share/Anki2/")
+ (front-context-string . "addons\n  drwxrwx")
+ (rear-context-string . "80 Jun  9  2017 ")
+ (position . 252))
+("Downloads-large"
+ (filename . "/windows/Documents and Settings/Jay Dugger/Downloads/")
+ (front-context-string . "audio\n  drwxrwxr")
+ (rear-context-string . "96 Jun 23 13:29 ")
+ (position . 260))
+("Taxonomies"
  (filename . "~/Dropbox/doc/reflexive/org/jwd - personal - List of Taxonomies - (20160327).org")
  (front-context-string . "* Taxonomies				")
  (rear-context-string . "     :export:\n\n\n")
@@ -14,7 +24,7 @@
  (position . 247))
 ("org-capture-last-stored"
  (filename . "~/Dropbox/org/notes.org")
- (front-context-string)
+ (front-context-string . "** TODO WATCH Br")
  (rear-context-string)
  (position . 9))
 ("src"
@@ -24,9 +34,9 @@
  (position . 239))
 ("Downloads"
  (filename . "~/Downloads/")
- (front-context-string . "audio\n  drwxrwxr")
- (rear-context-string . "12 Jul 11 02:46 ")
- (position . 246))
+ (front-context-string . "images\n  -rw----")
+ (rear-context-string . "88 Jun 13 19:26 ")
+ (position . 588))
 ("org-refile-last-stored"
  (filename . "~/Dropbox/doc/reflexive/org/jwd - personal - Journal - (2016).org")
  (front-context-string . "** <2011-12-29 T")
