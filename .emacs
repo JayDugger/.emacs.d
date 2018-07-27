@@ -78,7 +78,7 @@
  '(org-src-fontify-natively t)
  '(org-todo-keywords
    (quote
-    ((sequence "TODO(t!)" "HOLD(h@)" "|" "DECLINED(d@)" "DONE(f@)"))))
+    ((sequence "TODO(t!)" "HOLD(h@)" "|" "MISSED (m@)" "DECLINED(d@)" "DONE(f@)"))))
  '(org-use-sub-superscripts (quote {}))
  '(package-archives
    (quote
