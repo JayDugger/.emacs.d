@@ -2,7 +2,12 @@
 ;;; This format is meant to be slightly human-readable;
 ;;; nevertheless, you probably don't want to edit it.
 ;;; -*- End Of Bookmark File Format Version Stamp -*-
-(("Anki2"
+(("jwd - Learning Bitcoin from the Command Line - (20180622).org"
+ (filename . "~/Dropbox/doc/reflexive/org/jwd - Learning Bitcoin from the Command Line - (20180622).org")
+ (front-context-string . "#+TITLE: jwd - L")
+ (rear-context-string)
+ (position . 1))
+("Anki2"
  (filename . "~/.local/share/Anki2/")
  (front-context-string . "addons\n  drwxrwx")
  (rear-context-string . "80 Jun  9  2017 ")
@@ -49,9 +54,9 @@
  (position . 430))
 ("Dropbox-reflexive-org"
  (filename . "~/Dropbox/doc/reflexive/org/")
- (front-context-string . "  /home/jwdugger")
- (rear-context-string)
- (position . 1))
+ (front-context-string . "tcoin from the C")
+ (rear-context-string . "wd - Learning Bi")
+ (position . 6213))
 ("mess"
  (filename . "~/tmp/mess/")
  (front-context-string . "070d25dd-0573-4a")
