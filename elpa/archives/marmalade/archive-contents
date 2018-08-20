@@ -1,11 +1,4 @@
 (1
- (emacs-visual-notifications .
-			     [(20180707 2135)
-			      ((emacs
-				(24))
-			       (cl-lib
-				(0 5)))
-			      "A utility to create visual notifications in emacs" single])
  (zone-tunnels .
 	       [(20180309 2155)
 		((emacs

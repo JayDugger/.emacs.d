@@ -1,4 +1,4 @@
-;;;; Emacs Bookmark Format Version 1 ;;;;
+;;;; Emacs Bookmark Format Version 1 ;;;; -*- coding: utf-8-emacs -*- 
 ;;; This format is meant to be slightly human-readable;
 ;;; nevertheless, you probably don't want to edit it.
 ;;; -*- End Of Bookmark File Format Version Stamp -*-
@@ -44,9 +44,9 @@
  (position . 588))
 ("org-refile-last-stored"
  (filename . "~/Dropbox/doc/reflexive/org/jwd - personal - Journal - (2016).org")
- (front-context-string . "** <2011-12-29 T")
- (rear-context-string . "2011-12-29 Thu>\n")
- (position . 61000))
+ (front-context-string . "** jwd - family ")
+ (rear-context-string . "ro Wolfe books.\n")
+ (position . 430981))
 ("Dropbox-reflexive-org-data"
  (filename . "~/Dropbox/doc/reflexive/org/data/")
  (front-context-string)
