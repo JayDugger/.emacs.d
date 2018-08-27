@@ -169,3 +169,7 @@
 (global-set-key "\C-cbw" 'beeminder-whoami)
 (global-set-key "\C-cbg" 'beeminder-my-goals-org)
 (global-set-key "\C-cbr" 'beeminder-refresh-goal)
+
+;; 20180827--jwd
+;; configured org-board
+(global-set-key (kbd "C-c o") org-board-keymap)
