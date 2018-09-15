@@ -2,7 +2,7 @@
 ;; installed packages.  Don't delete this line.  If you don't want it,
 ;; just comment it out by adding a semicolon to the start of the line.
 ;; You may delete these explanatory comments.
-(package-initialize)
+(package-initialize)			
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -10,6 +10,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(Buffer-menu-name-width 50)
+ '(anki-editor-org-tags-as-anki-tags nil)
  '(ansi-color-faces-vector
    [default bold shadow italic underline bold bold-italic bold])
  '(camcorder-gif-output-directory "/home/jwdugger/tmp/mess")
@@ -19,7 +20,8 @@
  '(custom-enabled-themes '(sanityinc-solarized-light))
  '(custom-safe-themes
    '("06f0b439b62164c6f8f84fdda32b62fb50b6d00e8b01c2208e55543a6337433a" "4cf3221feff536e2b3385209e9b9dc4c2e0818a69a1cdb4b522756bcdf4e00a4" "4aee8551b53a43a883cb0b7f3255d6859d766b6c5e14bcb01bed572fcbef4328" "82d2cac368ccdec2fcc7573f24c3f79654b78bf133096f9b40c20d97ec1d8016" "1440d751f5ef51f9245f8910113daee99848e2c0" "e254937cba0f82c2d9eb3189a60748df9e486522" "7fe1e3de3e04afc43f9a3d3a8d38cd0a0efd9d4c" default))
- '(deft-archive-directory "~/Dropbox/doc/reflexive/org/archive")
+ '(default-input-method "japanese")
+ '(deft-archive-directory "~/Dropbox/doc/reflexive/org/archive/")
  '(deft-directory "~/Dropbox/doc/reflexive/org/")
  '(deft-extension "org")
  '(deft-extensions '("org" "txt" "md"))
@@ -28,7 +30,7 @@
  '(deft-recursive nil)
  '(deft-text-mode 'org-mode)
  '(deft-time-format " %Y-%m-%d %H%M")
- '(deft-use-filename-as-title t)
+ '(deft-use-filename-as-title nil)
  '(deft-use-filter-string-for-filename t)
  '(dired-dwim-target t)
  '(electric-pair-mode t)
@@ -68,6 +70,7 @@
  '(org-completion-use-ido t)
  '(org-default-notes-file "~/Dropbox/org/notes.org")
  '(org-directory "/home/jwdugger/Dropbox/doc/reflexive/org")
+ '(org-image-actual-width nil)
  '(org-log-done 'time)
  '(org-log-into-drawer t)
  '(org-pretty-entities t)
@@ -82,7 +85,7 @@
      ("org" . "http://orgmode.org/elpa/")
      ("gnu" . "http://elpa.gnu.org/packages/")))
  '(package-selected-packages
-   '(org-board lsp-ui flycheck lsp-mode lsp-python kanji-mode nov org-noter org-pdfview markdown-mode edit-indirect define-word emacsql emacsql-sqlite arview anki-editor ink-mode org-mind-map ob-translate js2-refactor xref-js2 org-brain which-key artbollocks-mode google-maps writegood-mode web-mode ereader php-mode hyperbole beeminder impatient-mode skewer-mode camcorder lorem-ipsum avy-zap ox-impress-js ox-reveal inf-ruby haskell-mode ssh org-plus-contrib metaweblog popup xml-rpc xahk-mode undo-tree sr-speedbar solarized-theme s python-mode pymacs paredit ox-tiddly org2blog nurumacs minimap magit javascript ipython ioccur ido-vertical-mode httpd htmlize eprime-mode elfeed edit-server-htmlize djvu dired-details+ dired+ deft csv-mode css-mode color-theme-solarized color-theme-sanityinc-tomorrow color-theme-sanityinc-solarized color-theme-github bash-completion auto-complete))
+   '(ztree org-board lsp-ui flycheck lsp-mode lsp-python kanji-mode nov org-noter org-pdfview markdown-mode edit-indirect define-word emacsql emacsql-sqlite arview anki-editor ink-mode org-mind-map ob-translate js2-refactor xref-js2 org-brain which-key artbollocks-mode google-maps writegood-mode web-mode ereader php-mode hyperbole beeminder impatient-mode skewer-mode camcorder lorem-ipsum avy-zap ox-impress-js ox-reveal inf-ruby haskell-mode ssh org-plus-contrib metaweblog popup xml-rpc xahk-mode undo-tree sr-speedbar solarized-theme s python-mode pymacs paredit ox-tiddly org2blog nurumacs minimap magit javascript ipython ioccur ido-vertical-mode httpd htmlize eprime-mode elfeed edit-server-htmlize djvu dired-details+ dired+ deft csv-mode css-mode color-theme-solarized color-theme-sanityinc-tomorrow color-theme-sanityinc-solarized color-theme-github bash-completion auto-complete))
  '(pdf-view-display-size 'fit-page)
  '(reb-re-syntax 'string)
  '(safe-local-variable-values '((org-use-sub-superscripts . {})))
@@ -143,7 +146,7 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((t (:family "DejaVu Sans Mono" :foundry "unknown" :slant normal :weight normal :height 120 :width normal)))))
+ '(default ((t (:family "DejaVu Sans Mono" :foundry "PfEd" :slant normal :weight normal :height 120 :width normal)))))
 
 ;; Don't show magit-1.4.0's warning
 (setq magit-last-seen-setup-instructions "1.4.0")

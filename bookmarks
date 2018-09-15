@@ -12,11 +12,6 @@
  (front-context-string . "addons\n  drwxrwx")
  (rear-context-string . "80 Jun  9  2017 ")
  (position . 252))
-("Downloads-large"
- (filename . "/windows/Documents and Settings/Jay Dugger/Downloads/")
- (front-context-string . "audio\n  drwxrwxr")
- (rear-context-string . "96 Jun 23 13:29 ")
- (position . 260))
 ("Taxonomies"
  (filename . "~/Dropbox/doc/reflexive/org/jwd - personal - List of Taxonomies - (20160327).org")
  (front-context-string . "* Taxonomies				")
