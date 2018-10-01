@@ -2,7 +2,7 @@
 ;; installed packages.  Don't delete this line.  If you don't want it,
 ;; just comment it out by adding a semicolon to the start of the line.
 ;; You may delete these explanatory comments.
-(package-initialize)			
+;; (package-initialize)			
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -67,7 +67,9 @@
      (emacs-lisp . t)
      (python . t)
      (ruby . t)
-     (shell . t)))
+     (shell . t)
+     (ditaa . t)))
+ '(org-babel-python-mode 'python)
  '(org-completion-use-ido t)
  '(org-default-notes-file "~/Dropbox/org/notes.org")
  '(org-directory "/home/jwdugger/Dropbox/doc/reflexive/org")
