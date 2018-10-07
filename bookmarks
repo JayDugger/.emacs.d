@@ -2,7 +2,12 @@
 ;;; This format is meant to be slightly human-readable;
 ;;; nevertheless, you probably don't want to edit it.
 ;;; -*- End Of Bookmark File Format Version Stamp -*-
-(("jwd - Learning Bitcoin from the Command Line - (20180622).org"
+(("Journal-2018"
+ (filename . "~/Dropbox/doc/reflexive/org/jwd - personal - Journal - (2016).org")
+ (front-context-string . "* 2018\n  :PROPER")
+ (rear-context-string . ".00114418 BTC.\n\n")
+ (position . 374758))
+("jwd - Learning Bitcoin from the Command Line - (20180622).org"
  (filename . "~/Dropbox/doc/reflexive/org/jwd - Learning Bitcoin from the Command Line - (20180622).org")
  (front-context-string . "#+TITLE: jwd - L")
  (rear-context-string)
@@ -39,9 +44,9 @@
  (position . 588))
 ("org-refile-last-stored"
  (filename . "~/Dropbox/doc/reflexive/org/jwd - personal - Journal - (2016).org")
- (front-context-string . "** jwd - family ")
- (rear-context-string . "ro Wolfe books.\n")
- (position . 430981))
+ (front-context-string . "*** READ /Cook, ")
+ (rear-context-string . "ocket\n   :END:\n\n")
+ (position . 462941))
 ("Dropbox-reflexive-org-data"
  (filename . "~/Dropbox/doc/reflexive/org/data/")
  (front-context-string)

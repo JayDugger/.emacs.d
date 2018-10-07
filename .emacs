@@ -31,7 +31,7 @@
  '(deft-recursive nil)
  '(deft-text-mode 'org-mode)
  '(deft-time-format " %Y-%m-%d %H%M")
- '(deft-use-filename-as-title nil)
+ '(deft-use-filename-as-title t)
  '(deft-use-filter-string-for-filename t)
  '(dired-dwim-target t)
  '(electric-pair-mode t)
@@ -56,7 +56,7 @@
        (tags "kdfw_01" nil))
       nil nil)))
  '(org-agenda-files
-   '("~/Dropbox/doc/reflexive/org/jwd - education - StackSkills Devops - (20180406).org" "~/Dropbox/doc/reflexive/org/jwd - work - L3 Job Offer Paperwork - (20180916).org" "~/Dropbox/doc/reflexive/org/jwd - List of To-Read Lists - (2012).org" "~/Dropbox/doc/reflexive/org/jwd - education - Duolingo - (201609061104).org" "/home/jwdugger/Dropbox/doc/reflexive/org/jwd - Audio Friday - (2012-2013).org" "~/Dropbox/doc/reflexive/org/jwd - images - Comics Wednesday - (20130102).org" "~/Dropbox/doc/reflexive/org/jwd - personal - List of Taxonomies - (20160327).org" "~/Dropbox/doc/reflexive/org/jwd - personal - Journal - (2016).org" "/home/jwdugger/Dropbox/doc/reflexive/org/jwd - Video Monday - (20121231).org" "~/Dropbox/doc/reflexive/org/jwd - Larchmont House - (2016).org" "~/Dropbox/doc/reflexive/org/jwd - Amazon Saturday - (2015).org" "~/Dropbox/doc/reflexive/org/jwd - 2015.KDEN_01 - Vacation Journal - (20150628).org" "~/Dropbox/doc/reflexive/org/jwd - Codecademy - (201408220050).org" "/home/jwdugger/Dropbox/doc/reflexive/org/jwd - Financial Sunday - (2013).org" "/home/jwdugger/Dropbox/doc/reflexive/org/jwd - Gaming Thursday - (20121231).org" "/home/jwdugger/Dropbox/doc/reflexive/org/jwd - Library Tuesday - (20121231).org" "/home/jwdugger/Dropbox/doc/reflexive/org/jwd - [GLC] - Outline of Gamer Lifestyle Course - (20130720).org" "/home/jwdugger/Dropbox/doc/reflexive/org/jwd - scratch - (20131004).org" "/home/jwdugger/Dropbox/doc/reflexive/org/jwd - scratch - (20140109).org" "/home/jwdugger/Dropbox/doc/reflexive/org/jwd - scratch.01 - (20121116).org"))
+   '("~/Dropbox/doc/reflexive/org/jwd - education - StackSkills Devops - (20180406).org" "~/Dropbox/doc/reflexive/org/jwd - List of To-Read Lists - (2012).org" "~/Dropbox/doc/reflexive/org/jwd - education - Duolingo - (201609061104).org" "/home/jwdugger/Dropbox/doc/reflexive/org/jwd - Audio Friday - (2012-2013).org" "~/Dropbox/doc/reflexive/org/jwd - images - Comics Wednesday - (20130102).org" "~/Dropbox/doc/reflexive/org/jwd - personal - List of Taxonomies - (20160327).org" "~/Dropbox/doc/reflexive/org/jwd - personal - Journal - (2016).org" "/home/jwdugger/Dropbox/doc/reflexive/org/jwd - Video Monday - (20121231).org" "~/Dropbox/doc/reflexive/org/jwd - Larchmont House - (2016).org" "~/Dropbox/doc/reflexive/org/jwd - Amazon Saturday - (2015).org" "~/Dropbox/doc/reflexive/org/jwd - 2015.KDEN_01 - Vacation Journal - (20150628).org" "~/Dropbox/doc/reflexive/org/jwd - Codecademy - (201408220050).org" "/home/jwdugger/Dropbox/doc/reflexive/org/jwd - Financial Sunday - (2013).org" "/home/jwdugger/Dropbox/doc/reflexive/org/jwd - Gaming Thursday - (20121231).org" "/home/jwdugger/Dropbox/doc/reflexive/org/jwd - Library Tuesday - (20121231).org" "/home/jwdugger/Dropbox/doc/reflexive/org/jwd - [GLC] - Outline of Gamer Lifestyle Course - (20130720).org" "/home/jwdugger/Dropbox/doc/reflexive/org/jwd - scratch - (20131004).org" "/home/jwdugger/Dropbox/doc/reflexive/org/jwd - scratch - (20140109).org" "/home/jwdugger/Dropbox/doc/reflexive/org/jwd - scratch.01 - (20121116).org"))
  '(org-archive-location
    "~/Dropbox/doc/reflexive/org/datetree.org::datetree/* From %s")
  '(org-archive-save-context-info '(time file category todo itags olpath ltags))
@@ -68,11 +68,13 @@
      (python . t)
      (ruby . t)
      (shell . t)
-     (ditaa . t)))
+     (ditaa . t)
+     (forth . t)))
  '(org-babel-python-mode 'python)
  '(org-completion-use-ido t)
  '(org-default-notes-file "~/Dropbox/org/notes.org")
  '(org-directory "/home/jwdugger/Dropbox/doc/reflexive/org")
+ '(org-id-link-to-org-use-id 'create-if-interactive-and-no-custom-id)
  '(org-image-actual-width nil)
  '(org-log-done 'time)
  '(org-log-into-drawer t)
@@ -88,7 +90,7 @@
      ("org" . "http://orgmode.org/elpa/")
      ("gnu" . "http://elpa.gnu.org/packages/")))
  '(package-selected-packages
-   '(ztree org-board lsp-ui flycheck lsp-mode lsp-python kanji-mode nov org-noter org-pdfview markdown-mode edit-indirect define-word emacsql emacsql-sqlite arview anki-editor ink-mode org-mind-map ob-translate js2-refactor xref-js2 org-brain which-key artbollocks-mode google-maps writegood-mode web-mode ereader php-mode hyperbole beeminder impatient-mode skewer-mode camcorder lorem-ipsum avy-zap ox-impress-js ox-reveal inf-ruby haskell-mode ssh org-plus-contrib metaweblog popup xml-rpc xahk-mode undo-tree sr-speedbar solarized-theme s python-mode pymacs paredit ox-tiddly org2blog nurumacs minimap magit javascript ipython ioccur ido-vertical-mode httpd htmlize eprime-mode elfeed edit-server-htmlize djvu dired-details+ dired+ deft csv-mode css-mode color-theme-solarized color-theme-sanityinc-tomorrow color-theme-sanityinc-solarized color-theme-github bash-completion auto-complete))
+   '(org-web-tools ztree org-board lsp-ui flycheck lsp-mode lsp-python kanji-mode nov org-noter org-pdfview markdown-mode edit-indirect define-word emacsql emacsql-sqlite arview anki-editor ink-mode org-mind-map ob-translate js2-refactor xref-js2 org-brain which-key artbollocks-mode google-maps writegood-mode web-mode php-mode hyperbole beeminder impatient-mode skewer-mode camcorder lorem-ipsum avy-zap ox-impress-js ox-reveal inf-ruby haskell-mode ssh org-plus-contrib metaweblog popup xml-rpc xahk-mode undo-tree sr-speedbar solarized-theme s python-mode pymacs paredit ox-tiddly org2blog nurumacs minimap magit javascript ipython ioccur ido-vertical-mode httpd htmlize eprime-mode elfeed edit-server-htmlize djvu dired-details+ dired+ deft csv-mode css-mode color-theme-solarized color-theme-sanityinc-tomorrow color-theme-sanityinc-solarized color-theme-github bash-completion auto-complete))
  '(pdf-view-display-size 'fit-page)
  '(reb-re-syntax 'string)
  '(safe-local-variable-values '((org-use-sub-superscripts . {})))
@@ -160,7 +162,7 @@
 (pdf-tools-install)
 
 ;; Force ereader to load
-(require 'ereader)
+;; (require 'ereader)
 
 ;; 20161224--jwd
 ;; Installed google-maps.el and added org-location-google-maps
