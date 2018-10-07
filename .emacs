@@ -181,3 +181,7 @@
 ;; 20180827--jwd
 ;; configured org-board
 (global-set-key (kbd "C-c o") org-board-keymap)
+
+;; 20181007--jwd
+;; configured nov for epub
+(add-to-list 'auto-mode-alist '("\\.epub\\'" . nov-mode))
