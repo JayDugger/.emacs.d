@@ -185,4 +185,4 @@
 
 ;; 20181007--jwd
 ;; configured nov for epub
-(add-to-list 'auto-mode-alist '("\\.epub\\'" . nov-mode))
+;; (add-to-list 'auto-mode-alist '("\\.epub\\'" . nov-mode))
