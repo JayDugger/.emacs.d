@@ -75,6 +75,7 @@
  '(org-completion-use-ido t)
  '(org-default-notes-file "~/Dropbox/org/notes.org")
  '(org-directory "/home/jwdugger/Dropbox/doc/reflexive/org")
+ '(org-export-backends '(ascii html icalendar latex md odt org))
  '(org-id-link-to-org-use-id 'create-if-interactive-and-no-custom-id)
  '(org-image-actual-width nil)
  '(org-log-done 'time)
