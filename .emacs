@@ -80,6 +80,8 @@
  '(org-image-actual-width nil)
  '(org-log-done 'time)
  '(org-log-into-drawer t)
+ '(org-modules
+   '(org-bbdb org-bibtex org-docview org-gnus org-id org-info org-irc org-mhe org-rmail org-w3m))
  '(org-pretty-entities t)
  '(org-refile-targets '((org-agenda-files :maxlevel . 3)))
  '(org-src-fontify-natively t)
