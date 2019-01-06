@@ -26,7 +26,7 @@
  '(deft-extension "org")
  '(deft-extensions '("org" "txt" "md"))
  '(deft-filter-only-filenames nil)
- '(deft-new-file-format "jwd - scratch - (%Y%m%d)")
+ '(deft-new-file-format "%FT%T%z - scratch file -- scratch")
  '(deft-org-mode-title-prefix t)
  '(deft-recursive nil)
  '(deft-text-mode 'org-mode)
@@ -55,8 +55,7 @@
        (agenda "" nil)
        (tags "kdfw_01" nil))
       nil nil)))
- '(org-agenda-files
-   '("~/Dropbox/doc/reflexive/org/jwd - education - StackSkills Devops - (20180406).org" "~/Dropbox/doc/reflexive/org/jwd - List of To-Read Lists - (2012).org" "~/Dropbox/doc/reflexive/org/jwd - education - Duolingo - (201609061104).org" "/home/jwdugger/Dropbox/doc/reflexive/org/jwd - Audio Friday - (2012-2013).org" "~/Dropbox/doc/reflexive/org/jwd - images - Comics Wednesday - (20130102).org" "~/Dropbox/doc/reflexive/org/jwd - personal - List of Taxonomies - (20160327).org" "~/Dropbox/doc/reflexive/org/jwd - personal - Journal - (2016).org" "/home/jwdugger/Dropbox/doc/reflexive/org/jwd - Video Monday - (20121231).org" "~/Dropbox/doc/reflexive/org/jwd - Larchmont House - (2016).org" "~/Dropbox/doc/reflexive/org/jwd - Amazon Saturday - (2015).org" "~/Dropbox/doc/reflexive/org/jwd - 2015.KDEN_01 - Vacation Journal - (20150628).org" "~/Dropbox/doc/reflexive/org/jwd - Codecademy - (201408220050).org" "/home/jwdugger/Dropbox/doc/reflexive/org/jwd - Financial Sunday - (2013).org" "/home/jwdugger/Dropbox/doc/reflexive/org/jwd - Gaming Thursday - (20121231).org" "/home/jwdugger/Dropbox/doc/reflexive/org/jwd - Library Tuesday - (20121231).org" "/home/jwdugger/Dropbox/doc/reflexive/org/jwd - [GLC] - Outline of Gamer Lifestyle Course - (20130720).org" "/home/jwdugger/Dropbox/doc/reflexive/org/jwd - scratch - (20131004).org" "/home/jwdugger/Dropbox/doc/reflexive/org/jwd - scratch - (20140109).org"))
+ '(org-agenda-files nil)
  '(org-archive-location
    "~/Dropbox/doc/reflexive/org/datetree.org::datetree/* From %s")
  '(org-archive-save-context-info '(time file category todo itags olpath ltags))
