@@ -93,7 +93,7 @@
      ("org" . "http://orgmode.org/elpa/")
      ("gnu" . "http://elpa.gnu.org/packages/")))
  '(package-selected-packages
-   '(ereader esxml poet-theme ess org-web-tools ztree org-board lsp-ui flycheck lsp-mode lsp-python kanji-mode org-noter org-pdfview markdown-mode edit-indirect define-word emacsql emacsql-sqlite arview anki-editor ink-mode org-mind-map ob-translate js2-refactor xref-js2 org-brain which-key artbollocks-mode google-maps writegood-mode web-mode php-mode hyperbole beeminder impatient-mode skewer-mode camcorder lorem-ipsum avy-zap ox-impress-js ox-reveal inf-ruby haskell-mode ssh org-plus-contrib metaweblog popup xml-rpc xahk-mode undo-tree sr-speedbar solarized-theme s python-mode pymacs paredit ox-tiddly org2blog nurumacs minimap magit javascript ipython ioccur ido-vertical-mode httpd htmlize eprime-mode elfeed edit-server-htmlize djvu dired-details+ dired+ deft csv-mode css-mode color-theme-solarized color-theme-sanityinc-tomorrow color-theme-sanityinc-solarized color-theme-github bash-completion auto-complete))
+   '(org-download ereader esxml poet-theme ess org-web-tools ztree org-board lsp-ui flycheck lsp-mode lsp-python kanji-mode org-noter org-pdfview markdown-mode edit-indirect define-word emacsql emacsql-sqlite arview anki-editor ink-mode org-mind-map ob-translate js2-refactor xref-js2 org-brain which-key artbollocks-mode google-maps writegood-mode web-mode php-mode hyperbole beeminder impatient-mode skewer-mode camcorder lorem-ipsum avy-zap ox-impress-js ox-reveal inf-ruby haskell-mode ssh org-plus-contrib metaweblog popup xml-rpc xahk-mode undo-tree sr-speedbar solarized-theme s python-mode pymacs paredit ox-tiddly org2blog nurumacs minimap magit javascript ipython ioccur ido-vertical-mode httpd htmlize eprime-mode elfeed edit-server-htmlize djvu dired-details+ dired+ deft csv-mode css-mode color-theme-solarized color-theme-sanityinc-tomorrow color-theme-sanityinc-solarized color-theme-github bash-completion auto-complete))
  '(pdf-view-display-size 'fit-page)
  '(reb-re-syntax 'string)
  '(safe-local-variable-values '((org-use-sub-superscripts . {})))
@@ -165,7 +165,7 @@
 (pdf-tools-install)
 
 ;; Force ereader to load
-;; (require 'ereader)
+(require 'ereader)
 
 ;; 20161224--jwd
 ;; Installed google-maps.el and added org-location-google-maps
